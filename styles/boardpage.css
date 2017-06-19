@@ -1,3 +1,7 @@
+body {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular';
+}
+
 .navbar {
     background-color: #6496e5;
     position: fixed;
@@ -5,3 +9,33 @@
     width: 100%;
     box-shadow: 0 5px 5px #888888;
 }
+
+ul {
+    margin: 10px;
+    list-style-type: none;
+}
+
+.board {
+    margin-top: 50px;
+}
+
+.board > ul {
+    white-space: nowrap;
+}
+
+.list {
+    background-color: lightblue;
+    border-radius: 15px;
+    padding: 10px;
+    display: inline-block;
+    width: 200px;
+}
+
+.boardsButton {
+    display: inline-block;
+}
+
+.menuButton {
+    float: right;
+}
+    
