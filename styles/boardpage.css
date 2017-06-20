@@ -1,42 +1,74 @@
 body {
     font-family: 'Helvetica', 'Lucida Sans Regular';
-    background-color: #B5CAF0;
+    background-color: #3F66AC;
+    color: #FFF;
 }
 
 .navbar {
-    background-color: #6496e5;
+    background-color: #254F9B;
+    color: #FFF;
+    height: 40px;
+    left: 0;
     position: fixed;
     top: 0;
     width: 100%;
-    box-shadow: 0 5px 5px #888888;
+}
+
+.board-toolbar {
+    height: 40px;
+    left: 0;
+    position: fixed;
+    top: 30px;
+    width: 100%;
+}
+
+.board-name {
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.board-menu {
+    margin: 25px;
+    float: right;
 }
 
 ul {
-    margin: 10px;
     list-style-type: none;
+    padding: 0;
 }
 
-.board {
+.lol {
+    margin-top: 90px;
+}
+
+.boards-btn {
+    background-color: #3F66AC;
+    color: #FFF;
+    border-radius: 5px;
+    border: none;
+    margin: 8px;
+    padding: 5px;
+}
+
+.boards-btn:hover {
+    background-color: #B5CAF0;
+}
+
+
+.board-page {
     margin-top: 50px;
 }
 
-.board > ul {
+.lol {
     white-space: nowrap;
 }
 
 .list {
-    background-color: lightblue;
-    border-radius: 15px;
-    padding: 10px;
+    background-color: #B5CAF0;
+    border-radius: 5px;
+    color: #000;
     display: inline-block;
+    margin: 0 5px;
+    vertical-align: top;
     width: 200px;
 }
-
-.boardsButton {
-    display: inline-block;
-}
-
-.menuButton {
-    float: right;
-}
-    
