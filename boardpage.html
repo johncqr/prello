@@ -8,7 +8,17 @@
 
 <body>
     <div class="navbar">
-        <button class="boards-btn">Boards</button>
+        <div class="boards-list-dropdown">
+            <button id="boards-list-btn">Boards</button>
+            <div id="boards-list">
+                <ul>
+                    <li class="board-entry">Board</li>
+                    <li class="board-entry">Board</li>
+                    <li class="board-entry">Board</li>
+                    <li class="board-entry">Board</li>
+                </ul>
+            </div>
+        </div>
     </div>
     <div class="board-page">
         <div class="board-toolbar">
@@ -17,23 +27,47 @@
         </div>
         <ul class="lol">
             <li class="list">
-                <h3 class="list-name">List</h3>
+                <h4 class="list-name">List</h4>
                 <ul>
-                    <li class="card">Card</li>
-                    <li class="card">Card</li>
-                    <li class="card">Card</li>
-                    <li class="card">Card</li>
-                    <li class="card">Card</li>
-                    <li class="card">Card</li>
+                    <li class="card">
+                        <p class="card-desc">Card</p>
+                    </li>
+                    <li class="card">
+                        <p class="card-desc">Card</p>
+                    </li>
+                    <li class="card">
+                        <p class="card-desc">Card</p>
+                    </li>
+                    <li class="card">
+                        <p class="card-desc">Card</p>
+                    </li>
+                    <li class="card">
+                        <p class="card-desc">Card</p>
+                    </li>
                 </ul>
+                <p class="add-link">Add a card...</p>
             </li>
             <li class="list">
                 <h3 class="list-name">List</h3>
                 <ul>
-                    <li class="card">Card</li>
-                    <li class="card">Card</li>
-                    <li class="card">Card</li>
-                    <li class="card">Card</li>
+                    <li class="card">
+                        <p class="card-desc">Card</p>
+                    </li>
+                    <li class="card">
+                        <p class="card-desc">Card</p>
+                    </li>
+                    <li class="card">
+                        <p class="card-desc">Card</p>
+                    </li>
+                    <li class="card">
+                        <p class="card-desc">Card</p>
+                    </li>
+                    <li class="card">
+                        <p class="card-desc">Card</p>
+                    </li>
+                    <li class="card">
+                        <p class="card-desc">Card</p>
+                    </li>
                 </ul>
             </li>
             <li class="list">
@@ -68,5 +102,6 @@
             </li>
         </ul>
     </div>
+    <script src="scripts/boardpage.js"></script>
 </body>
 </html>

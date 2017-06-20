@@ -22,6 +22,16 @@ body {
     width: 100%;
 }
 
+#boards-list {
+    box-shadow: 2px 2px 1px #888888;
+    border-radius: 2px;
+    color: #000;
+    display: none;
+    position: absolute;
+    background-color: #FFF;
+    min-width: 200px;
+}
+
 .board-name {
     display: inline-block;
     margin-left: 10px;
@@ -41,7 +51,7 @@ ul {
     margin-top: 90px;
 }
 
-.boards-btn {
+#boards-list-btn {
     background-color: #3F66AC;
     color: #FFF;
     border-radius: 5px;
@@ -50,13 +60,29 @@ ul {
     padding: 5px;
 }
 
-.boards-btn:hover {
+#boards-list-btn:hover {
     background-color: #B5CAF0;
 }
 
 
 .board-page {
     margin-top: 50px;
+}
+
+.card {
+    background-color: #FFF;
+    border-radius: 3px;
+    box-shadow: 0 1px 0 #888888;
+    margin: 5px;
+    padding: 3px 8px;
+}
+
+.card:hover {
+    background-color: #CBCBCB;
+}
+
+.card-desc {
+    margin: 0;
 }
 
 .lol {
@@ -69,6 +95,20 @@ ul {
     color: #000;
     display: inline-block;
     margin: 0 5px;
+    padding: 5px;
     vertical-align: top;
     width: 200px;
+}
+
+.list-name {
+    margin: 0;
+}
+
+.add-link {
+    margin: 10px 3px 0;
+}
+
+.add-link:hover {
+    background-color: #CBCBCB;
+    text-decoration: underline;
 }
