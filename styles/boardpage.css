@@ -20,6 +20,7 @@ body {
     position: fixed;
     top: 30px;
     width: 100%;
+    z-index: -1;
 }
 
 #boards-list {
@@ -30,6 +31,18 @@ body {
     position: absolute;
     background-color: #FFF;
     min-width: 200px;
+    z-index: 1;
+}
+
+.board-entry {
+    background-color: #B5CAF0;   
+    border-radius: 3px;
+    margin: 5px;
+    padding: 2px;
+}
+
+.board-entry:hover {
+    background-color: #3F66AC;
 }
 
 .board-name {
