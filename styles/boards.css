@@ -1,43 +1,65 @@
 body {
-    font-family: 'Lucida Sans', 'Lucida Sans Regular';
+    font-family: 'Helvetica', 'Lucida Sans Regular';
+    background-color: #B5CAF0;
 }
 
 .navbar {
-    background-color: #6496e5;
+    background-color: #254F9B;
     position: fixed;
+    left: 0;
     top: 0;
-    height: 60px;
     width: 100%;
-    box-shadow: 0 5px 5px #888888;
-    
+    height: 40px;
 }
 
 h1 {
-    margin-top: 80px;
+    margin-top: 50px;
 }
 
 .navbar > p {
+    display: inline-block;
     font-weight: bold;
     font-size: 20px;
-    display: inline-block;
+    margin: 10px;
 }
 
-.createButton {
-    display: block;
-    margin: 20px;
+.create-btn {
+    background-color: #3F66AC;
+    border-radius: 5px;
+    border: none;
     float: right;
+    margin: 8px;
+    padding: 5px;
 }
 
-.boardContainer {
+.create-btn:hover {
+    background-color: #B5CAF0;
+}
+
+.board-collection {
+    margin: 0 auto;
+    width: 80%;
+}
+
+.boards {
     display: flex;
     flex-wrap: wrap;
 }
 
 .board {
-    background-color: lightblue;
+    background-color: #254F9B;
     border-radius: 10px;
+    color: #FFF;
+    height: 100px;
     margin: 10px;
     padding: 10px;
-    height: 100px;
     width: 200px;
+}
+
+.board:hover {
+    background-color: #3F66AC;
+}
+
+.board-name {
+    margin-top: 5px;
 }
