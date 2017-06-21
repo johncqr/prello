@@ -15,6 +15,15 @@ body {
     z-index: 1
 }
 
+.navbar-mid {
+    font-weight: bold;
+    font-size: 20px;
+    position: absolute;
+    left: 50%;
+    top: -10px;
+    transform: translateX(-50%);
+}
+
 .board-toolbar {
     background-color: #254F9B;
     height: 55px;
