@@ -16,7 +16,8 @@ body {
 }
 
 .board-toolbar {
-    height: 40px;
+    background-color: #254F9B;
+    height: 55px;
     left: 0;
     position: fixed;
     top: 30px;
@@ -161,9 +162,16 @@ ul {
     width: 600px;
 }
 
+.card-page-name {
+    background: #3F66AC;
+    border-radius: 3px;
+    padding: 5px;
+}
+
 .card-section-name {
     font-weight: bold;
     margin: 3px;
+    border-bottom: solid 2px #000;
 }
 
 .card-label {
@@ -197,7 +205,7 @@ ul {
     display: inline-block;
     background-color: #FFF;
     border-radius: 2px;
-    padding: 1px;
+    padding: 2px;
 }
 
 .card-member:hover {
