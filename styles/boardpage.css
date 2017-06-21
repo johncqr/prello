@@ -47,8 +47,8 @@ body {
     right: 40px;
 }
 
-.menu-activity {
-    border-bottom: 2px solid #000;
+.menu-activity, .card-activity {
+    border-bottom: 1px solid #254F9B;
     padding: 3px;
     margin-bottom: 3px;
 }
@@ -172,6 +172,7 @@ ul {
     font-weight: bold;
     margin: 3px;
     border-bottom: solid 2px #000;
+    border-right: solid 2px #000;
 }
 
 .card-label {
@@ -234,6 +235,20 @@ ul {
     padding: 5px;
 }
 
+.card-send-btn {
+    background-color: #254F9B;
+    box-shadow: 0 2px 1px #888888;
+    color: #FFF;
+    display: inline-block;
+    padding: 6px;
+    border-radius: 2px;
+}
+
+.card-send-btn:hover {
+    background-color: #3F66AC;
+    cursor: pointer;
+}
+
 .card-add-option {
     background-color: #FFF;
     box-shadow: 0 2px 1px #888888;
@@ -245,4 +260,18 @@ ul {
 .card-add-option:hover {
     background-color: #3F66AC;
     cursor: pointer;
+}
+
+.card-info {
+    width: 450px;
+    float: left;
+}
+
+.card-options {
+    width: 150px;
+    float: right;
+}
+
+.card-clearer {
+    clear: both;
 }
