@@ -56,4 +56,5 @@ input:focus {
 
 .submit-btn:hover {
     background-color: #E97825;
+    cursor: pointer;
 }

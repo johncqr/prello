@@ -61,6 +61,7 @@ body {
 
 .board-entry:hover {
     background-color: #3F66AC;
+    cursor: pointer;
 }
 
 .board-name {
@@ -93,6 +94,7 @@ ul {
 
 #boards-list-btn:hover {
     background-color: #B5CAF0;
+    cursor: pointer;
 }
 
 
@@ -110,6 +112,7 @@ ul {
 
 .card:hover, .menu-option:hover {
     background-color: #CBCBCB;
+    cursor: pointer;
 }
 
 .menu-activity-time {
@@ -147,6 +150,7 @@ ul {
 .add-link:hover, #board-menu-btn:hover, .menu-add-members-link:hover {
     background-color: #CBCBCB;
     text-decoration: underline;
+    cursor: pointer;
 }
 
 .card-page {
@@ -174,6 +178,7 @@ ul {
 
 .card-label:hover {
     background-color: rgba(255,255,255,0.4);
+    cursor: pointer;
 }
 
 .card-label-green {
@@ -197,6 +202,7 @@ ul {
 
 .card-member:hover {
     background-color: #CBCBCB;
+    cursor: pointer;
 }
 
 .card-comment-username, .menu-activity-username, .menu-section-name {
@@ -223,4 +229,5 @@ ul {
 
 .card-add-option:hover {
     background-color: #3F66AC;
+    cursor: pointer;
 }
