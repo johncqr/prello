@@ -184,6 +184,13 @@ ul {
     text-align: center;
 }
 
+.card-label-surface {
+    border-radius: 2px;
+    display: inline-block;
+    height: 7px;
+    width: 30px;
+}
+
 .card-label:hover {
     background-color: rgba(255,255,255,0.4);
     cursor: pointer;
