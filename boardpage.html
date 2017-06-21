@@ -180,6 +180,50 @@
             </li>
         </ul>
     </div>
+    <div class="modal">
+        <div>
+            <div class="new-card-page card-page">
+                <div class="card-page-topbar">
+                    <div class="card-page-topbar-left">
+                        <input id="new-card-name" type="text" placeholder="Enter card name..." required>
+                    </div>
+                    <div class="card-page-topbar-right">
+                        <p class="card-btn close-new-card-btn">X</p>
+                    </div>
+                </div>
+                <div class="card-info">
+                    <p class="card-section-name">Description</p>
+                    <textarea id="new-card-description" rows="3" cols="35" placeholder="Enter description..."></textarea>
+                    <p class="card-section-name">Labels</p>
+                    <ul class="card-label-list">
+                    </ul>
+                    <p class="card-btn">Add Label</p>
+                    <p class="card-section-name">Members</p>
+                    <ul class="card-member-list">
+                    </ul>
+                    <p class="card-btn">Add Member</p>
+                    <p class="card-section-name">Add Comment</p>
+                    <textarea rows="3" cols="35"></textarea>
+                    <p class="card-btn">Send</p>
+                    <p class="card-section-name">Activity</p>
+                    <ul class="card-activity-list">
+                    </ul>
+                </div>
+                <div class="card-options">
+                    <p class="card-section-name">Add</p>
+                    <ul class="card-add-option-list">
+                        <li class="card-add-option">Members</li>
+                        <li class="card-add-option">Labels</li>
+                    </ul>
+                </div>
+                <div class="card-clearer"></div>
+                <p class="card-btn">Add Card</p>
+            </div>
+        </div>
+        <div class="modal-bg"></div>
+    </div>
+
+    <!--
     <div class="card-page">
         <h3 class="card-page-name">
             Card Name
@@ -193,12 +237,14 @@
                 <li class="card-label card-label-red">Red</li>
                 <li class="card-label card-label-purple"></li>
             </ul>
+            <p class="card-btn">Add Label</p>
             <p class="card-section-name">Members</p>
             <ul class="card-member-list">
                 <li class="card-member">User1</li>
                 <li class="card-member">User2</li>
                 <li class="card-member">User3</li>
             </ul>
+            <p class="card-btn">Add Member</p>
             <p class="card-section-name">Add Comment</p>
             <textarea rows="3" cols="35"></textarea>
             <p class="card-send-btn">Send</p>
@@ -251,6 +297,7 @@
         </div>
         <div class="card-clearer"></div>
     </div>
+    -->
     <script src="scripts/boardpage.js"></script>
 </body>
 </html>

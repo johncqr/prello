@@ -12,7 +12,7 @@ body {
     position: fixed;
     top: 0;
     width: 100%;
-    z-index: 1
+    z-index: 1;
 }
 
 .navbar-mid {
@@ -33,6 +33,13 @@ body {
     width: 100%;
     z-index: 0;
 }
+
+.board-toolbar-right {
+    position: absolute;
+    right: 10px;
+    top: 25px;
+}
+
 
 #boards-list {
     box-shadow: 2px 2px 1px #888888;
@@ -77,12 +84,6 @@ body {
 .board-name {
     display: inline-block;
     margin-left: 10px;
-}
-
-.board-toolbar-right {
-    position: absolute;
-    right: 10px;
-    top: 25px;
 }
 
 ul {
@@ -173,7 +174,44 @@ ul {
     width: 600px;
 }
 
-.card-page-name {
+.modal {
+    display: none;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+}
+
+.modal-bg {
+    position: absolute;
+    background-color: rgba(0,0,0,0.5);
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 2;
+}
+
+.new-card-page {
+    position: relative;
+    margin: 60px auto;
+    z-index: 3;
+}
+
+.card-page-topbar-left {
+    display: inline-block;
+}
+
+.card-page-topbar-right {
+    float: right;
+}
+
+.card-page-topbar-right > p {
+    margin: 0;
+}
+
+.card-page-topbar {
     background: #3F66AC;
     border-radius: 3px;
     padding: 5px;
@@ -246,7 +284,7 @@ ul {
     padding: 5px;
 }
 
-.card-send-btn {
+.card-btn {
     background-color: #254F9B;
     box-shadow: 0 2px 1px #888888;
     color: #FFF;
@@ -255,7 +293,7 @@ ul {
     border-radius: 2px;
 }
 
-.card-send-btn:hover {
+.card-btn:hover {
     background-color: #3F66AC;
     cursor: pointer;
 }
