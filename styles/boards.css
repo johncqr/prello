@@ -24,6 +24,48 @@ h1 {
     margin: 10px;
 }
 
+#boards-list-btn {
+    background-color: #3F66AC;
+    color: #FFF;
+    border-radius: 5px;
+    border: none;
+    margin: 5px;
+    padding: 5px;
+}
+
+.menu-section-name {
+    font-weight: bold;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+#boards-list {
+    box-shadow: 2px 2px 1px #888888;
+    border-radius: 2px;
+    color: #000;
+    display: none;
+    position: absolute;
+    background-color: #FFF;
+    min-width: 200px;
+}
+
+#logo {
+    display: inline-block;
+}
+
+
+.board-entry {
+    background-color: #B5CAF0;   
+    border-radius: 3px;
+    margin: 5px;
+    padding: 2px;
+}
+
+
+
 .create-btn {
     background-color: #3F66AC;
     border-radius: 5px;
