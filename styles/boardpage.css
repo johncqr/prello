@@ -12,6 +12,7 @@ body {
     position: fixed;
     top: 0;
     width: 100%;
+    z-index: 1
 }
 
 .board-toolbar {
@@ -20,7 +21,7 @@ body {
     position: fixed;
     top: 30px;
     width: 100%;
-    z-index: -1;
+    z-index: 0;
 }
 
 #boards-list {
@@ -31,7 +32,24 @@ body {
     position: absolute;
     background-color: #FFF;
     min-width: 200px;
-    z-index: 1;
+}
+
+#board-menu {
+    background-color: #B5CAF0;
+    box-shadow: 2px 2px 1px #888888;
+    border-radius: 2px;
+    color: #000;
+    display: none;
+    padding: 4px;
+    position: absolute;
+    width: 200px;
+    right: 40px;
+}
+
+.menu-activity {
+    border-bottom: 2px solid #000;
+    padding: 3px;
+    margin-bottom: 3px;
 }
 
 .board-entry {
@@ -50,7 +68,7 @@ body {
     margin-left: 10px;
 }
 
-.board-menu {
+.board-menu-dropdown {
     margin: 25px;
     float: right;
 }
@@ -82,7 +100,7 @@ ul {
     margin-top: 50px;
 }
 
-.card {
+.card, .menu-option {
     background-color: #FFF;
     border-radius: 3px;
     box-shadow: 0 1px 0 #888888;
@@ -90,8 +108,13 @@ ul {
     padding: 3px 8px;
 }
 
-.card:hover {
+.card:hover, .menu-option:hover {
     background-color: #CBCBCB;
+}
+
+.menu-activity-time {
+    margin: 3px;
+    font-size: 13px;
 }
 
 .card-desc {
@@ -121,7 +144,7 @@ ul {
     margin: 10px 3px 0;
 }
 
-.add-link:hover {
+.add-link:hover, #board-menu-btn:hover, .menu-add-members-link:hover {
     background-color: #CBCBCB;
     text-decoration: underline;
 }
@@ -176,7 +199,7 @@ ul {
     background-color: #CBCBCB;
 }
 
-.card-comment-username {
+.card-comment-username, .menu-activity-username, .menu-section-name {
     font-weight: bold;
     margin: 0;
 }
