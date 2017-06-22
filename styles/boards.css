@@ -1,10 +1,10 @@
 body {
     font-family: 'Helvetica', 'Lucida Sans Regular';
-    background-color: #B5CAF0;
+    background-color: #FFF;
 }
 
 .navbar {
-    background-color: #254F9B;
+    background-color: #0067A3;
     color: #FFF;
     height: 40px;
     left: 0;
@@ -28,51 +28,83 @@ body {
     top: 0;
 }
 
-h1 {
-    margin-top: 50px;
+.btn-text {
+    font-weight: bold;
+}
+
+#boards-list {
+    box-shadow: 0 0 6px rgba(0,0,0,.4);
+    border-radius: 2px;
+    color: #000;
+    display: none;
+    position: fixed;
+    background-color: #FFF;
+    min-width: 280px;
+}
+
+.btn {
+    border-radius: 5px;
+    border: none;
+    background-color: #4791BD;
+    color: #FFF;
 }
 
 #boards-list-btn {
-    background-color: #3F66AC;
-    color: #FFF;
-    border-radius: 5px;
-    border: none;
-    margin: 7px;
-    padding: 5px;
+    margin: 5px 4px;
+    padding: 7px;
+    width: 70px;
 }
 
-.menu-section-name {
-    font-weight: bold;
+#create-board-btn {
+    margin: 5px 4px;
+    font-size: 25px;
 }
+
+.btn:hover {
+    filter: brightness(120%);
+    cursor: pointer;
+}
+
+.boards-list-sep {
+    margin: 10px 0 0 10px;
+}
+
+.boards-list-sep-name {
+    font-size: .90rem;
+    margin-bottom: 0;
+}
+
+.board-entry-list {
+    margin-top: 2px;
+}
+
+.board-entry {
+    background-color: #E0EFF7;   
+    border-radius: 3px;
+    height: 36px;
+    margin: 5px;
+}
+
+.board-entry-text {
+    display: block;
+    font-weight: bold;
+    padding: 10px 20px;
+}
+
+.board-entry:hover {
+    filter: brightness(95%);
+    cursor: pointer;
+}
+
 
 ul {
     list-style-type: none;
     padding: 0;
 }
 
-#boards-list {
-    box-shadow: 2px 2px 1px #888888;
-    border-radius: 2px;
-    color: #000;
-    display: none;
-    position: absolute;
-    background-color: #FFF;
-    min-width: 200px;
-}
-
 #logo {
     display: inline-block;
 }
-
-
-.board-entry {
-    background-color: #B5CAF0;   
-    border-radius: 3px;
-    margin: 5px;
-    padding: 2px;
-}
-
-
 
 .create-btn {
     background-color: #3F66AC;
@@ -89,18 +121,19 @@ ul {
 }
 
 .board-collection {
-    margin: 0 auto;
+    margin: 40px auto;
     width: 80%;
 }
 
-.boards {
+.boards-container {
+    margin-top: 5px;
     display: flex;
     flex-wrap: wrap;
 }
 
 .board {
-    background-color: #254F9B;
-    border-radius: 10px;
+    background-color: #0067A3;
+    border-radius: 5px;
     color: #FFF;
     height: 100px;
     margin: 10px;
@@ -109,10 +142,16 @@ ul {
 }
 
 .board:hover {
-    background-color: #3F66AC;
+    filter: brightness(80%);
     cursor: pointer;
 }
 
 .board-name {
     margin-top: 5px;
+}
+
+.collection-name {
+    font-weight: bold;
+    font-size: 20px;
+    margin: 50px 0 0 30px;
 }

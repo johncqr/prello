@@ -9,14 +9,14 @@
 <body>
     <div class="navbar">
         <div class="navbar-left">
-            <button id="boards-list-btn">Boards</button>
+            <button id="boards-list-btn" class="btn"><span class="btn-text">Boards</span></button>
             <div id="boards-list">
-                <p class="menu-section-name">Personal Boards</p>
-                <ul>
-                    <li class="board-entry">Board</li>
-                    <li class="board-entry">Board</li>
-                    <li class="board-entry">Board</li>
-                    <li class="board-entry">Board</li>
+                <div class="boards-list-sep"><span class="boards-list-sep-name">Personal Boards</span></div>
+                <ul class="board-entry-list">
+                    <li class="board-entry"><span class="board-entry-text">Board</span></li>
+                    <li class="board-entry"><span class="board-entry-text">Board</span></li>
+                    <li class="board-entry"><span class="board-entry-text">Board</span></li>
+                    <li class="board-entry"><span class="board-entry-text">Board</span></li>
                 </ul>
             </div>
         </div>
@@ -24,12 +24,12 @@
             <p id="logo">Prello</p>
         </div>
         <div class="navbar-right">
-            <button class="create-btn">Create board...</button>
+            <button id="create-board-btn" class="btn">+</button>
         </div>
     </div>
     <div class="board-collection">
-        <h1 class="collection-name">Personal Boards</h1>
-        <div class="boards">
+        <p class="collection-name">Personal Boards</p>
+        <div class="boards-container">
             <div class="board">
                 <h3 class="board-name">Test</h3>
             </div>
