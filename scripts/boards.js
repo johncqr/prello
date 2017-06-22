@@ -3,4 +3,5 @@ function toggleBoardsLists() {
     boardsList.style.display = boardsList.style.display === "none" ? "block" : "none";
 }
 
+document.getElementById('boards-list').style.display = 'none';
 document.getElementById("boards-list-btn").addEventListener("click", toggleBoardsLists);
