@@ -9,14 +9,14 @@
 <body>
     <div class="navbar">
         <div class="navbar-left">
-            <button id="boards-list-btn">Boards</button>
+            <button id="boards-list-btn"><span class="btn-text">Boards</span></button>
             <div id="boards-list">
-                <p class="menu-section-name">Personal Boards</p>
-                <ul>
-                    <li class="board-entry">Board</li>
-                    <li class="board-entry">Board</li>
-                    <li class="board-entry">Board</li>
-                    <li class="board-entry">Board</li>
+                <div class="boards-list-sep"><span class="boards-list-sep-name">Personal Boards</span></div>
+                <ul class="board-entry-list">
+                    <li class="board-entry"><span class="board-entry-text">Board</span></li>
+                    <li class="board-entry"><span class="board-entry-text">Board</span></li>
+                    <li class="board-entry"><span class="board-entry-text">Board</span></li>
+                    <li class="board-entry"><span class="board-entry-text">Board</span></li>
                 </ul>
             </div>
         </div>
@@ -32,43 +32,49 @@
             <div class="board-toolbar-right">
                 <div id="board-menu-btn">Show Menu</div>
                 <div id="board-menu">
-                    <p class="menu-section-name">Menu</p>
-                    <div class="menu-member-container">
+                    <div class="board-menu-section">
+                        <span class="board-menu-title-text">Menu</span>
+                        <span id="board-menu-close-btn">X</span>
+                    </div>
+                    <div class="board-menu-section">
                         <ul class="card-member-list">
                             <li class="card-member">User1</li>
                             <li class="card-member">User2</li>
                             <li class="card-member">User3</li>
                         </ul>
-                        <p class="menu-add-members-link">Add Members...</p>
+                        <div class="btn"><span class="btn-text">Add Members...</span></div>
                     </div>
-                    <ul class="menu-option-list">
-                        <li class="menu-option">Change Background</li>
-                        <li class="menu-option">Filter Cards</li>
-                        <li class="menu-option">Power Ups</li>
-                        <li class="menu-option">Stickers</li>
-                    </ul>
-                    <div class="menu-activity-section">
-                        <p class="menu-section-name">Activity</p>
-                        <ul class="menu-activity-list">
-                            <li class="menu-activity">
-                                <span class="menu-activity-username">User</span> did activity.
-                                <p class="menu-activity-time">2 hours ago</p>
+                    <div class="board-menu-section">
+                        <ul class="board-menu-option-list">
+                            <li class="board-menu-option">Change Background</li>
+                            <li class="board-menu-option">Filter Cards</li>
+                            <li class="board-menu-option">Power Ups</li>
+                            <li class="board-menu-option">Stickers</li>
+                        </ul>
+                    </div>
+                    <div class="board-menu-section">
+                        <p class="board-menu-section-name">Activity</p>
+                        <ul class="board-menu-activity-list">
+                            <li class="board-menu-activity">
+                                <span class="board-menu-activity-username">User</span> did activity.
+                                <p class="board-menu-activity-time">2 hours ago</p>
                             </li>
-                            <li class="menu-activity">
-                                <span class="menu-activity-username">User</span> did activity.
-                                <p class="menu-activity-time">3 hours ago</p>
+                            <li class="board-menu-activity">
+                                <span class="board-menu-activity-username">User</span> did activity.
+                                <p class="board-menu-activity-time">3 hours ago</p>
                             </li>
-                            <li class="menu-activity">
-                                <span class="menu-activity-username">User</span> did activity.
-                                <p class="menu-activity-time">3 hours ago</p>
+                            <li class="board-menu-activity">
+                                <span class="board-menu-activity-username">User</span> did activity.
+                                <p class="board-menu-activity-time">3 hours ago</p>
                             </li>
-                            <li class="menu-activity">
-                                <span class="menu-activity-username">User</span> did activity.
-                                <p class="menu-activity-time">3 hours ago</p>
+                            <li class="board-menu-activity">
+                                <span class="board-menu-activity-username">User</span> did activity.
+                                <p class="board-menu-activity-time">3 hours ago</p>
                             </li>
                         </ul>
                     </div>
                 </div>
+                <div class="div-clearer"></div>
             </div>
         </div>
         <ul class="lol">
@@ -80,29 +86,24 @@
                             <li class="card-label-surface card-label-green"></li>
                             <li class="card-label-surface card-label-red"></li>
                         </ul>
-                        <p class="card-desc">Card</p>
+                        <p class="card-name">Card</p>
                     </li>
                     <li class="card">
                         <ul class="card-label-list">
                         </ul>
-                        <p class="card-desc">Card</p>
+                        <p class="card-name">Card</p>
                     </li>
                     <li class="card">
                         <ul class="card-label-list">
                         </ul>
-                        <p class="card-desc">Card</p>
+                        <p class="card-name">Card</p>
                     </li>
                     <li class="card">
                         <ul class="card-label-list">
                             <li class="card-label-surface card-label-purple"></li>
                             <li class="card-label-surface card-label-red"></li>
                         </ul>
-                        <p class="card-desc">Card</p>
-                    </li>
-                    <li class="card">
-                        <ul class="card-label-list">
-                        </ul>
-                        <p class="card-desc">Card</p>
+                        <p class="card-name">Card</p>
                     </li>
                 </ul>
                 <p class="add-link">Add a card...</p>
@@ -113,32 +114,32 @@
                     <li class="card">
                         <ul class="card-label-list">
                         </ul>
-                        <p class="card-desc">Card</p>
+                        <p class="card-name">Card</p>
                     </li>
                     <li class="card">
                         <ul class="card-label-list">
                         </ul>
-                        <p class="card-desc">Card</p>
+                        <p class="card-name">Card</p>
                     </li>
                     <li class="card">
                         <ul class="card-label-list">
                         </ul>
-                        <p class="card-desc">Card</p>
+                        <p class="card-name">Card</p>
                     </li>
                     <li class="card">
                         <ul class="card-label-list">
                         </ul>
-                        <p class="card-desc">Card</p>
+                        <p class="card-name">Card</p>
                     </li>
                     <li class="card">
                         <ul class="card-label-list">
                         </ul>
-                        <p class="card-desc">Card</p>
+                        <p class="card-name">Card</p>
                     </li>
                     <li class="card">
                         <ul class="card-label-list">
                         </ul>
-                        <p class="card-desc">Card</p>
+                        <p class="card-name">Card</p>
                     </li>
                     <p class="add-link">Add a card...</p>
                 </ul>
@@ -181,44 +182,38 @@
         </ul>
     </div>
     <div class="modal">
-        <div>
-            <div class="new-card-page card-page">
-                <div class="card-page-topbar">
-                    <div class="card-page-topbar-left">
-                        <input id="new-card-name" type="text" placeholder="Enter card name..." required>
-                    </div>
-                    <div class="card-page-topbar-right">
-                        <p class="card-btn close-new-card-btn">X</p>
-                    </div>
+        <div class="new-card-page card-page">
+            <div class="card-page-topbar">
+                <div class="card-page-topbar-left">
+                    <input id="new-card-page-name" type="text" placeholder="Enter card name..." required>
                 </div>
-                <div class="card-info">
-                    <p class="card-section-name">Description</p>
-                    <textarea id="new-card-description" rows="3" cols="35" placeholder="Enter description..."></textarea>
-                    <p class="card-section-name">Labels</p>
-                    <ul class="card-label-list">
-                    </ul>
-                    <p class="card-btn">Add Label</p>
-                    <p class="card-section-name">Members</p>
-                    <ul class="card-member-list">
-                    </ul>
-                    <p class="card-btn">Add Member</p>
-                    <p class="card-section-name">Add Comment</p>
-                    <textarea rows="3" cols="35"></textarea>
-                    <p class="card-btn">Send</p>
-                    <p class="card-section-name">Activity</p>
-                    <ul class="card-activity-list">
-                    </ul>
+                <div class="card-page-topbar-right">
+                    <p class="btn close-new-card-btn">X</p>
                 </div>
-                <div class="card-options">
-                    <p class="card-section-name">Add</p>
-                    <ul class="card-add-option-list">
-                        <li class="card-add-option">Members</li>
-                        <li class="card-add-option">Labels</li>
-                    </ul>
-                </div>
-                <div class="card-clearer"></div>
-                <p class="card-btn">Add Card</p>
             </div>
+            <div class="card-info">
+                <p class="card-section-name">Description</p>
+                <textarea id="new-card-nameription" rows="3" cols="35" placeholder="Enter description..."></textarea>
+                <p class="card-section-name">Labels</p>
+                <ul class="card-label-list">
+                </ul>
+                <p class="card-section-name">Members</p>
+                <ul class="card-member-list">
+                </ul>
+                <p class="card-section-name">Add Comment</p>
+                <textarea rows="3" cols="35"></textarea>
+                <div class="comment-send-btn btn">Send</div>
+                <p class="card-section-name">Activity</p>
+            </div>
+            <div class="card-options">
+                <p class="card-section-name">Add</p>
+                <ul class="card-add-option-list">
+                    <li class="btn">Members</li>
+                    <li class="btn">Labels</li>
+                </ul>
+            </div>
+            <div class="div-clearer"></div>
+            <p class="btn">Add Card</p>
         </div>
         <div class="modal-bg"></div>
     </div>

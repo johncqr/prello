@@ -1,11 +1,11 @@
 body {
     font-family: 'Helvetica', 'Lucida Sans Regular';
-    background-color: #3F66AC;
+    background-color: #0079BF;
     color: #FFF;
 }
 
 .navbar {
-    background-color: #254F9B;
+    background-color: #0067A3;
     color: #FFF;
     height: 40px;
     left: 0;
@@ -24,8 +24,73 @@ body {
     transform: translateX(-50%);
 }
 
+#boards-list {
+    box-shadow: 0 0 6px rgba(0,0,0,.4);
+    border-radius: 2px;
+    color: #000;
+    display: none;
+    position: fixed;
+    background-color: #FFF;
+    min-width: 280px;
+}
+
+#boards-list-btn {
+    border-radius: 5px;
+    border: none;
+    background-color: #4791BD;
+    color: #FFF;
+    margin: 5px 4px;
+    padding: 7px;
+    width: 70px;
+}
+
+#boards-list-btn:hover {
+    filter: brightness(120%);
+    cursor: pointer;
+}
+
+.boards-list-sep {
+    margin: 10px 0 0 10px;
+}
+
+.boards-list-sep-name {
+    font-size: .90rem;
+    margin-bottom: 0;
+}
+
+.board-entry-list {
+    margin-top: 2px;
+}
+
+.board-entry {
+    background-color: #E0EFF7;   
+    border-radius: 3px;
+    height: 36px;
+    margin: 5px;
+}
+
+.board-entry-text {
+    display: block;
+    font-weight: bold;
+    padding: 10px 20px;
+}
+
+.board-entry:hover {
+    filter: brightness(95%);
+    cursor: pointer;
+}
+
+.board-page {
+    margin-top: 50px;
+}
+
+.board-name {
+    display: inline-block;
+    margin-left: 10px;
+}
+
 .board-toolbar {
-    background-color: #254F9B;
+    background-color: #0079BF;
     height: 55px;
     left: 0;
     position: fixed;
@@ -40,50 +105,79 @@ body {
     top: 25px;
 }
 
-
-#boards-list {
-    box-shadow: 2px 2px 1px #888888;
-    border-radius: 2px;
-    color: #000;
-    display: none;
-    position: absolute;
-    background-color: #FFF;
-    min-width: 200px;
-}
-
 #board-menu {
-    background-color: #B5CAF0;
-    box-shadow: 2px 2px 1px #888888;
+    background-color: #EDEFF0;
+    box-shadow: 0 0 6px rgba(0,0,0,.4);
     border-radius: 2px;
     color: #000;
-    display: none;
+    display: flex;
     padding: 4px;
-    position: absolute;
-    width: 200px;
-    right: -10px;
+    position: fixed;
+    width: 300px;
+    bottom: 0;
+    right: 0;
+    top: 40px;
 }
 
-.menu-activity, .card-activity {
-    border-bottom: 1px solid #254F9B;
+#board-menu-btn {
+    border-radius: 2px;
+    height: 15px;
+    font-size: 14px;
+    padding: 5px;
+    text-decoration: underline;
+}
+
+#board-menu-btn:hover {
+    filter: brightness(80%);
+    background-color: #0079BF;
+}
+
+.board-menu-section {
+    border-bottom: 1px solid #CBCBCB;
+    margin-bottom: 10px;
+    padding-left: 10px;
+}
+
+.board-menu-title-text {
+    display: inline-block;
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-left: 125px;
+    margin-top: 10px;
+}
+
+#board-menu-close-btn {
+    color: #CBCBCB;
+    position: absolute;
+    right: 10px;
+    margin-top: 10px;
+}
+
+#board-menu-close-btn:hover {
+    color: #000;
+    cursor: pointer;
+}
+
+.board-menu-option {
+    background-color: #EDEFF0;
+    border-radius: 2px;
+    font-weight: bold;
+    padding: 7px 10px;
+}
+
+.board-menu-option:hover {
+    background-color: #CBCBCB;
+}
+
+.board-menu-activity, .card-activity {
+    border-bottom: 1px solid #CBCBCB;
     padding: 3px;
     margin-bottom: 3px;
 }
 
-.board-entry {
-    background-color: #B5CAF0;   
-    border-radius: 3px;
-    margin: 5px;
-    padding: 2px;
-}
-
-.board-entry:hover {
-    background-color: #3F66AC;
-    cursor: pointer;
-}
-
-.board-name {
-    display: inline-block;
-    margin-left: 10px;
+.board-menu-activity-time {
+    margin: 3px;
+    font-size: 13px;
 }
 
 ul {
@@ -95,44 +189,29 @@ ul {
     margin-top: 90px;
 }
 
-#boards-list-btn {
-    background-color: #3F66AC;
-    color: #FFF;
-    border-radius: 5px;
-    border: none;
-    margin: 8px;
-    padding: 5px;
+.btn, .btn-text {
+    font-weight: bold;
 }
 
-#boards-list-btn:hover {
-    background-color: #B5CAF0;
-    cursor: pointer;
-}
-
-
-.board-page {
-    margin-top: 50px;
-}
-
-.card, .menu-option {
+.card, .btn {
     background-color: #FFF;
     border-radius: 3px;
-    box-shadow: 0 1px 0 #888888;
+    box-shadow: 0 0 6px rgba(0,0,0,.4);
     margin: 5px;
     padding: 3px 8px;
 }
 
-.card:hover, .menu-option:hover {
+.card:hover {
     background-color: #CBCBCB;
     cursor: pointer;
 }
 
-.menu-activity-time {
-    margin: 3px;
-    font-size: 13px;
+.btn:hover {
+    color: #FFF;
+    background-color: #0079BF;
 }
 
-.card-desc {
+.card-name {
     margin: 0;
 }
 
@@ -141,7 +220,7 @@ ul {
 }
 
 .list {
-    background-color: #B5CAF0;
+    background-color: #E2E4E6;
     border-radius: 5px;
     color: #000;
     display: inline-block;
@@ -160,18 +239,19 @@ ul {
     margin: 10px 3px 0;
 }
 
-.add-link:hover, #board-menu-btn:hover, .menu-add-members-link:hover {
+.add-link:hover {
     background-color: #CBCBCB;
     text-decoration: underline;
     cursor: pointer;
 }
 
 .card-page {
-    background-color: #B5CAF0;
+    background-color: #EDEFF0;
     border-radius: 5px;
     color: #000;
+    min-height: 600px;
     padding: 5px;
-    width: 600px;
+    width: 700px;
 }
 
 .modal {
@@ -207,21 +287,9 @@ ul {
     float: right;
 }
 
-.card-page-topbar-right > p {
-    margin: 0;
-}
-
-.card-page-topbar {
-    background: #3F66AC;
-    border-radius: 3px;
-    padding: 5px;
-}
-
 .card-section-name {
     font-weight: bold;
-    margin: 3px;
-    border-bottom: solid 2px #000;
-    border-right: solid 2px #000;
+    margin: 20px 10px;
 }
 
 .card-label {
@@ -237,8 +305,8 @@ ul {
 .card-label-surface {
     border-radius: 2px;
     display: inline-block;
-    height: 7px;
-    width: 30px;
+    height: 8px;
+    width: 42px;
 }
 
 .card-label:hover {
@@ -270,7 +338,11 @@ ul {
     cursor: pointer;
 }
 
-.card-comment-username, .menu-activity-username, .menu-section-name {
+.comment-send-btn {
+    width: 40px;
+}
+
+.card-comment-username, .board-menu-activity-username, .board-menu-section-name {
     font-weight: bold;
     margin: 0;
 }
@@ -278,37 +350,10 @@ ul {
 .card-comment-content {
     background-color: #FFF;
     border-radius: 2px;
-    box-shadow: 2px 2px 1px #888888;
+    box-shadow: 0 0 6px rgba(0,0,0,.4);
     display: inline-block;
     margin: 4px 5px;
     padding: 5px;
-}
-
-.card-btn {
-    background-color: #254F9B;
-    box-shadow: 0 2px 1px #888888;
-    color: #FFF;
-    display: inline-block;
-    padding: 6px;
-    border-radius: 2px;
-}
-
-.card-btn:hover {
-    background-color: #3F66AC;
-    cursor: pointer;
-}
-
-.card-add-option {
-    background-color: #FFF;
-    box-shadow: 0 2px 1px #888888;
-    padding: 5px;
-    border-radius: 2px;
-    margin: 4px 5px;
-}
-
-.card-add-option:hover {
-    background-color: #3F66AC;
-    cursor: pointer;
 }
 
 .card-info {
@@ -321,6 +366,6 @@ ul {
     float: right;
 }
 
-.card-clearer {
+.div-clearer {
     clear: both;
 }
