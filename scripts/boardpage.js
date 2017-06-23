@@ -77,12 +77,12 @@ function toggleBoardsLists() {
 
 function openBoardMenu() {
     var boardMenu = document.querySelector('#board-menu');
-    boardMenu.style.display = 'block';
+    boardMenu.style.right = '0';
 }
 
 function closeBoardMenu() {
     var boardMenu = document.querySelector('#board-menu');
-    boardMenu.style.display = 'none';
+    boardMenu.style.right = '-320px';
 }
 
 function openNewCard() {
@@ -313,7 +313,6 @@ function addNewLabel() {
 initData();
 
 document.querySelector('#boards-list').style.display = 'none';
-document.querySelector('#board-menu').style.display = 'none';
 document.querySelector('#add-label-menu').style.display = 'none';
 document.querySelector('#form-list-adder-container').style.display = 'none';
 document.querySelector('#list-adder-btn').addEventListener('click', openListAdderForm);
