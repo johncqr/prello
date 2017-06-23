@@ -1,41 +1,58 @@
 body {
     font-family: 'Helvetica', 'Lucida Sans Regular';
-    background-color: #B5CAF0;
+    background-color: #FFF;
 }
 
-.page {
-    background-color: #254F9B;
-    border-radius: 10px;
-    height: 100%;
-    overflow: hidden; /* gives .page height after floating .fields */
-    text-align: center;
-    padding: 20px;
+.navbar {
+    background-color: #0067A3;
+    color: #FFF;
+    height: 40px;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
 }
 
-.page-title {
-    font-size: 60px;
-    letter-spacing: 3px;
+.navbar-mid {
+    font-weight: bold;
+    font-size: 20px;
+    position: absolute;
+    left: 50%;
+    top: -10px;
+    transform: translateX(-50%);
 }
 
+.page-container {
+    margin-top: 60px;
+}
 
 .fields {
-    box-shadow: 0 5px 5px #000;
-    display: inline-block;
-    background-color: #84A3DC;
-    border-radius: 10px;
-    margin: 10px;
-    padding: 10px;
-    width: 45%
+    margin: 0 auto;
+    width: 600px;
 }
 
-.form-title {
-    letter-spacing: 5px;
+.page-section {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+label {
+    font-size: 1.5rem;
+    display: block;
+    margin: 10px 0;
+}
+
+label[for="login-remember"] {
+    display: inline-block;
 }
 
 input {
+    background-color: #EDEFF0;
+    border: 1px solid #CDD2D4;
+    border-radius: 4px;
     display: block;
-    margin: 10px auto;
-    font-size: 30px;
+    font-size: 1.5rem;
+    padding: 10px;
 }
 
 .remember-checkbox {
@@ -47,14 +64,16 @@ input:focus {
 }
 
 .submit-btn {
-    background-color: #FFBF8F;
+    color: white;
+    background-color: #3F66AC;
     border-radius: 5px;
     border: none;
-    padding: 5px;
-    box-shadow: 0 5px 5px #888888;
+    padding: 5px 10px;
+    box-shadow: 0 2px #888888;
+    margin: 10px 0;
 }
 
 .submit-btn:hover {
-    background-color: #E97825;
+    filter: brightness(110%);
     cursor: pointer;
 }
