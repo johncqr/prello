@@ -60,6 +60,11 @@ var currentCardIndex;
 
 var LOL = document.querySelector('#lol');
 
+function toggleAddLabelMenu() {
+    var addLabelMenu = document.querySelector('#add-label-menu');
+    addLabelMenu.style.display = addLabelMenu.style.display === 'none' ? 'block' : 'none'
+}
+
 function toggleBoardsLists() {
     var boardsList = document.querySelector('#boards-list');
     boardsList.style.display = boardsList.style.display === 'none' ? 'block' : 'none'
@@ -274,16 +279,31 @@ function closeFullCard() {
     fullCardModal.style.display = 'none';
 }
 
+function addNewLabel() {
+    var addLabelDesc = document.querySelector('#add-label-desc');
+    var labelData = {
+        color: this.querySelector('span').textContent,
+        desc: addLabelDesc.value
+    }
+    addLabelDesc.value = '';
+    data[currentListIndex].cards[currentCardIndex].labels.push(labelData);
+    currentCard.querySelector('.card-label-list').appendChild(createLabelSurfaceElement(labelData));
+    document.querySelector('#current-card-page .card-label-list').appendChild(createCardLabelElement(labelData));
+
+}
+
 initData();
 
 document.querySelector('#boards-list').style.display = 'none';
 document.querySelector('#board-menu').style.display = 'none';
+document.querySelector('#add-label-menu').style.display = 'none';
 document.querySelector('#form-list-adder-container').style.display = 'none';
 document.querySelector('#list-adder-btn').addEventListener('click', openListAdderForm);
 document.querySelector('#list-adder-close-btn').addEventListener('click', closeListAdderForm);
 document.querySelector('#boards-list-btn').addEventListener('click', toggleBoardsLists);
 document.querySelector('#board-menu-btn').addEventListener('click', openBoardMenu);
 document.querySelector('#board-menu-close-btn').addEventListener('click', closeBoardMenu);
+document.querySelector('#add-label-btn').addEventListener('click', toggleAddLabelMenu);
 document.querySelector('#new-card-modal-bg').addEventListener('click', closeNewCard);
 document.querySelector('#close-new-card-btn').addEventListener('click', closeNewCard);
 document.querySelector('#close-card-btn').addEventListener('click', closeFullCard);
@@ -291,3 +311,8 @@ document.querySelector('#card-modal-bg').addEventListener('click', closeFullCard
 document.querySelector('#list-adder-submit-btn').addEventListener('click', addNewList);
 document.querySelector('#add-card-btn').addEventListener('click', addNewCard);
 document.querySelector('#delete-card-btn').addEventListener('click', deleteCard);
+
+var addLabelSelectors = document.getElementsByClassName('add-label-selector');
+for (var i = 0; i < addLabelSelectors.length; ++i) {
+    addLabelSelectors[i].addEventListener('click', addNewLabel);
+}

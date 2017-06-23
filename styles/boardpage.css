@@ -110,13 +110,38 @@ body {
     box-shadow: 0 0 6px rgba(0,0,0,.4);
     border-radius: 2px;
     color: #000;
-    display: flex;
     padding: 4px;
     position: fixed;
     width: 300px;
     bottom: 0;
     right: 0;
     top: 40px;
+}
+
+#add-label-menu {
+    background-color: #FFF;
+    box-shadow: 0 0 6px rgba(0,0,0,.4);
+    border-radius: 2px;
+    color: #000;
+    display: block;
+    padding: 4px;
+    position: fixed;
+    z-index: 5;
+    width: 180px;
+    height: 300px;
+}
+
+.add-label-selector {
+    border-radius: 3px;
+    margin: 5px 2px;
+    text-align: center;
+    height: 20px;
+    width: 175px;
+}
+
+.add-label-selector:hover {
+    filter: brightness(110%);
+    cursor: pointer;
 }
 
 #board-menu-btn {

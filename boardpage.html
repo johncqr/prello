@@ -125,10 +125,6 @@
                 <p class="card-page-description">This is a card description!</p>
                 <p class="card-section-name">Labels</p>
                 <ul class="card-label-list">
-                    <li class="card-label card-label-green"><span class="card-label-text">Green</span></li>
-                    <li class="card-label card-label-red"><span class="card-label-text">Red</span></span>
-                    </li>
-                    <li class="card-label card-label-purple"><span class="card-label-text"></span></li>
                 </ul>
                 <p class="card-section-name">Members</p>
                 <ul class="card-member-list">
@@ -152,7 +148,15 @@
                 <p class="card-section-name">Add</p>
                 <ul class="card-option-list">
                     <li class="btn">Members</li>
-                    <li class="btn">Labels</li>
+                    <li id="add-label-btn" class="btn">Labels</li>
+                    <div id="add-label-menu">
+                        <input id="add-label-desc" placeholder="Enter label description...">
+                        <ul id="add-label-list">
+                            <li class="add-label-selector card-label-red"><span class="card-label-text">red</span></li>
+                            <li class="add-label-selector card-label-green"><span class="card-label-text">green</span></li>
+                            <li class="add-label-selector card-label-purple"><span class="card-label-text">purple</span></li>
+                        </ul>
+                    </div>
                 </ul>
                 <p class="card-section-name">Options</p>
                 <ul class="card-option-list">
