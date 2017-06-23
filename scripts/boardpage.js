@@ -31,7 +31,7 @@ var data = [
             {
                 name: 'Card3',
                 desc: 'Description for Card 3',
-                labels: [{ color: 'red', desc: 'RED LABEL'}]
+                labels: [{ color: 'red', desc: 'RED LABEL' }]
             }
         ]
     },
@@ -50,6 +50,12 @@ var data = [
         ]
     }
 ];
+
+
+// used to see where to add/edit cards
+var currentList;
+var currentListIndex;
+var currentCard;
 
 var LOL = document.querySelector('#lol');
 
@@ -71,11 +77,17 @@ function closeBoardMenu() {
 function openNewCard() {
     var newCard = document.querySelector('#new-card-modal');
     newCard.style.display = 'block';
+    currentList = this.parentNode;
+    currentListIndex = getDataIndexOfList(currentList);
 }
 
 function closeNewCard() {
+    var newCardName = document.querySelector('#new-card-page-name');
+    var newCardDesc = document.querySelector('#new-card-desc');
     var newCard = document.querySelector('#new-card-modal');
     newCard.style.display = 'none';
+    newCardName.value = '';
+    newCardDesc.value = '';
 }
 
 function openListAdderForm() {
@@ -126,7 +138,7 @@ function createCardElement(c) {
 function createListElement(l) {
     var newListElement = document.createElement('li');
     newListElement.className = 'list';
-    
+
     var newListTopbarElement = document.createElement('div');
     newListTopbarElement.className = 'list-topbar';
     var newListNameElement = document.createElement('h4');
@@ -173,12 +185,29 @@ function addNewList() {
     }
 }
 
+function addNewCard() {
+    newCardName = document.querySelector('#new-card-page-name');
+    newCardDesc = document.querySelector('#new-card-desc');
+    if (newCardName.value != '') {
+        var cardData = {
+            name: newCardName.value,
+            desc: newCardDesc.value,
+            labels: []
+        };
+        data[currentListIndex].cards.push(cardData);
+        console.log(data);
+        var newCardElement = createCardElement(cardData);
+        currentList.querySelector('.card-list').appendChild(newCardElement);
+        closeNewCard();
+    }
+}
+
 function getDataIndexOfList(l) {
     var i = 1;
-    while (i < LOL.childNodes.length-1 && LOL.childNodes[i] !== l) {
+    while (i < LOL.childNodes.length - 1 && LOL.childNodes[i] !== l) {
         ++i;
     }
-    return i-1;
+    return i - 1;
 }
 
 function deleteList() {
@@ -214,7 +243,7 @@ function updateFullCardModalElement(c) {
     for (var i = 0; i < c.labels.length; ++i) {
         cardLabelList.appendChild(createCardLabelElement(c.labels[i]));
     }
-    
+
 
 }
 
@@ -251,3 +280,4 @@ document.querySelector('#close-new-card-btn').addEventListener('click', closeNew
 document.querySelector('#close-card-btn').addEventListener('click', closeFullCard);
 document.querySelector('#card-modal-bg').addEventListener('click', closeFullCard);
 document.querySelector('#list-adder-submit-btn').addEventListener('click', addNewList);
+document.querySelector('#add-card-btn').addEventListener('click', addNewCard);
