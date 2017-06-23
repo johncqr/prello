@@ -260,9 +260,19 @@ input {
     border-radius: 5px;
     color: #000;
     min-height: 600px;
+    overflow: hidden;
     padding: 5px;
     width: 700px;
 }
+
+.new-card-page {
+    position: relative;
+    margin: 60px auto;
+    z-index: 3;
+    min-height: 100px;
+    width: 300px;
+}
+
 
 .modal {
     display: none;
@@ -283,12 +293,6 @@ input {
     z-index: 2;
 }
 
-.new-card-page {
-    position: relative;
-    margin: 60px auto;
-    z-index: 3;
-}
-
 .card-page-topbar-left {
     display: inline-block;
 }
@@ -307,7 +311,7 @@ input {
     display: inline-block;
     min-height: 30px;
     min-width: 40px;
-    padding: 2px;
+    padding: 0 5px;
     vertical-align: middle;
     text-align: center;
 }
@@ -320,8 +324,16 @@ input {
     margin: 2px;
 }
 
+.card-label-text {
+    display: block;
+    margin: 5px auto;
+    color: #FFF;
+    font-weight: bold;
+    text-shadow: 0 0 2px rgba(0,0,0,.4);
+}
+
 .card-label:hover {
-    background-color: rgba(255,255,255,0.4);
+    filter: brightness(150%);
     cursor: pointer;
 }
 
