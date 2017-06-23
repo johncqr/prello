@@ -56,6 +56,7 @@ var data = [
 var currentList;
 var currentListIndex;
 var currentCard;
+var currentCardIndex;
 
 var LOL = document.querySelector('#lol');
 
@@ -202,6 +203,12 @@ function addNewCard() {
     }
 }
 
+function deleteCard() {
+    data[currentListIndex].cards.splice(currentCardIndex, 1);
+    currentCard.parentNode.removeChild(currentCard);
+    closeFullCard();
+}
+
 function getDataIndexOfList(l) {
     var i = 1;
     while (i < LOL.childNodes.length - 1 && LOL.childNodes[i] !== l) {
@@ -243,8 +250,6 @@ function updateFullCardModalElement(c) {
     for (var i = 0; i < c.labels.length; ++i) {
         cardLabelList.appendChild(createCardLabelElement(c.labels[i]));
     }
-
-
 }
 
 function openFullCard() {
@@ -258,6 +263,10 @@ function openFullCard() {
     updateFullCardModalElement(cardData);
     var fullCardModal = document.querySelector('#card-modal');
     fullCardModal.style.display = 'block';
+    currentList = this.parentNode.parentNode;
+    currentListIndex = getDataIndexOfList(currentList);
+    currentCard = this;
+    currentCardIndex = i;
 }
 
 function closeFullCard() {
@@ -281,3 +290,4 @@ document.querySelector('#close-card-btn').addEventListener('click', closeFullCar
 document.querySelector('#card-modal-bg').addEventListener('click', closeFullCard);
 document.querySelector('#list-adder-submit-btn').addEventListener('click', addNewList);
 document.querySelector('#add-card-btn').addEventListener('click', addNewCard);
+document.querySelector('#delete-card-btn').addEventListener('click', deleteCard);
