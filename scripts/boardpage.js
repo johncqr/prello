@@ -54,17 +54,17 @@ var data = [
 var LOL = document.querySelector('#lol');
 
 function toggleBoardsLists() {
-    var boardsList = document.getElementById('boards-list');
+    var boardsList = document.querySelector('#boards-list');
     boardsList.style.display = boardsList.style.display === 'none' ? 'block' : 'none'
 }
 
 function openBoardMenu() {
-    var boardMenu = document.getElementById('board-menu');
+    var boardMenu = document.querySelector('#board-menu');
     boardMenu.style.display = 'block';
 }
 
 function closeBoardMenu() {
-    var boardMenu = document.getElementById('board-menu');
+    var boardMenu = document.querySelector('#board-menu');
     boardMenu.style.display = 'none';
 }
 
@@ -138,6 +138,7 @@ function createListElement(l) {
     newListDeleteButton.className = 'btn list-delete-btn'
     var deleteButtonText = document.createTextNode('Delete');
     newListDeleteButton.appendChild(deleteButtonText)
+    newListDeleteButton.addEventListener('click', deleteList);
     newListTopbarElement.appendChild(newListDeleteButton);
     var newCardListElement = document.createElement('ul');
     newCardListElement.className = 'card-list';
@@ -171,11 +172,21 @@ function addNewList() {
     }
 }
 
+function deleteList() {
+    var listToDelete = this.parentNode.parentNode;
+    var i = 1;
+    while (i < LOL.childNodes.length-1 && LOL.childNodes[i] !== listToDelete) {
+        ++i;
+    }
+    data.splice(i-1, 1);
+    LOL.removeChild(listToDelete);
+}
+
 initData();
 
-document.getElementById('boards-list').style.display = 'none';
-document.getElementById('board-menu').style.display = 'none';
-document.getElementById('form-list-adder-container').style.display = 'none';
+document.querySelector('#boards-list').style.display = 'none';
+document.querySelector('#board-menu').style.display = 'none';
+document.querySelector('#form-list-adder-container').style.display = 'none';
 document.querySelector('#list-adder-btn').addEventListener('click', openListAdderForm);
 document.querySelector('#list-adder-close-btn').addEventListener('click', closeListAdderForm);
 document.querySelector('#boards-list-btn').addEventListener('click', toggleBoardsLists);
