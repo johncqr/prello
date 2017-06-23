@@ -60,11 +60,14 @@ var currentCardIndex;
 
 var LOL = document.querySelector('#lol');
 
+<<<<<<< HEAD
 function closeAddLabelMenu() {
     var addLabelMenu = document.querySelector('#add-label-menu');
     addLabelMenu.style.display = 'none';
 }
 
+=======
+>>>>>>> e18cb588501fb08a19210a6b746d5c2ecd7d3c9f
 function toggleAddLabelMenu() {
     var addLabelMenu = document.querySelector('#add-label-menu');
     addLabelMenu.style.display = addLabelMenu.style.display === 'none' ? 'block' : 'none'
@@ -295,6 +298,19 @@ function addNewLabel() {
     data[currentListIndex].cards[currentCardIndex].labels.push(labelData);
     currentCard.querySelector('.card-label-list').appendChild(createLabelSurfaceElement(labelData));
     document.querySelector('#current-card-page .card-label-list').appendChild(createCardLabelElement(labelData));
+}
+
+function addNewLabel() {
+    var addLabelDesc = document.querySelector('#add-label-desc');
+    var labelData = {
+        color: this.querySelector('span').textContent,
+        desc: addLabelDesc.value
+    }
+    addLabelDesc.value = '';
+    data[currentListIndex].cards[currentCardIndex].labels.push(labelData);
+    currentCard.querySelector('.card-label-list').appendChild(createLabelSurfaceElement(labelData));
+    document.querySelector('#current-card-page .card-label-list').appendChild(createCardLabelElement(labelData));
+
 }
 
 initData();
