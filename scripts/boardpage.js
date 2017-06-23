@@ -125,10 +125,20 @@ function createCardElement(c) {
 function createListElement(l) {
     var newListElement = document.createElement('li');
     newListElement.className = 'list';
+    
+    var newListTopbarElement = document.createElement('div');
+    newListTopbarElement.className = 'list-topbar';
     var newListNameElement = document.createElement('h4');
     newListNameElement.className = 'list-name';
     var listName = document.createTextNode(l.name);
     newListNameElement.appendChild(listName);
+    newListTopbarElement.appendChild(newListNameElement);
+
+    var newListDeleteButton = document.createElement('div');
+    newListDeleteButton.className = 'btn list-delete-btn'
+    var deleteButtonText = document.createTextNode('Delete');
+    newListDeleteButton.appendChild(deleteButtonText)
+    newListTopbarElement.appendChild(newListDeleteButton);
     var newCardListElement = document.createElement('ul');
     newCardListElement.className = 'card-list';
     for (var i = 0; i < l.cards.length; ++i) {
@@ -139,7 +149,7 @@ function createListElement(l) {
     var addLinkText = document.createTextNode('Add a card...');
     newAddLink.appendChild(addLinkText);
     newAddLink.addEventListener('click', openNewCard);
-    newListElement.appendChild(newListNameElement);
+    newListElement.appendChild(newListTopbarElement);
     newListElement.appendChild(newCardListElement);
     newListElement.appendChild(newAddLink);
     return newListElement;

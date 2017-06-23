@@ -241,8 +241,17 @@ input {
     display: inline-block;
 }
 
+.list-topbar {
+    margin: -15px 0;
+}
+
 .list-name {
-    margin: 0;
+    display: inline-block;
+}
+
+.list-delete-btn {
+    margin-top: 20px;
+    float: right;
 }
 
 .add-link {
