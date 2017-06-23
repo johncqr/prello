@@ -185,8 +185,9 @@ ul {
     padding: 0;
 }
 
-.lol {
+#lol {
     margin-top: 90px;
+    white-space: nowrap;
 }
 
 .btn, .btn-text {
@@ -207,16 +208,13 @@ ul {
 }
 
 .btn:hover {
-    color: #FFF;
     background-color: #0079BF;
+    color: #FFF;
+    cursor: pointer;
 }
 
 .card-name {
     margin: 0;
-}
-
-.lol {
-    white-space: nowrap;
 }
 
 .list {
@@ -229,6 +227,18 @@ ul {
     vertical-align: top;
     width: 200px;
     height: 100%;
+}
+
+input {
+    display: block;
+}
+
+#list-adder {
+    display: inline-block;
+}
+
+#list-adder-submit-btn, #list-adder-close-btn {
+    display: inline-block;
 }
 
 .list-name {
@@ -307,6 +317,7 @@ ul {
     display: inline-block;
     height: 8px;
     width: 42px;
+    margin: 2px;
 }
 
 .card-label:hover {
