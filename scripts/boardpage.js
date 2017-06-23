@@ -60,14 +60,11 @@ var currentCardIndex;
 
 var LOL = document.querySelector('#lol');
 
-<<<<<<< HEAD
 function closeAddLabelMenu() {
     var addLabelMenu = document.querySelector('#add-label-menu');
     addLabelMenu.style.display = 'none';
 }
 
-=======
->>>>>>> e18cb588501fb08a19210a6b746d5c2ecd7d3c9f
 function toggleAddLabelMenu() {
     var addLabelMenu = document.querySelector('#add-label-menu');
     addLabelMenu.style.display = addLabelMenu.style.display === 'none' ? 'block' : 'none'
@@ -135,7 +132,7 @@ function createCardElement(c) {
     var newCardElement = document.createElement('li');
     newCardElement.className = 'card';
     var newCardLabelListElement = document.createElement('ul');
-    newCardLabelListElement.className = 'card-label-list';
+    newCardLabelListElement.className = 'card-label-surface-list';
     for (var i = 0; i < c.labels.length; ++i) {
         newCardLabelListElement.appendChild(createLabelSurfaceElement(c.labels[i]));
     }
@@ -308,7 +305,7 @@ function addNewLabel() {
     }
     addLabelDesc.value = '';
     data[currentListIndex].cards[currentCardIndex].labels.push(labelData);
-    currentCard.querySelector('.card-label-list').appendChild(createLabelSurfaceElement(labelData));
+    currentCard.querySelector('.card-label-surface-list').appendChild(createLabelSurfaceElement(labelData));
     document.querySelector('#current-card-page .card-label-list').appendChild(createCardLabelElement(labelData));
 
 }

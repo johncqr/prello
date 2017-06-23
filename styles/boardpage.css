@@ -348,6 +348,11 @@ input {
     margin: 20px 10px;
 }
 
+.card-label-surface-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
 .card-label {
     border-radius: 2px;
     display: inline-block;
@@ -363,7 +368,7 @@ input {
     border-radius: 2px;
     display: inline-block;
     height: 8px;
-    width: 42px;
+    width: 38px;
     margin: 2px;
 }
 
