@@ -274,12 +274,20 @@ input {
     width: 700px;
 }
 
-.new-card-page {
+#new-card-page {
     position: relative;
     margin: 60px auto;
     z-index: 3;
     min-height: 100px;
     width: 300px;
+}
+
+#current-card-page {
+    position: relative;
+    margin: 60px auto;
+    z-index: 3;
+    min-height: 600px;
+    width: 600px;
 }
 
 
@@ -323,6 +331,7 @@ input {
     padding: 0 5px;
     vertical-align: middle;
     text-align: center;
+    margin: 5px;
 }
 
 .card-label-surface {

@@ -88,14 +88,14 @@
             </li>
         </ul>
     </div>
-    <div class="modal">
-        <div class="new-card-page card-page">
+    <div id="new-card-modal" class="modal">
+        <div id="new-card-page" class="card-page">
             <div class="card-page-topbar">
                 <div class="card-page-topbar-left">
                     <input id="new-card-page-name" type="text" placeholder="Enter card name..." required>
                 </div>
                 <div class="card-page-topbar-right">
-                    <div class="btn close-new-card-btn">X</div>
+                    <div id="close-new-card-btn" class="btn">X</div>
                 </div>
             </div>
             <div class="card-info">
@@ -105,69 +105,64 @@
             <div class="div-clearer"></div>
             <p class="btn">Add Card</p>
         </div>
-        <div class="modal-bg"></div>
+        <div id="new-card-modal-bg" class="modal-bg"></div>
     </div>
 
-    <div class="card-page">
-        <div class="card-page-topbar">
-            <div class="card-page-topbar-left">
-                <h3 class="card-page-name">
-                    Card Name
-                </h3>
+    <div id="card-modal" class="modal">
+        <div id="current-card-page" class="card-page">
+            <div class="card-page-topbar">
+                <div class="card-page-topbar-left">
+                    <h3 class="card-page-name">
+                        Card Name
+                    </h3>
+                </div>
+                <div class="card-page-topbar-right">
+                    <div id="close-card-btn" class="btn">X</div>
+                </div>
             </div>
-            <div class="card-page-topbar-right">
-                <p class="btn close-new-card-btn">X</p>
+            <div class="card-info">
+                <p class="card-section-name">Description</p>
+                <p class="card-page-description">This is a card description!</p>
+                <p class="card-section-name">Labels</p>
+                <ul class="card-label-list">
+                    <li class="card-label card-label-green"><span class="card-label-text">Green</span></li>
+                    <li class="card-label card-label-red"><span class="card-label-text">Red</span></span>
+                    </li>
+                    <li class="card-label card-label-purple"><span class="card-label-text"></span></li>
+                </ul>
+                <p class="card-section-name">Members</p>
+                <ul class="card-member-list">
+                </ul>
+                <p class="card-section-name">Add Comment</p>
+                <textarea rows="3" cols="35"></textarea>
+                <div class="comment-send-btn btn">Send</div>
+                <p class="card-section-name">Activity</p>
+                <ul class="card-activity-list">
+                    <!--
+                    <li class="card-activity">
+                        <p class="card-comment-username">User</p>
+                        <p class="card-comment-content">
+                            Comment
+                        </p>
+                    </li>
+                    -->
+                </ul>
             </div>
+            <div class="card-options">
+                <p class="card-section-name">Add</p>
+                <ul class="card-option-list">
+                    <li class="btn">Members</li>
+                    <li class="btn">Labels</li>
+                </ul>
+                <p class="card-section-name">Options</p>
+                <ul class="card-option-list">
+                    <li class="btn">Delete</li>
+                </ul>
+            </div>
+            <div class="card-clearer"></div>
         </div>
-        <div class="card-info">
-            <p class="card-section-name">Description</p>
-            <p class="card-page-description">This is a card description!</p>
-            <p class="card-section-name">Labels</p>
-            <ul class="card-label-list">
-                <li class="card-label card-label-green"><span class="card-label-text">Green</span></li>
-                <li class="card-label card-label-red"><span class="card-label-text">Red</span></span>
-                </li>
-                <li class="card-label card-label-purple"><span class="card-label-text"></span></li>
-            </ul>
-            <p class="card-section-name">Members</p>
-            <ul class="card-member-list">
-                <li class="card-member">User1</li>
-                <li class="card-member">User2</li>
-                <li class="card-member">User3</li>
-            </ul>
-            <p class="card-section-name">Add Comment</p>
-            <textarea rows="3" cols="35"></textarea>
-            <div class="comment-send-btn btn">Send</div>
-            <p class="card-section-name">Activity</p>
-            <ul class="card-activity-list">
-                <li class="card-activity">
-                    <p class="card-comment-username">User</p>
-                    <p class="card-comment-content">
-                        Comment
-                    </p>
-                </li>
-                <li class="card-activity">
-                    <p class="card-comment-username">User</p>
-                    <p class="card-comment-content">
-                        Comment
-                    </p>
-                </li>
-            </ul>
-        </div>
-        <div class="card-options">
-            <p class="card-section-name">Add</p>
-            <ul class="card-option-list">
-                <li class="btn">Members</li>
-                <li class="btn">Labels</li>
-            </ul>
-            <p class="card-section-name">Options</p>
-            <ul class="card-option-list">
-                <li class="btn">Delete</li>
-            </ul>
-        </div>
-        <div class="card-clearer"></div>
+        <div id="card-modal-bg" class="modal-bg"></div>
     </div>
-
     <script src="scripts/boardpage.js"></script>
 </body>
 </html>

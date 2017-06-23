@@ -69,12 +69,12 @@ function closeBoardMenu() {
 }
 
 function openNewCard() {
-    var newCard = document.querySelector('.modal');
+    var newCard = document.querySelector('#new-card-modal');
     newCard.style.display = 'block';
 }
 
 function closeNewCard() {
-    var newCard = document.querySelector('.modal');
+    var newCard = document.querySelector('#new-card-modal');
     newCard.style.display = 'none';
 }
 
@@ -119,6 +119,7 @@ function createCardElement(c) {
     newCardNameElement.appendChild(cardName);
     newCardElement.appendChild(newCardLabelListElement);
     newCardElement.appendChild(newCardNameElement);
+    newCardElement.addEventListener('click', openFullCard);
     return newCardElement;
 }
 
@@ -172,14 +173,67 @@ function addNewList() {
     }
 }
 
-function deleteList() {
-    var listToDelete = this.parentNode.parentNode;
+function getDataIndexOfList(l) {
     var i = 1;
-    while (i < LOL.childNodes.length-1 && LOL.childNodes[i] !== listToDelete) {
+    while (i < LOL.childNodes.length-1 && LOL.childNodes[i] !== l) {
         ++i;
     }
-    data.splice(i-1, 1);
+    return i-1;
+}
+
+function deleteList() {
+    var listToDelete = this.parentNode.parentNode;
+    var indexToDelete = getDataIndexOfList(listToDelete);
+    data.splice(indexToDelete, 1);
     LOL.removeChild(listToDelete);
+}
+
+function createCardLabelElement(la) {
+    var cardLabelElement = document.createElement('li');
+    cardLabelElement.className = 'card-label card-label-' + la.color;
+    var cardLabelSpan = document.createElement('span');
+    cardLabelSpan.className = 'card-label-text';
+    var cardLabelText = document.createTextNode(la.desc);
+    cardLabelSpan.appendChild(cardLabelText);
+    cardLabelElement.appendChild(cardLabelSpan);
+    return cardLabelElement;
+}
+
+function updateFullCardModalElement(c) {
+    var cardPage = document.querySelector('#current-card-page');
+    cardPage.querySelector('.card-page-name').textContent = c.name;
+    cardPage.querySelector('.card-page-description').textContent = c.desc;
+
+    var cardLabelList = cardPage.querySelector('.card-label-list');
+    // clear label list
+    while (cardLabelList.firstChild) {
+        cardLabelList.removeChild(cardLabelList.firstChild);
+    }
+
+    // populate label list
+    for (var i = 0; i < c.labels.length; ++i) {
+        cardLabelList.appendChild(createCardLabelElement(c.labels[i]));
+    }
+    
+
+}
+
+function openFullCard() {
+    var parentList = this.parentNode.parentNode;
+    var parentUl = this.parentNode;
+    var i = 0;
+    while (i < parentUl.childNodes.length && parentUl.childNodes[i] !== this) {
+        ++i;
+    }
+    var cardData = data[getDataIndexOfList(parentList)].cards[i];
+    updateFullCardModalElement(cardData);
+    var fullCardModal = document.querySelector('#card-modal');
+    fullCardModal.style.display = 'block';
+}
+
+function closeFullCard() {
+    var fullCardModal = document.querySelector('#card-modal');
+    fullCardModal.style.display = 'none';
 }
 
 initData();
@@ -192,6 +246,8 @@ document.querySelector('#list-adder-close-btn').addEventListener('click', closeL
 document.querySelector('#boards-list-btn').addEventListener('click', toggleBoardsLists);
 document.querySelector('#board-menu-btn').addEventListener('click', openBoardMenu);
 document.querySelector('#board-menu-close-btn').addEventListener('click', closeBoardMenu);
-document.querySelector('.modal-bg').addEventListener('click', closeNewCard);
-document.querySelector('.close-new-card-btn').addEventListener('click', closeNewCard);
+document.querySelector('#new-card-modal-bg').addEventListener('click', closeNewCard);
+document.querySelector('#close-new-card-btn').addEventListener('click', closeNewCard);
+document.querySelector('#close-card-btn').addEventListener('click', closeFullCard);
+document.querySelector('#card-modal-bg').addEventListener('click', closeFullCard);
 document.querySelector('#list-adder-submit-btn').addEventListener('click', addNewList);
