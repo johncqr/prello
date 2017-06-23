@@ -1,3 +1,5 @@
+// Data Modeling
+
 function Label(color) {
     this.color = color;
     this.desc = '';
