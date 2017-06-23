@@ -128,7 +128,7 @@ body {
     position: fixed;
     z-index: 5;
     width: 180px;
-    height: 300px;
+    min-height: 200px;
 }
 
 .add-label-selector {
@@ -389,12 +389,24 @@ input {
     background-color: green;
 }
 
+.card-label-yellow {
+    background-color: yellow;
+}
+
+.card-label-orange {
+    background-color: orange;
+}
+
 .card-label-red {
     background-color: red;
 }
 
 .card-label-purple {
     background-color: purple;
+}
+
+.card-label-blue {
+    background-color: blue;
 }
 
 .card-member {
