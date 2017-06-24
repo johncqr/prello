@@ -42,7 +42,6 @@ body {
 
 #boards-list-btn {
     border-radius: 5px;
-    border: none;
     background-color: #4791BD;
     color: #FFF;
     margin: 5px 4px;
@@ -224,7 +223,8 @@ ul {
     white-space: nowrap;
 }
 
-.btn, .btn-text {
+#boards-list-btn, .btn {
+    border: none;
     font-weight: bold;
 }
 
@@ -265,10 +265,6 @@ ul {
     white-space: normal;
 }
 
-input {
-    display: block;
-}
-
 #list-adder {
     display: inline-block;
 }
@@ -283,18 +279,22 @@ input {
 
 .list-name {
     display: inline-block;
+    max-height: 250px;
+    overflow-y: auto;
+    width: 150px;
 }
 
 .list-delete-btn {
     margin-top: 20px;
+    margin-right: 0;
     float: right;
 }
 
-.add-link {
+.card-add-link {
     margin: 10px 3px 0;
 }
 
-.add-link:hover {
+.card-add-link:hover {
     background-color: #CBCBCB;
     text-decoration: underline;
     cursor: pointer;
@@ -348,6 +348,7 @@ input {
 
 .card-page-topbar-left {
     display: inline-block;
+    width: 550px;
 }
 
 .card-page-topbar-right {
