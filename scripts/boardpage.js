@@ -55,28 +55,29 @@ var data = [
 
 
 // used to see where to add/edit cards
-var currentList;
+var $currentList;
 var currentListIndex;
-var currentCard;
+var $currentCard;
 var currentCardIndex;
 
 // cached selectors
-var LOL = document.querySelector('#lol');
-var newCardName = document.querySelector('#new-card-page-name');
-var newCardDesc = document.querySelector('#new-card-desc');
-var addLabelDesc = document.querySelector('#add-label-desc');
-var cardPage = document.querySelector('#current-card-page');
-var fullCardModal = document.querySelector('#card-modal');
-var newListName = document.querySelector('#list-adder-input');
-
-$addLabelMenu = $('#add-label-menu');
-$boardsList = $('#boards-list');
-$boardMenu = $('#board-menu');
-$newCardModal = $('#new-card-modal');
-$newCardPageName = $('#new-card-page-name');
-$newCardDesc = $('#new-card-desc');
-$formListAdderContainer = $('#form-list-adder-container');
-$listAdderBtn = $('#list-adder-btn');
+var $lol = $('#lol');
+var $newCardName = $('#new-card-page-name');
+var $newCardDesc = $('#new-card-desc');
+var $addLabelDesc = $('#add-label-desc');
+var $cardPage = $('#current-card-page');
+var $fullCardModal = $('#card-modal');
+var $newListName = $('#list-adder-input');
+var $addLabelMenu = $('#add-label-menu');
+var $boardsList = $('#boards-list');
+var $boardMenu = $('#board-menu');
+var $newCardModal = $('#new-card-modal');
+var $newCardPageName = $('#new-card-page-name');
+var $newCardDesc = $('#new-card-desc');
+var $formListAdderContainer = $('#form-list-adder-container');
+var $listAdderBtn = $('#list-adder-btn');
+var $currentCardPageLabelList = $('#current-card-page-label-list');
+var $listAdder = $('#list-adder');
 
 // menu event listeners
 function closeAddLabelMenu() {
@@ -101,8 +102,8 @@ function closeBoardMenu() {
 
 function openNewCard() {
     $newCardModal.show();
-    currentList = this.parentNode;
-    currentListIndex = getDataIndexOfList(currentList);
+    $currentList = $(this).parent();
+    currentListIndex = $currentList.index();
 }
 
 function closeNewCard() {
@@ -121,199 +122,155 @@ function closeListAdderForm() {
     $listAdderBtn.show();
 }
 
-// Helper
-function getDataIndexOfList(l) {
-    var i = 1;
-    while (i < LOL.childNodes.length - 1 && LOL.childNodes[i] !== l) {
-        ++i;
-    }
-    return i - 1;
+function createLabelSurface(la) {
+    var $newLabelSurface = $('<li></li>',
+        { class: 'card-label-surface card-label-'+la.color });
+    return $newLabelSurface;
 }
 
-function createLabelSurfaceElement(la) {
-    var newLabelSurfaceElement = document.createElement('li');
-    newLabelSurfaceElement.className = 'card-label-surface card-label-' + la.color;
-    return newLabelSurfaceElement;
-}
-
-function createCardElement(c) {
-    var newCardElement = document.createElement('li');
-    newCardElement.className = 'card';
-    var newCardLabelListElement = document.createElement('ul');
-    newCardLabelListElement.className = 'card-label-surface-list';
+function createCard(c) {
+    var $newCard = $('<li></li>', { class: 'card'});
+    var $newCardLabelList = $('<ul></ul>', { class: 'card-label-surface-list'});
     for (var i = 0; i < c.labels.length; ++i) {
-        newCardLabelListElement.appendChild(createLabelSurfaceElement(c.labels[i]));
+        $newCardLabelList.append(createLabelSurface(c.labels[i]));
     }
-    var newCardNameElement = document.createElement('p');
-    newCardNameElement.className = 'card-name';
-    var cardName = document.createTextNode(c.name);
-    newCardNameElement.appendChild(cardName);
-    newCardElement.appendChild(newCardLabelListElement);
-    newCardElement.appendChild(newCardNameElement);
-    newCardElement.addEventListener('click', openFullCard);
-    return newCardElement;
+    var $newCardName = $('<p></p>', {
+        class: 'card-name',
+        text: c.name
+    });
+    $newCard.append($newCardLabelList);
+    $newCard.append($newCardName);
+
+    $newCard.click(openFullCard);
+    return $newCard;
 }
 
-function createListElement(l) {
-    var newListElement = document.createElement('li');
-    newListElement.className = 'list';
+function createList(l) {
+    var $newList = $('<li></li>', { class: 'list' });
 
-    var newListTopbarElement = document.createElement('div');
-    newListTopbarElement.className = 'list-topbar';
-    var newListNameElement = document.createElement('h4');
-    newListNameElement.className = 'list-name';
-    var listName = document.createTextNode(l.name);
-    newListNameElement.appendChild(listName);
-    newListTopbarElement.appendChild(newListNameElement);
+    $('<div></div>', { class: 'list-topbar' })
+        .append($('<h4></h4>', { class: 'list-name', text: l.name }))
+        .append($('<div></div>', { class: 'btn list-delete-btn', text: 'X' })
+            .click(deleteList)).appendTo($newList);
 
-    var newListDeleteButton = document.createElement('div');
-    newListDeleteButton.className = 'btn list-delete-btn'
-    var deleteButtonText = document.createTextNode('X');
-    newListDeleteButton.appendChild(deleteButtonText)
-    newListDeleteButton.addEventListener('click', deleteList);
-    newListTopbarElement.appendChild(newListDeleteButton);
-    var newCardListElement = document.createElement('ul');
-    newCardListElement.className = 'card-list';
+    var $newCardList = $('<ul></ul>', { class: 'card-list' }).appendTo($newList);
     for (var i = 0; i < l.cards.length; ++i) {
-        newCardListElement.appendChild(createCardElement(l.cards[i]));
+        $newCardList.append(createCard(l.cards[i]));
     }
-    var newAddLink = document.createElement('p');
-    newAddLink.className = 'card-add-link';
-    var addLinkText = document.createTextNode('Add a card...');
-    newAddLink.appendChild(addLinkText);
-    newAddLink.addEventListener('click', openNewCard);
-    newListElement.appendChild(newListTopbarElement);
-    newListElement.appendChild(newCardListElement);
-    newListElement.appendChild(newAddLink);
-    return newListElement;
+
+    $('<p></p>', { class: 'card-add-link', text: 'Add a card...' })
+        .click(openNewCard)
+        .appendTo($newList);
+    return $newList;
 }
 
-function createNewListFromName(name) {
+function addNewListFromName(name) {
     var newList = new List(name);
     data.push(newList);
-    var newListElement = createListElement(newList);
-    LOL.insertBefore(newListElement, LOL.lastElementChild);
+    var $newList = createList(newList);
+    $newList.insertBefore($listAdder);
 }
 
 function addNewList() {
-    if (newListName.value != '') {
-        createNewListFromName(newListName.value);
-        newListName.value = '';
+    if ($newListName.val() != '') {
+        addNewListFromName($newListName.val());
+        $newListName.val('');
         closeListAdderForm();
     }
 }
 
 function addNewCard() {
-    if (newCardName.value != '') {
+    if ($newCardName.val() != '') {
         var cardData = {
-            name: newCardName.value,
-            desc: newCardDesc.value,
+            name: $newCardName.val(),
+            desc: $newCardDesc.val(),
             labels: []
         };
         data[currentListIndex].cards.push(cardData);
-        console.log(data);
-        var newCardElement = createCardElement(cardData);
-        currentList.querySelector('.card-list').appendChild(newCardElement);
+        var $newCard = createCard(cardData);
+        $currentList.find('.card-list').append($newCard);
         closeNewCard();
     }
 }
 
 function deleteCard() {
     data[currentListIndex].cards.splice(currentCardIndex, 1);
-    currentCard.parentNode.removeChild(currentCard);
+    $currentCard.remove();
     closeFullCard();
 }
 
 function deleteList() {
-    var listToDelete = this.parentNode.parentNode;
-    var indexToDelete = getDataIndexOfList(listToDelete);
+    var $listToDelete = $(this).closest('.list');
+    var indexToDelete = $listToDelete.index();
     data.splice(indexToDelete, 1);
-    LOL.removeChild(listToDelete);
+    $listToDelete.remove();
 }
 
-function createCardLabelElement(la) {
-    var cardLabelElement = document.createElement('li');
-    cardLabelElement.className = 'card-label card-label-' + la.color;
-    var cardLabelSpan = document.createElement('span');
-    cardLabelSpan.className = 'card-label-text';
-    var cardLabelText = document.createTextNode(la.desc);
-    cardLabelSpan.appendChild(cardLabelText);
-    cardLabelElement.appendChild(cardLabelSpan);
-    return cardLabelElement;
+function createCardLabel(la) {
+    var $cardLabel = $('<li></li>', { class: 'card-label card-label-'+la.color })
+        .append($('<span></span>', { class: 'card-label-text', text: la.desc }));
+    return $cardLabel;
 }
 
-function updateFullCardModalElement(c) {
-    cardPage.querySelector('.card-page-name').textContent = c.name;
-    cardPage.querySelector('.card-page-description').textContent = c.desc;
-    var cardLabelList = cardPage.querySelector('.card-label-list');
-    // clear label list
-    while (cardLabelList.firstChild) {
-        cardLabelList.removeChild(cardLabelList.firstChild);
-    }
+function updateFullCardModal(c) {
+    $cardPage.find('.card-page-name').text(c.name);
+    $cardPage.find('.card-page-description').text(c.desc);
+    $cardLabelList = $cardPage.find('.card-label-list');
+    $cardLabelList.empty();
+
     // populate label list
     for (var i = 0; i < c.labels.length; ++i) {
-        cardLabelList.appendChild(createCardLabelElement(c.labels[i]));
+        $cardLabelList.append(createCardLabel(c.labels[i]));
     }
 }
 
 function openFullCard() {
-    var parentList = this.parentNode.parentNode;
-    var parentUl = this.parentNode;
-    var i = 0;
-    while (i < parentUl.childNodes.length && parentUl.childNodes[i] !== this) {
-        ++i;
-    }
-    var cardData = data[getDataIndexOfList(parentList)].cards[i];
-    updateFullCardModalElement(cardData);
-    fullCardModal.style.display = 'block';
-    currentList = this.parentNode.parentNode;
-    currentListIndex = getDataIndexOfList(currentList);
-    currentCard = this;
-    currentCardIndex = i;
+    var $parentList = $(this).closest('.list');
+    var cardData = data[$parentList.index()].cards[$(this).index()];
+    updateFullCardModal(cardData);
+    $fullCardModal.show();
+    $currentList = $(this.closest('.list'));
+    currentListIndex = $currentList.index();
+    $currentCard = $(this);
+    currentCardIndex = $(this).index();
 }
 
 function closeFullCard() {
-    fullCardModal.style.display = 'none';
+    $fullCardModal.hide();
     closeAddLabelMenu();
 }
 
 function addNewLabel() {
     var labelData = {
-        color: this.querySelector('span').textContent,
-        desc: addLabelDesc.value
+        color: $(this).find('span').text(),
+        desc: $addLabelDesc.val()
     }
-    addLabelDesc.value = '';
+    $addLabelDesc.val('');
     data[currentListIndex].cards[currentCardIndex].labels.push(labelData);
-    currentCard.querySelector('.card-label-list').appendChild(createLabelSurfaceElement(labelData));
-    document.querySelector('#current-card-page .card-label-list').appendChild(createCardLabelElement(labelData));
+    $currentCard.find('.card-label-surface-list').append(createLabelSurface(labelData));
+    $currentCardPageLabelList.append(createCardLabel(labelData));
 }
 
 function initData() {
     for (var i = 0; i < data.length; ++i) {
-        var listElement = createListElement(data[i]);
-        LOL.insertBefore(listElement, LOL.lastElementChild);
+        var $list = createList(data[i]);
+        $list.insertBefore($listAdder);
     }
 }
 
 initData();
 
-document.querySelector('#add-label-menu').style.display = 'none';
-document.querySelector('#form-list-adder-container').style.display = 'none';
-document.querySelector('#list-adder-btn').addEventListener('click', openListAdderForm);
-document.querySelector('#list-adder-close-btn').addEventListener('click', closeListAdderForm);
-document.querySelector('#boards-list-btn').addEventListener('click', toggleBoardsLists);
-document.querySelector('#board-menu-btn').addEventListener('click', openBoardMenu);
-document.querySelector('#board-menu-close-btn').addEventListener('click', closeBoardMenu);
-document.querySelector('#add-label-btn').addEventListener('click', toggleAddLabelMenu);
-document.querySelector('#new-card-modal-bg').addEventListener('click', closeNewCard);
-document.querySelector('#close-new-card-btn').addEventListener('click', closeNewCard);
-document.querySelector('#close-card-btn').addEventListener('click', closeFullCard);
-document.querySelector('#card-modal-bg').addEventListener('click', closeFullCard);
-document.querySelector('#list-adder-submit-btn').addEventListener('click', addNewList);
-document.querySelector('#add-card-btn').addEventListener('click', addNewCard);
-document.querySelector('#delete-card-btn').addEventListener('click', deleteCard);
-
-var addLabelSelectors = document.getElementsByClassName('add-label-selector');
-for (var i = 0; i < addLabelSelectors.length; ++i) {
-    addLabelSelectors[i].addEventListener('click', addNewLabel);
-}
+$('#list-adder-btn').click(openListAdderForm);
+$('#list-adder-close-btn').click(closeListAdderForm);
+$('#boards-list-btn').click(toggleBoardsLists);
+$('#board-menu-btn').click(openBoardMenu);
+$('#board-menu-close-btn').click(closeBoardMenu);
+$('#add-label-btn').click(toggleAddLabelMenu);
+$('#new-card-modal-bg').click(closeNewCard);
+$('#close-new-card-btn').click(closeNewCard);
+$('#close-card-btn').click(closeFullCard);
+$('#card-modal-bg').click(closeFullCard);
+$('#list-adder-submit-btn').click(addNewList);
+$('#add-card-btn').click(addNewCard);
+$('#delete-card-btn').click(deleteCard);
+$('.add-label-selector').click(addNewLabel);

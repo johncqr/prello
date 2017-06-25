@@ -130,7 +130,7 @@ body {
     box-shadow: 0 0 6px rgba(0,0,0,.4);
     border-radius: 2px;
     color: #000;
-    display: block;
+    display: none;
     padding: 4px;
     position: fixed;
     z-index: 5;
@@ -249,6 +249,10 @@ ul {
 
 .card-name {
     margin: 0;
+}
+
+#form-list-adder-container {
+    display: none;
 }
 
 .list {
