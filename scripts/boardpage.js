@@ -60,7 +60,7 @@ var currentListIndex;
 var currentCard;
 var currentCardIndex;
 
-// elements that get used a lot
+// cached selectors
 var LOL = document.querySelector('#lol');
 var newCardName = document.querySelector('#new-card-page-name');
 var newCardDesc = document.querySelector('#new-card-desc');
@@ -69,60 +69,56 @@ var cardPage = document.querySelector('#current-card-page');
 var fullCardModal = document.querySelector('#card-modal');
 var newListName = document.querySelector('#list-adder-input');
 
+$addLabelMenu = $('#add-label-menu');
+$boardsList = $('#boards-list');
+$boardMenu = $('#board-menu');
+$newCardModal = $('#new-card-modal');
+$newCardPageName = $('#new-card-page-name');
+$newCardDesc = $('#new-card-desc');
+$formListAdderContainer = $('#form-list-adder-container');
+$listAdderBtn = $('#list-adder-btn');
+
 // menu event listeners
 function closeAddLabelMenu() {
-    var addLabelMenu = document.querySelector('#add-label-menu');
-    addLabelMenu.style.display = 'none';
+    $addLabelMenu.hide();
 }
 
 function toggleAddLabelMenu() {
-    var addLabelMenu = document.querySelector('#add-label-menu');
-    addLabelMenu.style.display = addLabelMenu.style.display === 'none' ? 'block' : 'none'
+    $addLabelMenu.toggle();
 }
 
 function toggleBoardsLists() {
-    var boardsList = document.querySelector('#boards-list');
-    boardsList.style.display = boardsList.style.display === 'none' ? 'block' : 'none'
+    $boardsList.toggle();
 }
 
 function openBoardMenu() {
-    var boardMenu = document.querySelector('#board-menu');
-    boardMenu.style.right = '0';
+    $boardMenu.css('right', '0');
 }
 
 function closeBoardMenu() {
-    var boardMenu = document.querySelector('#board-menu');
-    boardMenu.style.right = '-320px';
+    $boardMenu.css('right', '-320px');
 }
 
 function openNewCard() {
-    var newCard = document.querySelector('#new-card-modal');
-    newCard.style.display = 'block';
+    $newCardModal.show();
     currentList = this.parentNode;
     currentListIndex = getDataIndexOfList(currentList);
 }
 
 function closeNewCard() {
-    var newCardName = document.querySelector('#new-card-page-name');
-    var newCardDesc = document.querySelector('#new-card-desc');
-    var newCard = document.querySelector('#new-card-modal');
-    newCard.style.display = 'none';
-    newCardName.value = '';
-    newCardDesc.value = '';
+    $newCardModal.hide();
+    $newCardPageName.val('');
+    $newCardDesc.val('');
 }
 
 function openListAdderForm() {
-    var listAdderForm = document.querySelector('#form-list-adder-container');
-    var listAdderButton = document.querySelector('#list-adder-btn');
-    listAdderForm.style.display = 'block';
-    listAdderButton.style.display = 'none';
+    $formListAdderContainer.show();
+    $listAdderBtn.hide();
 }
 
 function closeListAdderForm() {
-    var listAdderForm = document.querySelector('#form-list-adder-container');
-    var listAdderButton = document.querySelector('#list-adder-btn');
-    listAdderForm.style.display = 'none';
-    listAdderButton.style.display = 'block';
+    $formListAdderContainer.hide();
+    $listAdderBtn.show();
 }
 
 // Helper
@@ -301,7 +297,6 @@ function initData() {
 
 initData();
 
-document.querySelector('#boards-list').style.display = 'none';
 document.querySelector('#add-label-menu').style.display = 'none';
 document.querySelector('#form-list-adder-container').style.display = 'none';
 document.querySelector('#list-adder-btn').addEventListener('click', openListAdderForm);
