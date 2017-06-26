@@ -62,7 +62,7 @@ var currentCardIndex;
 
 // cached selectors
 var $lol = $('#lol');
-var $newCardName = $('#new-card-page-name');
+var $newCardNameInput = $('#new-card-name-input');
 var $newCardDesc = $('#new-card-desc');
 var $addLabelDesc = $('#add-label-desc');
 var $cardPage = $('#current-card-page');
@@ -72,12 +72,12 @@ var $addLabelMenu = $('#add-label-menu');
 var $boardsList = $('#boards-list');
 var $boardMenu = $('#board-menu');
 var $newCardModal = $('#new-card-modal');
-var $newCardPageName = $('#new-card-page-name');
 var $newCardDesc = $('#new-card-desc');
 var $formListAdderContainer = $('#form-list-adder-container');
 var $listAdderBtn = $('#list-adder-btn');
 var $currentCardPageLabelList = $('#current-card-page-label-list');
 var $listAdder = $('#list-adder');
+var $listAdderInput = $('#list-adder-input');
 
 // menu event listeners
 function closeAddLabelMenu() {
@@ -102,18 +102,20 @@ function closeBoardMenu() {
 
 function openNewCard() {
     $newCardModal.show();
+    $newCardNameInput.focus();
     $currentList = $(this).parent();
     currentListIndex = $currentList.index();
 }
 
 function closeNewCard() {
     $newCardModal.hide();
-    $newCardPageName.val('');
+    $newCardNameInput.val('');
     $newCardDesc.val('');
 }
 
 function openListAdderForm() {
     $formListAdderContainer.show();
+    $listAdderInput.focus();
     $listAdderBtn.hide();
 }
 
@@ -140,8 +142,6 @@ function createCard(c) {
     });
     $newCard.append($newCardLabelList);
     $newCard.append($newCardName);
-
-    $newCard.click(openFullCard);
     return $newCard;
 }
 
@@ -150,8 +150,8 @@ function createList(l) {
 
     $('<div></div>', { class: 'list-topbar' })
         .append($('<h4></h4>', { class: 'list-name', text: l.name }))
-        .append($('<div></div>', { class: 'btn list-delete-btn', text: 'X' })
-            .click(deleteList)).appendTo($newList);
+        .append($('<div></div>', { class: 'btn list-delete-btn', text: 'X' }))
+        .appendTo($newList);
 
     var $newCardList = $('<ul></ul>', { class: 'card-list' }).appendTo($newList);
     for (var i = 0; i < l.cards.length; ++i) {
@@ -159,7 +159,6 @@ function createList(l) {
     }
 
     $('<p></p>', { class: 'card-add-link', text: 'Add a card...' })
-        .click(openNewCard)
         .appendTo($newList);
     return $newList;
 }
@@ -180,9 +179,9 @@ function addNewList() {
 }
 
 function addNewCard() {
-    if ($newCardName.val() != '') {
+    if ($newCardNameInput.val() != '') {
         var cardData = {
-            name: $newCardName.val(),
+            name: $newCardNameInput.val(),
             desc: $newCardDesc.val(),
             labels: []
         };
@@ -274,3 +273,19 @@ $('#list-adder-submit-btn').click(addNewList);
 $('#add-card-btn').click(addNewCard);
 $('#delete-card-btn').click(deleteCard);
 $('.add-label-selector').click(addNewLabel);
+
+$listAdderInput.keypress(function(e) {
+    if (e.which === 13) {
+        addNewList();
+    }
+})
+$newCardNameInput.keypress(function(e) {
+    if (e.which === 13) {
+        addNewCard();
+    }
+})
+
+// Event delegation
+$lol.on('click', '.card-add-link', openNewCard);
+$lol.on('click', '.list-delete-btn', deleteList);
+$lol.on('click', '.card', openFullCard);
