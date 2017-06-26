@@ -270,12 +270,31 @@ ul {
 }
 
 .edit-list-name-input {
+    background-color: #E2E4E6;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 2px solid #000;
     display: inline-block;
     margin: 20px 0 20px 0;
     max-height: 250px;
     width: 150px;
+    font-family: 'Helvetica', 'Lucida Sans Regular';
+    font-size: 1em;
+    font-weight: bold;
 }
 
+.edit-card-name-input {
+    background-color: #E2E4E6;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 2px solid #000;
+    display: block;
+    font-size: 1.12em;
+    font-weight: bold;
+    margin-top: 17px;
+}
 
 #list-adder {
     display: inline-block;
