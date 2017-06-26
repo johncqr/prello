@@ -63,7 +63,7 @@ var currentCardIndex;
 // cached selectors
 var $lol = $('#lol');
 var $newCardNameInput = $('#new-card-name-input');
-var $newCardDesc = $('#new-card-desc');
+var $newCardDescInput = $('#new-card-desc-input');
 var $addLabelDesc = $('#add-label-desc');
 var $cardPage = $('#current-card-page');
 var $fullCardModal = $('#card-modal');
@@ -72,7 +72,6 @@ var $addLabelMenu = $('#add-label-menu');
 var $boardsList = $('#boards-list');
 var $boardMenu = $('#board-menu');
 var $newCardModal = $('#new-card-modal');
-var $newCardDesc = $('#new-card-desc');
 var $formListAdderContainer = $('#form-list-adder-container');
 var $listAdderBtn = $('#list-adder-btn');
 var $currentCardPageLabelList = $('#current-card-page-label-list');
@@ -110,7 +109,7 @@ function openNewCard() {
 function closeNewCard() {
     $newCardModal.hide();
     $newCardNameInput.val('');
-    $newCardDesc.val('');
+    $newCardDescInput.val('');
 }
 
 function openListAdderForm() {
@@ -182,7 +181,7 @@ function addNewCard() {
     if ($newCardNameInput.val() != '') {
         var cardData = {
             name: $newCardNameInput.val(),
-            desc: $newCardDesc.val(),
+            desc: $newCardDescInput.val(),
             labels: []
         };
         data[currentListIndex].cards.push(cardData);
@@ -250,6 +249,49 @@ function addNewLabel() {
     $currentCardPageLabelList.append(createCardLabel(labelData));
 }
 
+function updateListName() {
+    var value;
+    var $this = $(this);
+    var $listName = $this.next();
+    if ((value = $this.val()) !== '') {
+        $listName.text(value);
+        $listName.show();
+        $this.remove();
+        data[$listName.closest('.list').index()].name = value;
+    }
+}
+
+function openListNameEdit() {
+    var $this = $(this);
+    var $editListNameInput = $('<input>', { type: 'text', class: 'edit-list-name-input' })
+        .val($this.text());
+    $this.before($editListNameInput);
+    $editListNameInput.focus();
+    $this.hide();
+}
+
+function updateCardName() {
+    var value;
+    var $this = $(this);
+    var $cardName = $this.next();
+    if ((value = $this.val()) !== '') {
+        $cardName.text(value);
+        $currentCard.find('.card-name').text(value);
+        $cardName.show();
+        $this.remove();
+        data[currentListIndex].cards[currentCardIndex].name = value;
+    }
+}
+
+function openCardNameEdit() {
+    var $this = $(this);
+    var $editCardNameEdit = $('<input>', { type: 'text', class: 'card-page-name edit-card-name-input' })
+        .val($this.text());
+    $this.before($editCardNameEdit);
+    $editCardNameEdit.focus();
+    $this.hide();
+}
+
 function initData() {
     for (var i = 0; i < data.length; ++i) {
         var $list = createList(data[i]);
@@ -273,6 +315,7 @@ $('#list-adder-submit-btn').click(addNewList);
 $('#add-card-btn').click(addNewCard);
 $('#delete-card-btn').click(deleteCard);
 $('.add-label-selector').click(addNewLabel);
+$('#current-card-page-name').click(openCardNameEdit);
 
 $listAdderInput.keypress(function(e) {
     if (e.which === 13) {
@@ -289,3 +332,14 @@ $newCardNameInput.keypress(function(e) {
 $lol.on('click', '.card-add-link', openNewCard);
 $lol.on('click', '.list-delete-btn', deleteList);
 $lol.on('click', '.card', openFullCard);
+$lol.on('click', '.list-name', openListNameEdit);
+$lol.on('keypress', '.edit-list-name-input', function(e) {
+    if (e.which === 13) {
+        updateListName.call(this);
+    }
+});
+$fullCardModal.on('keypress', '.edit-card-name-input', function(e) {
+    if (e.which === 13) {
+        updateCardName.call(this);
+    }
+});

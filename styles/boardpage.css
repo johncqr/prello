@@ -269,6 +269,14 @@ ul {
     white-space: normal;
 }
 
+.edit-list-name-input {
+    display: inline-block;
+    margin: 20px 0 20px 0;
+    max-height: 250px;
+    width: 150px;
+}
+
+
 #list-adder {
     display: inline-block;
 }
