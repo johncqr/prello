@@ -296,6 +296,11 @@ ul {
     width: 150px;
 }
 
+#current-card-page-name:hover, .list-name:hover {
+    filter: opacity(50%);
+    cursor: pointer;
+}
+
 .list-delete-btn {
     margin-top: 20px;
     margin-right: 0;

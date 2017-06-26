@@ -255,10 +255,10 @@ function updateListName() {
     var $listName = $this.next();
     if ((value = $this.val()) !== '') {
         $listName.text(value);
-        $listName.show();
-        $this.remove();
         data[$listName.closest('.list').index()].name = value;
     }
+    $listName.show();
+    $this.remove();
 }
 
 function openListNameEdit() {
@@ -266,7 +266,7 @@ function openListNameEdit() {
     var $editListNameInput = $('<input>', { type: 'text', class: 'edit-list-name-input' })
         .val($this.text());
     $this.before($editListNameInput);
-    $editListNameInput.focus();
+    $editListNameInput.focus().select();
     $this.hide();
 }
 
@@ -277,10 +277,10 @@ function updateCardName() {
     if ((value = $this.val()) !== '') {
         $cardName.text(value);
         $currentCard.find('.card-name').text(value);
-        $cardName.show();
-        $this.remove();
         data[currentListIndex].cards[currentCardIndex].name = value;
     }
+    $cardName.show();
+    $this.remove();
 }
 
 function openCardNameEdit() {
@@ -288,7 +288,7 @@ function openCardNameEdit() {
     var $editCardNameEdit = $('<input>', { type: 'text', class: 'card-page-name edit-card-name-input' })
         .val($this.text());
     $this.before($editCardNameEdit);
-    $editCardNameEdit.focus();
+    $editCardNameEdit.focus().select();
     $this.hide();
 }
 
