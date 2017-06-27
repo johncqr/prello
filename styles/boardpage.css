@@ -284,8 +284,24 @@ ul {
     font-weight: bold;
 }
 
-.edit-card-name-input {
-    background-color: #E2E4E6;
+#edit-card-desc-input {
+    display: none;
+    background-color: #EDEFF0;
+    border-top: 2px solid #000;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 2px solid #000;
+    font-family: Helvetica;
+    font-size: 1em;
+}
+
+#edit-card-desc-submit-btn {
+    display: none;
+    width: 55px;
+}
+
+#edit-card-name-input {
+    background-color: #EDEFF0;
     border-top: 0;
     border-left: 0;
     border-right: 0;

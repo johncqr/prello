@@ -1,6 +1,8 @@
 // API information
 var USER = 'john';
 var HOST = `http://thiman.me:1337/${USER}`
+
+// in-memory data to prevent constant API calls
 var map = {};
 
 // used to see where to add/edit cards
@@ -29,6 +31,12 @@ $(function () {
     var $listAdderBtn = $('#list-adder-btn');
     var $listAdder = $('#list-adder');
     var $listAdderInput = $('#list-adder-input');
+    var $editCardNameInput = $('#edit-card-name-input');
+    var $cardName = $('#current-card-page-name');
+    var $cardDesc = $('#current-card-page-description');
+    var $editDescBtn = $('#current-card-page-edit-desc-btn');
+    var $editCardDescInput = $('#edit-card-desc-input');
+    var $editCardDescSubmit = $('#edit-card-desc-submit-btn')
 
     // menu event listeners
     function closeAddLabelMenu() {
@@ -206,14 +214,17 @@ $(function () {
         var cardData = map[currentLid].cards[currentCid];
         updateFullCardModal(cardData);
         $fullCardModal.show();
+        $editCardNameInput.hide();
     }
 
     function closeFullCard() {
-        $fullCardModal.hide();
-        var $editCardNameInput = $('.edit-card-name-input');
-        if ($editCardNameInput.length !== 0) {
-            updateCardName.call($editCardNameInput[0]);
+        if ($editCardNameInput.is(':visible')) {
+            updateCardName();
         }
+        if ($editCardDescSubmit.is(':visible')) {
+            updateCardDesc();
+        }
+        $fullCardModal.hide();
         closeAddLabelMenu();
     }
 
@@ -272,11 +283,9 @@ $(function () {
     }
 
     function updateCardName() {
-        var value;
-        var $this = $(this);
-        var $cardName = $this.next();
-        if ((value = $this.val()) !== '') {
-            map[currentLid].cards[currentCid].name = $this.val();
+        var newName;
+        if ((newName = $editCardNameInput.val()) !== '') {
+            map[currentLid].cards[currentCid].name = newName;
             var currentCardData = map[currentLid].cards[currentCid];
             $.ajax({
                 url: `${HOST}/list/${currentLid}/card/${currentCid}`,
@@ -288,20 +297,50 @@ $(function () {
                 },
                 type: 'PATCH'
             });
-            $cardName.text(value);
-            $currentCard.find('.card-name').text(value);
+            $cardName.text(newName);
+            $currentCard.find('.card-name').text(newName);
         }
         $cardName.show();
-        $this.remove();
+        $editCardNameInput.hide();
     }
 
     function openCardNameEdit() {
-        var $this = $(this);
-        var $editCardNameEdit = $('<input>', { type: 'text', class: 'card-page-name edit-card-name-input' })
-            .val($this.text());
-        $this.before($editCardNameEdit);
-        $editCardNameEdit.focus().select();
-        $this.hide();
+        $editCardNameInput
+            .val($cardName.text())
+            .show();
+        $editCardNameInput.focus().select();
+        $cardName.hide();
+    }
+
+    function updateCardDesc() {
+        var newDesc = $editCardDescInput.val();
+        map[currentLid].cards[currentCid].desc = newDesc;
+        var currentCardData = map[currentLid].cards[currentCid];
+        $.ajax({
+            url: `${HOST}/list/${currentLid}/card/${currentCid}`,
+            data: {
+                name: currentCardData.name,
+                desc: currentCardData.desc,
+                labels: currentCardData.labels,
+                _id: currentCid
+            },
+            type: 'PATCH'
+        });
+        $cardDesc.text(newDesc);
+        $cardDesc.show();
+        $editDescBtn.show();
+        $editCardDescInput.hide();
+        $editCardDescSubmit.hide();
+    }
+
+    function openCardDescEdit() {
+        $editCardDescInput
+            .val($cardDesc.text())
+            .show();
+        $editCardDescSubmit.show();
+        $editCardDescInput.focus().select();
+        $editDescBtn.hide();
+        $cardDesc.hide();
     }
 
     function deleteLabel() {
@@ -351,7 +390,14 @@ $(function () {
     $('#add-card-btn').click(addNewCard);
     $('#delete-card-btn').click(deleteCard);
     $('.add-label-selector').click(addNewLabel);
-    $('#current-card-page-name').click(openCardNameEdit);
+    $cardName.click(openCardNameEdit);
+    $editDescBtn.click(openCardDescEdit);
+    $editCardDescSubmit.click(updateCardDesc);
+    $editCardNameInput.keypress(function (e) {
+        if (e.which === 13) {
+            updateCardName();
+        }
+    });
 
     $listAdderInput.keypress(function (e) {
         if (e.which === 13) {
@@ -372,11 +418,6 @@ $(function () {
     $lol.on('keypress', '.edit-list-name-input', function (e) {
         if (e.which === 13) {
             updateListName.call(this);
-        }
-    });
-    $fullCardModal.on('keypress', '.edit-card-name-input', function (e) {
-        if (e.which === 13) {
-            updateCardName.call(this);
         }
     });
     $fullCardModal.on('click', '.card-label', deleteLabel);
