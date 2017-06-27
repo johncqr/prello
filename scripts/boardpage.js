@@ -304,6 +304,25 @@ $(function () {
         $this.hide();
     }
 
+    function deleteLabel() {
+        var $this = $(this);
+        var labelIndex = $this.index();
+        map[currentLid].cards[currentCid].labels.splice(labelIndex, 1);
+        var currentCardData = map[currentLid].cards[currentCid];
+        $.ajax({
+            url: `${HOST}/list/${currentLid}/card/${currentCid}`,
+            data: {
+                name: currentCardData.name,
+                desc: currentCardData.desc,
+                labels: currentCardData.labels,
+                _id: currentCid
+            },
+            type: 'PATCH'
+        });
+        $currentCard.find(`.card-label-surface-list:nth-child(${labelIndex+1})`).remove();
+        $this.remove();
+    }
+
     function initData(data) {
         for (var i = 0; i < data.length; ++i) {
             var $list = createList(data[i]);
@@ -360,5 +379,6 @@ $(function () {
             updateCardName.call(this);
         }
     });
+    $fullCardModal.on('click', '.card-label', deleteLabel);
 }
 );
