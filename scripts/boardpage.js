@@ -1,24 +1,7 @@
-// Data Modeling
-
-function Label(color) {
-    this.color = color;
-    this.desc = '';
-}
-
-function Card(name) {
-    this.name = name;
-    this.desc = '';
-    this.labels = [];
-}
-
-function List(name) {
-    this.name = name;
-    this.cards = [];
-}
-
+// API information
 var USER = 'john';
 var HOST = `http://thiman.me:1337/${USER}`
-var map = new Map();
+var map = {};
 
 // used to see where to add/edit cards
 var $currentList;
@@ -117,7 +100,7 @@ $(function () {
     }
 
     function createList(l) {
-        map[l._id] = { name: l.name, cards: new Map() };
+        map[l._id] = { name: l.name, cards: {} };
         var $newList = $('<li></li>', { class: 'list', 'data-lid': l._id });
         $('<div></div>', { class: 'list-topbar' })
             .append($('<h4></h4>', { class: 'list-name', text: l.name }))
@@ -181,7 +164,7 @@ $(function () {
             url: `${HOST}/list/${currentLid}/card/${currentCid}`,
             type: 'DELETE'
         });
-        map[currentLid].cards.delete(currentCid);
+        delete map[currentLid].cards[currentCid];
         $currentCard.remove();
         closeFullCard();
     }
@@ -193,6 +176,7 @@ $(function () {
             url: `${HOST}/list/${lidToDelete}`,
             type: 'DELETE'
         });
+        delete map[lidToDelete];
         $listToDelete.remove();
     }
 
@@ -226,6 +210,10 @@ $(function () {
 
     function closeFullCard() {
         $fullCardModal.hide();
+        var $editCardNameInput = $('.edit-card-name-input');
+        if ($editCardNameInput.length !== 0) {
+            updateCardName.call($editCardNameInput[0]);
+        }
         closeAddLabelMenu();
     }
 
