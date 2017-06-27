@@ -344,8 +344,8 @@ $(function () {
     }
 
     function deleteLabel() {
-        var $this = $(this);
-        var labelIndex = $this.index();
+        var $labelToDelete = $(this);
+        var labelIndex = $labelToDelete.index();
         map[currentLid].cards[currentCid].labels.splice(labelIndex, 1);
         var currentCardData = map[currentLid].cards[currentCid];
         $.ajax({
@@ -358,8 +358,9 @@ $(function () {
             },
             type: 'PATCH'
         });
-        $currentCard.find(`.card-label-surface-list:nth-child(${labelIndex+1})`).remove();
-        $this.remove();
+        console.log(labelIndex);
+        $currentCard.find(`.card-label-surface-list li:nth-child(${labelIndex+1})`).remove();
+        $labelToDelete.remove();
     }
 
     function initData(data) {
