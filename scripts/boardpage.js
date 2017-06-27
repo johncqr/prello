@@ -134,7 +134,7 @@ $(function () {
             },
             type: 'POST',
             dataType: 'json'
-        }).done(function(json) {
+        }).done(function (json) {
             $newList = createList(json);
             $newList.insertBefore($listAdder);
         });
@@ -158,8 +158,8 @@ $(function () {
                 },
                 type: 'POST',
                 dataType: 'json'
-            }).done(function(json) {
-                var cardData = json.cards[json.cards.length-1];
+            }).done(function (json) {
+                var cardData = json.cards[json.cards.length - 1];
                 var $newCard = createCard(cardData, currentLid);
                 $currentList.find('.card-list').append($newCard);
                 closeNewCard();
@@ -359,7 +359,7 @@ $(function () {
             type: 'PATCH'
         });
         console.log(labelIndex);
-        $currentCard.find(`.card-label-surface-list li:nth-child(${labelIndex+1})`).remove();
+        $currentCard.find(`.card-label-surface-list li:nth-child(${labelIndex + 1})`).remove();
         $labelToDelete.remove();
     }
 
