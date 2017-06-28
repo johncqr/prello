@@ -374,8 +374,9 @@ ul {
     position: relative;
     margin: 60px auto;
     z-index: 3;
-    min-height: 600px;
+    height: 600px;
     width: 600px;
+    overflow-y: auto;
 }
 
 
