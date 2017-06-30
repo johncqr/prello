@@ -1,11 +1,179 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
+
+<head>
+    <title><%= title %> | Prello</title>
+    <link rel="stylesheet" type="text/css" href="stylesheets/boardpage.css">
+</head>
+
+<body>
+    <div class="navbar">
+        <div class="navbar-left">
+            <button id="boards-list-btn">Boards</button>
+            <div id="boards-list">
+                <div class="boards-list-sep"><span class="boards-list-sep-name">Personal Boards</span></div>
+                <ul class="board-entry-list">
+                    <li class="board-entry"><span class="board-entry-text">Board</span></li>
+                    <li class="board-entry"><span class="board-entry-text">Board</span></li>
+                    <li class="board-entry"><span class="board-entry-text">Board</span></li>
+                    <li class="board-entry"><span class="board-entry-text">Board</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="navbar-mid">
+            <p id="logo">Prello</p>
+        </div>
+    </div>
+    <div class="board-page">
+        <div class="board-toolbar">
+            <div class="board-toolbar-left">
+                <h2 class="board-name">Board Title</h2>
+            </div>
+            <div class="board-toolbar-right">
+                <div id="board-menu-btn">Show Menu</div>
+                <div id="board-menu">
+                    <div class="board-menu-section">
+                        <span class="board-menu-title-text">Menu</span>
+                        <span id="board-menu-close-btn">X</span>
+                    </div>
+                    <div class="board-menu-section">
+                        <ul class="card-member-list">
+                            <li class="card-member">User1</li>
+                            <li class="card-member">User2</li>
+                            <li class="card-member">User3</li>
+                        </ul>
+                        <div class="btn">Add Members...</div>
+                    </div>
+                    <div class="board-menu-section">
+                        <ul class="board-menu-option-list">
+                            <li class="board-menu-option">Change Background</li>
+                            <li class="board-menu-option">Filter Cards</li>
+                            <li class="board-menu-option">Power Ups</li>
+                            <li class="board-menu-option">Stickers</li>
+                        </ul>
+                    </div>
+                    <div class="board-menu-section">
+                        <p class="board-menu-section-name">Activity</p>
+                        <ul class="board-menu-activity-list">
+                            <li class="board-menu-activity">
+                                <span class="board-menu-activity-username">User</span> did activity.
+                                <p class="board-menu-activity-time">2 hours ago</p>
+                            </li>
+                            <li class="board-menu-activity">
+                                <span class="board-menu-activity-username">User</span> did activity.
+                                <p class="board-menu-activity-time">3 hours ago</p>
+                            </li>
+                            <li class="board-menu-activity">
+                                <span class="board-menu-activity-username">User</span> did activity.
+                                <p class="board-menu-activity-time">3 hours ago</p>
+                            </li>
+                            <li class="board-menu-activity">
+                                <span class="board-menu-activity-username">User</span> did activity.
+                                <p class="board-menu-activity-time">3 hours ago</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="div-clearer"></div>
+            </div>
+        </div>
+        <ul id="lol">
+            <li id="list-adder" class="list">
+                <div id="list-adder-btn" class="btn">Add a list...</div>
+                <div id="form-list-adder-container">
+                    <input id="list-adder-input" name="new-list" placeholder="Add a list...">
+                    <div id="list-adder-submit-btn" class="btn">Save</div>
+                    <div id="list-adder-close-btn" class="btn">X</div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div id="new-card-modal" class="modal">
+        <div id="new-card-page" class="card-page">
+            <div class="card-page-topbar">
+                <div class="card-page-topbar-left">
+                    <input id="new-card-name-input" class="card-page-name" type="text" placeholder="Enter card name..." required>
+                </div>
+                <div class="card-page-topbar-right">
+                    <div id="close-new-card-btn" class="btn">X</div>
+                </div>
+            </div>
+            <div class="card-info">
+                <p class="card-section-name">Description</p>
+                <textarea id="new-card-desc-input" rows="3" cols="35" placeholder="Enter description..."></textarea>
+            </div>
+            <div class="div-clearer"></div>
+            <p id="add-card-btn" class="btn">Add Card</p>
+        </div>
+        <div id="new-card-modal-bg" class="modal-bg"></div>
+    </div>
+
+    <div id="card-modal" class="modal">
+        <div id="current-card-page" class="card-page">
+            <div class="card-page-topbar">
+                <div class="card-page-topbar-left">
+                    <h3 id="current-card-page-name" class="card-page-name">
+                    </h3>
+                    <input type="text" id="edit-card-name-input" class="card-page-name">
+                </div>
+                <div class="card-page-topbar-right">
+                    <div id="close-card-btn" class="btn">X</div>
+                </div>
+            </div>
+            <div class="card-info">
+                <p class="card-section-name">Description</p>
+                <p id="current-card-page-description" class="card-page-description"></p>
+                <div id="current-card-page-edit-desc-btn" class="btn">Edit description...</div>
+                <textarea id="edit-card-desc-input" rows="3" cols"35"></textarea>
+                <div id="edit-card-desc-submit-btn" class="btn">Submit</div>
+                <p class="card-section-name">Labels</p>
+                <ul id="current-card-page-label-list" class="card-label-list">
+                </ul>
+                <p class="card-section-name">Members</p>
+                <ul class="card-member-list">
+                </ul>
+                <p class="card-section-name">Add Comment</p>
+                <textarea rows="3" cols="35"></textarea>
+                <div class="comment-send-btn btn">Send</div>
+                <p class="card-section-name">Activity</p>
+                <ul class="card-activity-list">
+                    <!--
+                    <li class="card-activity">
+                        <p class="card-comment-username">User</p>
+                        <p class="card-comment-content">
+                            Comment
+                        </p>
+                    </li>
+                    -->
+                </ul>
+            </div>
+            <div class="card-options">
+                <p class="card-section-name">Add</p>
+                <ul class="card-option-list">
+                    <li class="btn">Members</li>
+                    <li id="add-label-btn" class="btn">Labels</li>
+                    <div id="add-label-menu">
+                        <input id="add-label-desc" placeholder="Enter label description...">
+                        <ul id="add-label-list">
+                            <li class="add-label-selector card-label-green"><span class="card-label-text">green</span></li>
+                            <li class="add-label-selector card-label-yellow"><span class="card-label-text">yellow</span></li>
+                            <li class="add-label-selector card-label-orange"><span class="card-label-text">orange</span></li>
+                            <li class="add-label-selector card-label-red"><span class="card-label-text">red</span></li>
+                            <li class="add-label-selector card-label-purple"><span class="card-label-text">purple</span></li>
+                            <li class="add-label-selector card-label-blue"><span class="card-label-text">blue</span></li>
+                        </ul>
+                    </div>
+                </ul>
+                <p class="card-section-name">Options</p>
+                <ul class="card-option-list">
+                    <li id="delete-card-btn" class="btn">Delete</li>
+                </ul>
+            </div>
+            <div class="card-clearer"></div>
+        </div>
+        <div id="card-modal-bg" class="modal-bg"></div>
+    </div>
+    <script src="javascripts/jquery-3.2.1.js"></script>
+    <script src="javascripts/boardpage.js"></script>
+</body>
 </html>
