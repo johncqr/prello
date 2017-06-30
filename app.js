@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var cors = require('./libs/cors')
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -18,25 +19,6 @@ db.once('open', function() {
 })
 
 var app = express();
-
-// CORS MIDDLEWARE
-app.use(function (req, res, next) {
-
-    // Website you wish to allow to connect
-    res.setHeader('Access-Control-Allow-Origin', 'null');
-
-    // Request methods you wish to allow
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-
-    // Request headers you wish to allow
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-
-    // // Set to true if you need the website to include cookies in the requests sent
-    // // to the API (e.g. in case you use sessions)
-    // res.setHeader('Access-Control-Allow-Credentials', true);
-    next();
-});
-// END CORS MIDDLEWARE
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -52,7 +34,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
-app.use('/list', list);
+app.use('/list', cors, list);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
