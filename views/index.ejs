@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <title><%= title %> | Prello</title>
-    <link rel="stylesheet" type="text/css" href="stylesheets/boardpage.css">
-</head>
-
+<%- include('header', {title: title, stylesheet: stylesheet}); %>
 <body>
     <div class="navbar">
         <div class="navbar-left">
@@ -27,7 +20,7 @@
     <div class="board-page">
         <div class="board-toolbar">
             <div class="board-toolbar-left">
-                <h2 class="board-name">Board Title</h2>
+                <h2 class="board-name"><%= title %></h2>
             </div>
             <div class="board-toolbar-right">
                 <div id="board-menu-btn">Show Menu</div>
@@ -175,5 +168,4 @@
     </div>
     <script src="javascripts/jquery-3.2.1.js"></script>
     <script src="javascripts/boardpage.js"></script>
-</body>
-</html>
+<%- include('footer'); %>
