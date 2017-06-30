@@ -1,0 +1,157 @@
+body {
+    font-family: 'Helvetica', 'Lucida Sans Regular';
+    background-color: #FFF;
+}
+
+.navbar {
+    background-color: #0067A3;
+    color: #FFF;
+    height: 40px;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+
+.navbar-mid {
+    font-weight: bold;
+    font-size: 20px;
+    position: absolute;
+    left: 50%;
+    top: -10px;
+    transform: translateX(-50%);
+}
+
+.navbar-right {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.btn-text {
+    font-weight: bold;
+}
+
+#boards-list {
+    box-shadow: 0 0 6px rgba(0,0,0,.4);
+    border-radius: 2px;
+    color: #000;
+    display: none;
+    position: fixed;
+    background-color: #FFF;
+    min-width: 280px;
+}
+
+.btn {
+    border-radius: 5px;
+    border: none;
+    background-color: #4791BD;
+    color: #FFF;
+}
+
+#boards-list-btn {
+    margin: 5px 4px;
+    padding: 7px;
+    width: 70px;
+}
+
+#create-board-btn {
+    margin: 5px 4px;
+    font-size: 25px;
+}
+
+.btn:hover {
+    filter: brightness(120%);
+    cursor: pointer;
+}
+
+.boards-list-sep {
+    margin: 10px 0 0 10px;
+}
+
+.boards-list-sep-name {
+    font-size: .90rem;
+    margin-bottom: 0;
+}
+
+.board-entry-list {
+    margin-top: 2px;
+}
+
+.board-entry {
+    background-color: #E0EFF7;   
+    border-radius: 3px;
+    height: 36px;
+    margin: 5px;
+}
+
+.board-entry-text {
+    display: block;
+    font-weight: bold;
+    padding: 10px 20px;
+}
+
+.board-entry:hover {
+    filter: brightness(95%);
+    cursor: pointer;
+}
+
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+#logo {
+    display: inline-block;
+}
+
+.create-btn {
+    background-color: #3F66AC;
+    border-radius: 5px;
+    border: none;
+    float: right;
+    margin: 8px;
+    padding: 5px;
+}
+
+.create-btn:hover {
+    background-color: #B5CAF0;
+    cursor: pointer;
+}
+
+.board-collection {
+    margin: 40px auto;
+    width: 80%;
+}
+
+.boards-container {
+    margin-top: 5px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.board {
+    background-color: #0067A3;
+    border-radius: 5px;
+    color: #FFF;
+    height: 100px;
+    margin: 10px;
+    padding: 10px;
+    width: 200px;
+}
+
+.board:hover {
+    filter: brightness(80%);
+    cursor: pointer;
+}
+
+.board-name {
+    margin-top: 5px;
+}
+
+.collection-name {
+    font-weight: bold;
+    font-size: 20px;
+    margin: 50px 0 0 30px;
+}
