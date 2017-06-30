@@ -30,6 +30,10 @@ body {
     transform: translateX(-50%);
 }
 
+#logo {
+    font-family: 'Brush Script MT', 'Helvetica', 'Lucida Sans Regular';
+}
+
 #boards-list {
     box-shadow: 0 0 6px rgba(0,0,0,.4);
     border-radius: 2px;

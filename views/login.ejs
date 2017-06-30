@@ -1,0 +1,36 @@
+<%- include('header', {title: title, stylesheet: stylesheet}); %>
+    <div class="navbar">
+        <div class="navbar-mid">
+            <p id="logo">Prello</p>
+        </div>
+    </div>
+    <div class="page-container">
+        <div class="fields registration">
+            <p class="page-section">Create a New Prello Account</p>
+            <form id="form-registration">
+                <label for="reg-username">Username</label>
+                <input type="text" name="reg-username" placeholder="e.g FirstnameLastname" required>
+                <label for="reg-email">Email</label>
+                <input type="email" name="reg-email" placeholder="e.g email@domain.com" required>
+                <label for="reg-password">Password</label>
+                <input id="password" type="password" name="reg-password" placeholder="e.g ********" required>
+                <label for="reg-password-confirm">Confirm Password</label>
+                <input id="password-confirm" type="password" name="reg-password-confirm" placeholder="Confirm Password" required>
+                <input class="submit-btn" type="submit" value="Create New Account">
+            </form>
+        </div>
+        <div class="fields login">
+            <p class="page-section">Log In to Prello</p>
+            <form id="form-login">
+                <label for="login-username">Username</label>
+                <input type="text" name="login-username" placeholder="e.g FirstnameLastname" required>
+                <label for="login-password">Password</label>
+                <input type="password" name="login-password" placeholder="e.g ********" required>
+                <label for="login-remember">Remember Me</label>
+                <input class="remember-checkbox" name="login-remember" type="checkbox"><br>
+                <input class="submit-btn" type="submit" value="Log In">
+            </form>
+        </div>
+    </div>
+    <script src="javascripts/login.js"></script>
+<%- include('footer'); %>
