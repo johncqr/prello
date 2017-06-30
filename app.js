@@ -8,7 +8,6 @@ var mongoose = require('mongoose');
 var cors = require('./libs/cors')
 
 var index = require('./routes/index');
-var users = require('./routes/users');
 var list = require('./routes/list');
 
 mongoose.connect('mongodb://localhost/prello');
@@ -33,7 +32,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
-app.use('/users', users);
 app.use('/list', cors, list);
 
 // catch 404 and forward to error handler
