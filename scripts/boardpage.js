@@ -1,6 +1,6 @@
 // API information
-var USER = 'john';
-var HOST = `http://thiman.me:1337/${USER}`
+var PORT = 3000;
+var HOST = `http://localhost:${PORT}`;
 
 // in-memory data to prevent constant API calls
 var map = {};
