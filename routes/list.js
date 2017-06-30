@@ -125,10 +125,10 @@ router.patch('/:lid/card/:cid', function (req, res) {
                         console.log(`Error patching card with id ${req.params.lid} from list with id ${req.params.cid}`);
                     }
                 });
+                res.send(list);
             }
         }
     });
-    res.send();
 });
 
 
