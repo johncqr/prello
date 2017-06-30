@@ -1,22 +1,9 @@
 var express = require('express');
 var mongoose = require('mongoose');
-
 var router = express.Router();
 
-var List = mongoose.model('List',
-    {
-        name: String,
-        cards: Array
-    }
-);
-
-var Card = mongoose.model('Card',
-    {
-        name: String,
-        desc: String,
-        labels: Array
-    }
-);
+var List = require('../models/list');
+var Card = require('../models/card');
 
 router.get('/', function (req, res) {
     List.find({}, function (err, lists) {
