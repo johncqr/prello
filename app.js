@@ -5,12 +5,15 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var session = require('client-sessions');
 var cors = require('./libs/cors')
 
 var login = require('./routes/login');
 var boards = require('./routes/boards');
 var index = require('./routes/index');
 var list = require('./routes/list');
+
+var User = require('./models/user');
 
 mongoose.connect('mongodb://localhost/prello');
 var db = mongoose.connection;
@@ -32,6 +35,29 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(session({
+  cookieName: 'session',
+  secret: 'prello_secret_string',
+  duration: 30 * 60 * 1000,
+  activeDuration: 5 * 60 * 1000,
+}));
+
+app.use(function(req, res, next) {
+  if (req.session && req.session.user) {
+    User.findOne({ email: req.session.user.email }, function(err, user) {
+      if (user) {
+        req.user = user;
+        delete req.user.password;
+        req.session.user = user;
+        res.locals.user = user;
+      }
+      next();
+    });
+  } else {
+    next();
+  }
+});
 
 app.use('/', index);
 app.use('/login', login);
