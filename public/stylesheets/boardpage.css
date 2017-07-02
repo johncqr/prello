@@ -30,6 +30,13 @@ body {
     transform: translateX(-50%);
 }
 
+.navbar-right {
+    position: absolute;
+    display: flex;
+    right: 0;
+    top: 0;
+}
+
 #logo {
     font-family: 'Brush Script MT', 'Helvetica', 'Lucida Sans Regular';
 }
@@ -42,15 +49,6 @@ body {
     position: fixed;
     background-color: #FFF;
     min-width: 280px;
-}
-
-#boards-list-btn {
-    border-radius: 5px;
-    background-color: #4791BD;
-    color: #FFF;
-    margin: 5px 4px;
-    padding: 7px;
-    width: 70px;
 }
 
 #boards-list-btn:hover {
@@ -227,8 +225,22 @@ ul {
     white-space: nowrap;
 }
 
-#boards-list-btn, .btn {
-    border: none;
+.navbar-btn {
+    border-radius: 5px;
+    background-color: #4791BD;
+    color: #FFF;
+    font-weight: bold;
+    display: inline-block;
+    height: 30px;
+    vertical-align: middle;
+    line-height: 30px;
+    margin: 5px 3px;
+    min-width: 20px;
+    text-align: center;
+    padding: 0 10px;
+}
+
+.btn {
     font-weight: bold;
 }
 

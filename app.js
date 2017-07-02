@@ -9,6 +9,7 @@ var session = require('client-sessions');
 var cors = require('./libs/cors')
 
 var login = require('./routes/login');
+var logout = require('./routes/logout');
 var boards = require('./routes/boards');
 var index = require('./routes/index');
 var list = require('./routes/list');
@@ -61,6 +62,7 @@ app.use(function(req, res, next) {
 
 app.use('/', index);
 app.use('/login', login);
+app.use('/logout', logout);
 app.use('/boards', boards);
 app.use('/list', cors, list);
 

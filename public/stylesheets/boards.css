@@ -24,12 +24,9 @@ body {
 
 .navbar-right {
     position: absolute;
+    display: flex;
     right: 0;
     top: 0;
-}
-
-.btn-text {
-    font-weight: bold;
 }
 
 #boards-list {
@@ -42,25 +39,26 @@ body {
     min-width: 280px;
 }
 
-.btn {
+.navbar-btn {
     border-radius: 5px;
-    border: none;
     background-color: #4791BD;
     color: #FFF;
-}
-
-#boards-list-btn {
-    margin: 5px 4px;
-    padding: 7px;
-    width: 70px;
+    font-weight: bold;
+    display: inline-block;
+    height: 30px;
+    vertical-align: middle;
+    line-height: 30px;
+    margin: 5px 3px;
+    min-width: 20px;
+    padding: 0 10px;
+    text-align: center;
 }
 
 #create-board-btn {
-    margin: 5px 4px;
     font-size: 25px;
 }
 
-.btn:hover {
+.navbar-btn:hover {
     filter: brightness(120%);
     cursor: pointer;
 }
@@ -104,20 +102,6 @@ ul {
 
 #logo {
     display: inline-block;
-}
-
-.create-btn {
-    background-color: #3F66AC;
-    border-radius: 5px;
-    border: none;
-    float: right;
-    margin: 8px;
-    padding: 5px;
-}
-
-.create-btn:hover {
-    background-color: #B5CAF0;
-    cursor: pointer;
 }
 
 .board-collection {

@@ -1,7 +1,7 @@
 <%- include('common/header', {title: title, stylesheet: stylesheet}); %>
     <div class="navbar">
         <div class="navbar-left">
-            <button id="boards-list-btn" class="btn"><span class="btn-text">Boards</span></button>
+            <div id="boards-list-btn" class="navbar-btn">Boards</div>
             <div id="boards-list">
                 <div class="boards-list-sep"><span class="boards-list-sep-name">Personal Boards</span></div>
                 <ul class="board-entry-list">
@@ -16,7 +16,8 @@
             <p id="logo">Prello</p>
         </div>
         <div class="navbar-right">
-            <button id="create-board-btn" class="btn">+</button>
+            <div id="create-board-btn" class="navbar-btn">+</div>
+            <a href="/logout"><div id="logout-btn" class="navbar-btn">Log Out</div></a>
         </div>
     </div>
     <div class="board-collection">
