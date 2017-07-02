@@ -6,7 +6,7 @@ var User = require('../models/user');
 
 router.get('/', function (req, res, next) {
   if (req.user) {
-    res.redirect('..')
+    res.redirect('/')
   } else {
     res.render('login', { title: 'Log In', stylesheet: 'login.css', notice: '' });
   }
@@ -43,7 +43,7 @@ router.post('/', function (req, res, next) {
         // set cookie with user info
         console.log(user);
         req.session.user = user;
-        res.redirect('..');
+        res.redirect('/');
       } else {
         notice = 'Invalid username or password';
         res.render('login', { title: 'Log In', stylesheet: 'login.css', notice: notice });
