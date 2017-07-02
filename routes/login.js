@@ -10,20 +10,29 @@ router.get('/', function (req, res, next) {
 
 router.post('/', function (req, res, next) {
   var notice;
-  var newUser = new User({
-    username: req.body['reg-username'],
-    email: req.body['reg-email'],
-    password: req.body['reg-password']
-  });
-  newUser.save(function (err) {
-    if (err) {
-      console.log(err);
-      notice = 'Could not create account at this time.';
-    } else {
-      notice = `Account "${newUser.username}" created sucessfully!`;
-    }
-    res.render('login', { title: 'Log In', stylesheet: 'login.css', notice: notice });
-  });
+  if (req.body['reg-username']) {
+    User.findOne({ email: req.body['reg-email'] }, function (err, user) {
+      if (!user) {
+        var newUser = new User({
+          username: req.body['reg-username'],
+          email: req.body['reg-email'],
+          password: req.body['reg-password']
+        });
+        newUser.save(function (err) {
+          if (err) {
+            console.log(err);
+            notice = 'Could not create account at this time.';
+          } else {
+            notice = `Account "${req.body['reg-email']}" created sucessfully!`;
+          }
+          res.render('login', { title: 'Log In', stylesheet: 'login.css', notice: notice });
+        });
+      } else {
+        notice = `Account with the email "${req.body['reg-email']}" already exists!`
+        res.render('login', { title: 'Log In', stylesheet: 'login.css', notice: notice });
+      }
+    });
+  }
 });
 
 module.exports = router;
