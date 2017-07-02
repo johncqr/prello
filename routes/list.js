@@ -46,6 +46,7 @@ router.patch('/:lid', function (req, res) {
 });
 
 router.post('/:lid/card', function (req, res) {
+    console.log(req.session);
     List.findById(mongoose.Types.ObjectId(req.params.lid), function (err, list) {
         if (err) {
             console.log('Error finding list with id: ' + req.params.lid);
@@ -53,12 +54,16 @@ router.post('/:lid/card', function (req, res) {
             var newCard = new Card(
                 {
                     name: req.body.name,
-                    desc: req.body.desc
+                    desc: req.body.desc,
+                    author: req.session.user.username
                 }
             );
+            console.log(newCard);
             list.cards.push(newCard);
             list.save(function (err) {
-                console.log('Error adding card to list with id: ' + req.params.lid);
+                if (err) {
+                    console.log('Error adding card to list with id: ' + req.params.lid);
+                }
             });
             res.send(list);
         }

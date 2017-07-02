@@ -267,6 +267,10 @@ ul {
     margin: 0;
 }
 
+.card-author {
+    float: right;
+}
+
 #form-list-adder-container {
     display: none;
 }
@@ -492,13 +496,13 @@ ul {
 
 .card-member {
     display: inline-block;
-    background-color: #FFF;
+    background-color: #D6DADC;
     border-radius: 2px;
-    padding: 2px;
+    padding: 2px 5px;
 }
 
 .card-member:hover {
-    background-color: #CBCBCB;
+    filter: brightness(95%);
     cursor: pointer;
 }
 

@@ -19,7 +19,8 @@ $(function () {
     var $addLabelDesc = $('#add-label-desc');
     var $cardPage = $('#current-card-page');
     var $cardPageName = $('#current-card-page-name');
-    var $cardPageDesc = $('#current-card-page-description')
+    var $cardPageDesc = $('#current-card-page-description');
+    var $cardPageAuthor = $('#current-card-page-author');
     var $cardPageLabelList = $('#current-card-page-label-list');
     var $fullCardModal = $('#card-modal');
     var $newListName = $('#list-adder-input');
@@ -90,7 +91,7 @@ $(function () {
     }
 
     function createCard(c, lid) {
-        map[lid].cards[c._id] = { name: c.name, desc: c.desc, labels: c.labels };
+        map[lid].cards[c._id] = { name: c.name, desc: c.desc, labels: c.labels, author: c.author };
         var $newCard = $('<li></li>', { class: 'card', 'data-lid': lid, 'data-cid': c._id });
         var $newCardLabelList = $('<ul></ul>', { class: 'card-label-surface-list' });
         if (c.labels) {
@@ -102,8 +103,16 @@ $(function () {
             class: 'card-name',
             text: c.name
         });
-        $newCard.append($newCardLabelList);
-        $newCard.append($newCardName);
+        var $newCardAuthor = $('<div></div>', {
+            class: 'card-author',
+        }).append($('<span></span>', {
+            class: 'card-member',
+            text: c.author
+        }));
+        $newCard.append($newCardLabelList)
+            .append($newCardName)
+            .append($newCardAuthor)
+            .append($('<div class="div-clearer"></div>'));
         return $newCard;
     }
 
@@ -197,6 +206,7 @@ $(function () {
     function updateFullCardModal(c) {
         $cardPageName.text(c.name);
         $cardPageDesc.text(c.desc);
+        $cardPageAuthor.text(c.author);
         $cardPageLabelList.empty();
 
         // populate label list
