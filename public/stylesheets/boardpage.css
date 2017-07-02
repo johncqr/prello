@@ -506,7 +506,7 @@ ul {
     cursor: pointer;
 }
 
-.comment-send-btn {
+#send-comment-btn {
     width: 40px;
 }
 

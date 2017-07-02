@@ -46,7 +46,6 @@ router.patch('/:lid', function (req, res) {
 });
 
 router.post('/:lid/card', function (req, res) {
-    console.log(req.session);
     List.findById(mongoose.Types.ObjectId(req.params.lid), function (err, list) {
         if (err) {
             console.log('Error finding list with id: ' + req.params.lid);
@@ -118,6 +117,42 @@ router.patch('/:lid/card/:cid', function (req, res) {
                     }
                 });
                 res.send(list);
+            }
+        }
+    });
+});
+
+router.post('/:lid/card/:cid/comment', function (req, res) {
+    List.findById(mongoose.Types.ObjectId(req.params.lid), function (err, list) {
+        if (err) {
+            console.log('Error finding list with id: ' + req.params.lid);
+        } else {
+            var indexToUpdate = -1;
+            for (var i = 0; i < list.cards.length; ++i) {
+                if (list.cards[i]._id == req.params.cid) {
+                    indexToUpdate = i;
+                    break;
+                }
+            }
+            if (indexToUpdate !== -1) {
+                var card = list.cards[indexToUpdate];
+                var commentData = {
+                    content: req.body.content,
+                    username: req.session.user.username,
+                    datetimePosted: new Date().toLocaleString(),
+                }
+                if (!card.comments) {
+                    card.comments = [];
+                }
+                card.comments.push(commentData);
+                list.cards.set(indexToUpdate, card);
+                list.save(function (err) {
+                    if (err) {
+                        console.log(`Error commenting card with id ${req.params.lid} from list with id ${req.params.cid}`);
+                    } else {
+                        res.send(commentData);
+                    }
+                });
             }
         }
     });

@@ -5,6 +5,7 @@ var schema = new Schema({
     desc: String,
     labels: Array,
     author: String,
+    comments: Array,
 }, { versionKey: false});
 
 module.exports = mongoose.model('Card', schema);
