@@ -41,7 +41,6 @@ router.post('/', function (req, res, next) {
     User.findOne({ email: req.body['login-email'] }, function (err, user) {
       if (user && req.body['login-password'] === user.password) {
         // set cookie with user info
-        console.log(user);
         req.session.user = user;
         res.redirect('/');
       } else {
