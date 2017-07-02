@@ -5,9 +5,14 @@
         </div>
     </div>
     <div class="page-container">
+        <% if (notice) { %>
+            <div id="notice">
+                <%= notice %>
+            </div>
+        <% } %>
         <div class="fields registration">
             <p class="page-section">Create a New Prello Account</p>
-            <form id="form-registration">
+            <form id="form-registration" method="POST">
                 <label for="reg-username">Username</label>
                 <input type="text" name="reg-username" placeholder="e.g FirstnameLastname" required>
                 <label for="reg-email">Email</label>

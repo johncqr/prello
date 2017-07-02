@@ -12,9 +12,9 @@ router.get('/', function (req, res) {
 });
 
 router.post('/', function (req, res) {
-    var newList = new List(
-        { name: req.body.name }
-    );
+    var newList = new List({
+        name: req.body.name
+    });
     newList.save(function (err, list) {
         if (err) {
             console.log(err);
