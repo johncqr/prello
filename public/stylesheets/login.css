@@ -3,6 +3,10 @@ body {
     background-color: #FFF;
 }
 
+#logo {
+    font-family: 'Brush Script MT', 'Helvetica', 'Lucida Sans Regular';
+}
+
 .navbar {
     background-color: #0067A3;
     color: #FFF;

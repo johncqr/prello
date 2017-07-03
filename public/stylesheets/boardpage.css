@@ -10,6 +10,11 @@ body {
     color: #FFF;
 }
 
+#logo {
+    font-family: 'Brush Script MT', 'Helvetica', 'Lucida Sans Regular';
+}
+
+
 .navbar {
     background-color: #0067A3;
     color: #FFF;
@@ -35,10 +40,6 @@ body {
     display: flex;
     right: 0;
     top: 0;
-}
-
-#logo {
-    font-family: 'Brush Script MT', 'Helvetica', 'Lucida Sans Regular';
 }
 
 #boards-list {
