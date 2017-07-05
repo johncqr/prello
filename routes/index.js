@@ -4,10 +4,11 @@ var requireLogin = require('../libs/requireLogin');
 
 var User = require('../models/user');
 
+var boardStyle = 'stylesheets/boards.css';
 var loginStyle = 'stylesheets/login.css';
 
 router.get('/', requireLogin, function(req, res) {
-  res.render('index', { title: 'Boards', stylesheet: loginStyle });
+  res.render('index', { title: 'Boards', stylesheet: boardStyle });
 });
 
 router.get('/login', function (req, res, next) {

@@ -7,6 +7,10 @@ body {
     font-family: 'Brush Script MT', 'Helvetica', 'Lucida Sans Regular';
 }
 
+a {
+    text-decoration: none;
+}
+
 .navbar {
     background-color: #0067A3;
     color: #FFF;
