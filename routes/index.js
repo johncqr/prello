@@ -4,15 +4,17 @@ var requireLogin = require('../libs/requireLogin');
 
 var User = require('../models/user');
 
+var loginStyle = 'stylesheets/login.css';
+
 router.get('/', requireLogin, function(req, res) {
-  res.render('index', { title: 'Boards', stylesheet: 'stylesheets/boards.css' });
+  res.render('index', { title: 'Boards', stylesheet: loginStyle });
 });
 
 router.get('/login', function (req, res, next) {
   if (req.user) {
     res.redirect('/')
   } else {
-    res.render('login', { title: 'Log In', stylesheet: 'stylesheets/login.css', notice: '' });
+    res.render('login', { title: 'Log In', stylesheet: loginStyle, notice: '' });
   }
 });
 
@@ -33,11 +35,11 @@ router.post('/login', function (req, res, next) {
           } else {
             notice = `Account "${req.body['reg-email']}" created sucessfully!`;
           }
-          res.render('login', { title: 'Log In', stylesheet: 'login.css', notice: notice });
+          res.render('login', { title: 'Log In', stylesheet: loginStyle, notice: notice });
         });
       } else {
         notice = `Account with the email "${req.body['reg-email']}" already exists!`
-        res.render('login', { title: 'Log In', stylesheet: 'login.css', notice: notice });
+        res.render('login', { title: 'Log In', stylesheet: loginStyle, notice: notice });
       }
     });
   }
@@ -49,7 +51,7 @@ router.post('/login', function (req, res, next) {
         res.redirect('/');
       } else {
         notice = 'Invalid username or password';
-        res.render('login', { title: 'Log In', stylesheet: 'login.css', notice: notice });
+        res.render('login', { title: 'Log In', stylesheet: loginStyle, notice: notice });
       }
     });
   }
