@@ -1,41 +1,36 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var router = express.Router();
+var requireLogin = require('../libs/requireLogin');
 
 var Board = require('../models/board');
 var List = require('../models/list');
 var Card = require('../models/card');
 
+router.use(requireLogin);
+
 router.get('/', function (req, res) {
-  if (req.user) {
-    Board.find({ creator: req.user.username }, function (err, boards) {
-      res.json(boards);
-    });
-  }
+  Board.find({ creator: req.user.username }, function (err, boards) {
+    res.json(boards);
+  });
 });
 
 router.post('/', function (req, res) {
-  if (req.user) {
-    var newBoard = new Board({
-      name: req.body.name,
-      creator: req.user.username
-    });
-    newBoard.save(function (err, board) {
-      if (err) {
-        console.log(err);
-      } else {
-        res.json(board);
-      }
-    });
-  }
+  var newBoard = new Board({
+    name: req.body.name,
+    creator: req.user.username
+  });
+  newBoard.save(function (err, board) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(board);
+    }
+  });
 });
 
 router.get('/:bid', function (req, res) {
-  if (req.user) {
-    res.render('boardpage', { title: 'Prello', stylesheet: '../stylesheets/boardpage.css' });
-  } else {
-    res.redirect('/login');
-  }
+  res.render('boardpage', { title: 'Prello', stylesheet: '../stylesheets/boardpage.css' });
 });
 
 router.get('/:bid/list', function (req, res) {
