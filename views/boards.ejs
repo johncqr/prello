@@ -18,6 +18,11 @@
         <div class="navbar-right">
             <div id="create-board-btn" class="navbar-btn">+</div>
             <a href="/logout"><div id="logout-btn" class="navbar-btn">Log Out</div></a>
+            <div id="create-board-menu">
+                <label>Title</label>
+                <input id="create-board-input" placeholder="Enter board name...">
+                <div id="create-board-submit-btn" class="btn">Create</div>
+            </div>
         </div>
     </div>
     <div class="board-collection">
@@ -46,5 +51,6 @@
             </div>
         </div>
     </div>
+    <script src="javascripts/jquery-3.2.1.js"></script>
     <script src="javascripts/boards.js"></script>
 <%- include('common/footer'); %>

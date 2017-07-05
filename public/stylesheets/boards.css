@@ -28,7 +28,6 @@ body {
 
 .navbar-right {
     position: absolute;
-    display: flex;
     right: 0;
     top: 0;
 }
@@ -42,6 +41,38 @@ body {
     background-color: #FFF;
     min-width: 280px;
 }
+
+#create-board-menu {
+    color: #000;
+    position: fixed;
+    box-shadow: 0 0 6px rgba(0,0,0,.4);
+    border-radius: 2px;
+    background-color: #FFF;
+    display: none;
+    padding: 5px;
+    right: 0;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+}
+
+.btn {
+    font-weight: bold;
+    background-color: #FFF;
+    border-radius: 3px;
+    box-shadow: 0 0 6px rgba(0,0,0,.4);
+    margin: 5px;
+    padding: 3px 8px;
+}
+
+.btn:hover {
+    background-color: #0079BF;
+    color: #FFF;
+    cursor: pointer;
+}
+
 
 .navbar-btn {
     border-radius: 5px;

@@ -1,7 +1,15 @@
-function toggleBoardsLists() {
-    var boardsList = document.getElementById("boards-list");
-    boardsList.style.display = boardsList.style.display === "none" ? "block" : "none";
-}
+$(function () {
+    $boardsList = $('#boards-list');
+    $createBoardMenu = $('#create-board-menu');
 
-document.getElementById('boards-list').style.display = 'none';
-document.getElementById("boards-list-btn").addEventListener("click", toggleBoardsLists);
+    function toggleBoardsList() {
+        $boardsList.toggle();
+    }
+
+    function toggleCreateBoardMenu() {
+        $createBoardMenu.toggle();
+    }
+
+    $('#boards-list-btn').click(toggleBoardsList);
+    $('#create-board-btn').click(toggleCreateBoardMenu);
+});
