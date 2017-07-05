@@ -288,7 +288,7 @@ $(function () {
             }))
             .append($('<p></p>', {
                 class: 'card-comment-time',
-                text: comment.datetimePosted
+                text: Date(comment.datetimePosted)
             }));
         return $comment;
     }

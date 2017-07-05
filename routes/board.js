@@ -218,7 +218,7 @@ router.post('/:bid/list/:lid/card/:cid/comment', function (req, res) {
           var commentData = {
             content: req.body.content,
             username: req.session.user.username,
-            datetimePosted: new Date().toLocaleString(),
+            datetimePosted: new Date(),
           }
           if (!card.comments) {
             card.comments = [];
