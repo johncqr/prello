@@ -10,9 +10,8 @@ var cors = require('./libs/cors')
 
 var login = require('./routes/login');
 var logout = require('./routes/logout');
-var boards = require('./routes/boards');
+var board = require('./routes/board');
 var index = require('./routes/index');
-var list = require('./routes/list');
 
 var User = require('./models/user');
 
@@ -63,8 +62,7 @@ app.use(function(req, res, next) {
 app.use('/', index);
 app.use('/login', login);
 app.use('/logout', logout);
-app.use('/boards', boards);
-app.use('/list', cors, list);
+app.use('/board', cors, board);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -1,6 +1,7 @@
 // API information
+var BID = window.location.pathname.split('/')[2];
 var PORT = 3000;
-var HOST = `http://localhost:${PORT}`;
+var HOST = `http://localhost:${PORT}/board/${BID}`;
 
 // in-memory data to prevent constant API calls
 var map = {};

@@ -3,7 +3,7 @@ var router = express.Router();
 
 router.get('/', function(req, res) {
   if (req.user) {
-    res.render('index', { title: 'Board Title', stylesheet: 'boardpage.css' });
+    res.render('index', { title: 'Boards', stylesheet: 'stylesheets/boards.css' });
   } else {
     res.redirect('/login');
   }
