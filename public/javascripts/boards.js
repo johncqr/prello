@@ -32,17 +32,19 @@ $(function () {
     }
 
     function addNewBoard() {
-        $.ajax({
-            url: `${HOST}/board`,
-            data: {
-                name: $createBoardInput.val()
-            },
-            type: 'POST',
-        }).done(function (json) {
-            var $board = createBoard(json);
-            $personalBoards.append($board);
-        });
-        $createBoardInput.val('');
+        if ($createBoardInput.val() !== '') {
+            $.ajax({
+                url: `${HOST}/board`,
+                data: {
+                    name: $createBoardInput.val()
+                },
+                type: 'POST',
+            }).done(function (json) {
+                var $board = createBoard(json);
+                $personalBoards.append($board);
+            });
+            $createBoardInput.val('');
+        }
     }
 
     function initData(data) {
