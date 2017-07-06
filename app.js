@@ -4,7 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var mongoose = require('mongoose');
+// var mongoose = require('mongoose');
 var session = require('client-sessions');
 var cors = require('./libs/cors')
 
@@ -13,12 +13,14 @@ var index = require('./routes/index');
 
 var User = require('./models/user');
 
-mongoose.connect('mongodb://localhost/prello');
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
-  console.log('Database connection successful.');
-})
+// mongoose.connect('mongodb://localhost/prello');
+// var db = mongoose.connection;
+// db.on('error', console.error.bind(console, 'connection error:'));
+// db.once('open', function() {
+//   console.log('Database connection successful.');
+// })
+
+require('./db');
 
 var app = express();
 

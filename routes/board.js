@@ -2,6 +2,7 @@ var express = require('express');
 var mongoose = require('mongoose');
 var router = express.Router();
 var requireLogin = require('../libs/requireLogin');
+// var sequelize = require('sequelize');
 
 var Board = require('../models/board');
 var List = require('../models/list');
