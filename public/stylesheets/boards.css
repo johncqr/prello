@@ -120,10 +120,6 @@ label {
     border-radius: 3px;
     height: 36px;
     margin: 5px;
-}
-
-.board-entry-text {
-    display: block;
     font-weight: bold;
     padding: 10px 20px;
 }

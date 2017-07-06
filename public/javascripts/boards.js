@@ -7,6 +7,7 @@ $(function () {
     $boardsList = $('#boards-list');
     $createBoardMenu = $('#create-board-menu');
     $personalBoards = $('#personal-boards .boards-container');
+    $personalBoardEntries = $('.board-entry-list');
     $createBoardInput = $('#create-board-input');
 
     function toggleBoardsList() {
@@ -31,6 +32,25 @@ $(function () {
         return $board;
     }
 
+    function createBoardEntry(b) {
+        var $boardEntry = $('<a></a>', {
+            href: `/board/${b._id}`
+        })
+            .append($('<li></li>', {
+                class: 'board-entry',
+                text: b.name
+            }));
+        console.log("yes");
+        return $boardEntry;
+    }
+
+    function addBoard(b) {
+        var $board = createBoard(b);
+        var $boardEntry = createBoardEntry(b);
+        $personalBoards.append($board);
+        $personalBoardEntries.append($boardEntry);
+    }
+
     function addNewBoard() {
         if ($createBoardInput.val() !== '') {
             $.ajax({
@@ -39,18 +59,14 @@ $(function () {
                     name: $createBoardInput.val()
                 },
                 type: 'POST',
-            }).done(function (json) {
-                var $board = createBoard(json);
-                $personalBoards.append($board);
-            });
+            }).done(addBoard);
             $createBoardInput.val('');
         }
     }
 
     function initData(data) {
         for (var i = 0; i < data.length; ++i) {
-            var $board = createBoard(data[i]);
-            $personalBoards.append($board);
+            addBoard(data[i]);
         }
     }
 
