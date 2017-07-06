@@ -16,6 +16,9 @@ $(function () {
 
     function toggleCreateBoardMenu() {
         $createBoardMenu.toggle();
+        if ($createBoardInput.is(':visible')) {
+            $createBoardInput.focus();
+        }
     }
 
     function createBoard(b) {
