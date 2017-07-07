@@ -5,6 +5,7 @@ var requireLogin = require('../libs/requireLogin');
 var Board = require('../models/board');
 var List = require('../models/list');
 var Card = require('../models/card');
+var boardpageStyle = '../stylesheets/boardpage.css';
 
 var router = express.Router();
 router.use(requireLogin);
