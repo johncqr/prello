@@ -3,12 +3,15 @@ var router = express.Router();
 var requireLogin = require('../libs/requireLogin');
 
 var User = require('../models/user');
+var Board = require('../models/board');
 
 var boardStyle = 'stylesheets/boards.css';
 var loginStyle = 'stylesheets/login.css';
 
 router.get('/', requireLogin, function(req, res) {
-  res.render('index', { title: 'Boards', stylesheet: boardStyle });
+  Board.find({ creator: req.user.username }, function (err, boards) {
+    res.render('index', { title: 'Boards', boards, stylesheet: boardStyle });
+  });
 });
 
 router.get('/login', function (req, res, next) {

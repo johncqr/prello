@@ -34,7 +34,11 @@ router.post('/', function (req, res) {
 });
 
 router.get('/:bid', function (req, res) {
-  res.render('boardpage', { title: 'Prello', stylesheet: boardpageStyle });
+  Board.findById(req.params.bid, function (err, board) {
+    Board.find({ creator: req.user.username }, function (err, boards) {
+      res.render('boardpage', { title: board.name, boards, stylesheet: boardpageStyle });
+    });
+  });
 });
 
 router.delete('/:bid', function (req, res) {

@@ -4,6 +4,10 @@ html, body {
     overflow-y: hidden;
 }
 
+a {
+    text-decoration: none;
+}
+
 body {
     font-family: 'Helvetica', 'Lucida Sans Regular';
     background-color: #0079BF;
@@ -75,10 +79,6 @@ body {
     border-radius: 3px;
     height: 36px;
     margin: 5px;
-}
-
-.board-entry-text {
-    display: block;
     font-weight: bold;
     padding: 10px 20px;
 }
@@ -400,7 +400,6 @@ ul {
     width: 600px;
     overflow-y: auto;
 }
-
 
 .modal {
     display: none;

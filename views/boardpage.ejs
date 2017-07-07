@@ -6,10 +6,11 @@
             <div id="boards-list">
                 <div class="boards-list-sep"><span class="boards-list-sep-name">Personal Boards</span></div>
                 <ul class="board-entry-list">
-                    <li class="board-entry"><span class="board-entry-text">Board</span></li>
-                    <li class="board-entry"><span class="board-entry-text">Board</span></li>
-                    <li class="board-entry"><span class="board-entry-text">Board</span></li>
-                    <li class="board-entry"><span class="board-entry-text">Board</span></li>
+                <% for (var i = 0; i < boards.length; ++i) { %>
+                <a href="/board/<%= boards[i]._id %>" data-bid="<%= boards[i]._id %>" >
+                    <li class="board-entry"><%= boards[i].name %></li>
+                </a>
+                <% } %>
                 </ul>
             </div>
         </div>

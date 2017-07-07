@@ -85,18 +85,6 @@ $(function () {
         }
     }
 
-    function initData(data) {
-        for (var i = 0; i < data.length; ++i) {
-            addBoard(data[i]);
-        }
-    }
-
-    $.ajax({
-        url: `${HOST}/board`,
-        type: 'GET',
-        dataType: 'json',
-    }).done(initData);
-
     $('#boards-list-btn').click(toggleBoardsList);
     $('#create-board-btn').click(toggleCreateBoardMenu);
     $('#create-board-submit-btn').click(addNewBoard);
