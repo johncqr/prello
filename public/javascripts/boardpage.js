@@ -262,10 +262,7 @@ $(function () {
         $.ajax({
             url: `${HOST}/list/${currentLid}/card/${currentCid}`,
             data: {
-                name: currentCardData.name,
-                desc: currentCardData.desc,
                 labels: currentCardData.labels,
-                _id: currentCid
             },
             type: 'PATCH'
         });
@@ -348,9 +345,6 @@ $(function () {
                 url: `${HOST}/list/${currentLid}/card/${currentCid}`,
                 data: {
                     name: currentCardData.name,
-                    desc: currentCardData.desc,
-                    labels: currentCardData.labels,
-                    _id: currentCid
                 },
                 type: 'PATCH'
             });
@@ -376,10 +370,7 @@ $(function () {
         $.ajax({
             url: `${HOST}/list/${currentLid}/card/${currentCid}`,
             data: {
-                name: currentCardData.name,
                 desc: currentCardData.desc,
-                labels: currentCardData.labels,
-                _id: currentCid
             },
             type: 'PATCH'
         });
@@ -408,10 +399,7 @@ $(function () {
         $.ajax({
             url: `${HOST}/list/${currentLid}/card/${currentCid}`,
             data: {
-                name: currentCardData.name,
-                desc: currentCardData.desc,
                 labels: currentCardData.labels,
-                _id: currentCid
             },
             type: 'PATCH'
         });

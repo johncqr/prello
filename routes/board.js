@@ -171,9 +171,11 @@ router.patch('/:bid/list/:lid/card/:cid', function (req, res) {
           return c._id == req.params.cid;
         });
         if (cardIndexToUpdate !== undefined) {
-          var card = req.body;
-          card._id = mongoose.Types.ObjectId(req.body._id);
-          board.lists[indexToUpdate].cards[cardIndexToUpdate] = card;
+          var card = list.cards[cardIndexToUpdate];
+          for (var key in req.body) {
+            card[key] = req.body[key];
+          }
+          list.cards[cardIndexToUpdate] = card;
           board.lists.set(indexToUpdate, list);
           board.save(function (err, board) {
             sendResource(err, board.lists[indexToUpdate], res);
