@@ -37,6 +37,16 @@ router.get('/:bid', function (req, res) {
   res.render('boardpage', { title: 'Prello', stylesheet: boardpageStyle });
 });
 
+router.delete('/:bid', function (req, res) {
+  Board.findById(req.params.bid, function (err, board) {
+    if (err) {
+      console.log(err);
+    } else {
+      board.remove();
+    }
+  });
+});
+
 router.get('/:bid/list', function (req, res) {
   Board.findById(req.params.bid, function (err, board) {
     sendResource(err, board.lists, res);

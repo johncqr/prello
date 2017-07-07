@@ -26,18 +26,24 @@ $(function () {
             href: `/board/${b._id}`
         })
         .append($('<div></div>', {
-            class: 'board'
+            class: 'board',
+            'data-bid': b._id,
         })
             .append($('<h3></h3>', {
                 class: 'board-name',
-                text: b.name
+                text: b.name,
+            }))
+            .append($('<div></div>', {
+                class: 'delete-btn',
+                text: 'X',
             })));
         return $board;
     }
 
     function createBoardEntry(b) {
         var $boardEntry = $('<a></a>', {
-            href: `/board/${b._id}`
+            href: `/board/${b._id}`,
+            'data-bid': b._id,
         })
             .append($('<li></li>', {
                 class: 'board-entry',
@@ -52,6 +58,18 @@ $(function () {
         var $boardEntry = createBoardEntry(b);
         $personalBoards.append($board);
         $personalBoardEntries.append($boardEntry);
+    }
+    
+    function deleteBoard(e) {
+        e.preventDefault();
+        var $board = $(this).closest('.board');
+        var bid = $board.attr('data-bid');
+        $.ajax({
+            url: `${HOST}/board/${bid}`,
+            type: 'DELETE',
+        });
+        $board.remove()
+        $boardsList.find(`a[data-bid='${bid}']`).remove();
     }
 
     function addNewBoard() {
@@ -82,4 +100,5 @@ $(function () {
     $('#boards-list-btn').click(toggleBoardsList);
     $('#create-board-btn').click(toggleCreateBoardMenu);
     $('#create-board-submit-btn').click(addNewBoard);
+    $('#personal-boards').on('click', '.delete-btn', deleteBoard);
 });
