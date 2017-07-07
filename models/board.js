@@ -5,7 +5,7 @@ var commentSchema = new Schema({
     content: String,
     username: String,
     datetimePosted: Date
-});
+}, { versionKey: false });
 
 var cardSchema = new Schema({
     author: String,
