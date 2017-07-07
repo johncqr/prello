@@ -3,8 +3,6 @@ var mongoose = require('mongoose');
 var requireLogin = require('../libs/requireLogin');
 
 var Board = require('../models/board');
-var List = require('../models/list');
-var Card = require('../models/card');
 
 var router = express.Router();
 router.use(requireLogin);
@@ -17,6 +15,10 @@ function sendResource(err, resource, res) {
   } else {
     res.json(resource);
   }
+}
+
+function getBoard(bid) {
+  
 }
 
 router.get('/', function (req, res) {
@@ -50,12 +52,12 @@ router.post('/:bid/list', function (req, res) {
     if (err) {
       console.log(err);
     } else {
-      var newList = new List({
-        name: req.body.name
-      });
+      var newList = {
+        name: req.body.name,
+      };
       board.lists.push(newList);
       board.save(function (err, board) {
-        sendResource(err, board.lists[board.lists.length-1], res);
+        sendResource(err, board.lists[board.lists.length - 1], res);
       });
     }
   });
@@ -66,11 +68,9 @@ router.delete('/:bid/list/:lid', function (req, res) {
     if (err) {
       console.log(err);
     } else {
-      var indexToDelete = board.lists.findIndex(function (l) {
-        return l._id == req.params.lid;
-      });
-      if (indexToDelete !== undefined) {
-        board.lists.splice(indexToDelete, 1);
+      var list = board.lists.id(req.params.lid);
+      if (list) {
+        list.remove();
         board.save(function (err) {
           if (err) {
             console.log(err);
@@ -87,13 +87,9 @@ router.patch('/:bid/list/:lid', function (req, res) {
     if (err) {
       console.log(err);
     } else {
-      var indexToUpdate = board.lists.findIndex(function (l) {
-        return l._id == req.params.lid;
-      });
-      if (indexToUpdate !== undefined) {
-        var list = board.lists[indexToUpdate];
+      var list = board.lists.id(req.params.lid);
+      if (list) {
         list.name = req.body.name;
-        board.lists.set(indexToUpdate, list);
         board.save(function (err, board) {
           sendResource(err, board.lists, res);
         });
@@ -107,22 +103,16 @@ router.post('/:bid/list/:lid/card', function (req, res) {
     if (err) {
       console.log(err);
     } else {
-      var indexToUpdate = board.lists.findIndex(function (l) {
-        return l._id == req.params.lid;
-      });
-      if (indexToUpdate !== undefined) {
-        var list = board.lists[indexToUpdate];
-        var newCard = new Card(
-          {
-            name: req.body.name,
-            desc: req.body.desc,
-            author: req.user.username
-          }
-        );
+      var list = board.lists.id(req.params.lid);
+      if (list) {
+        var newCard = {
+          name: req.body.name,
+          desc: req.body.desc,
+          author: req.user.username
+        }
         list.cards.push(newCard);
-        board.lists.set(indexToUpdate, list);
         board.save(function (err, board) {
-          sendResource(err, board.lists[indexToUpdate], res);
+          sendResource(err, list, res);
         });
       }
     }
@@ -134,17 +124,11 @@ router.delete('/:bid/list/:lid/card/:cid', function (req, res) {
     if (err) {
       console.log(err);
     } else {
-      var indexToUpdate = board.lists.findIndex(function (l) {
-        return l._id == req.params.lid;
-      });
-      if (indexToUpdate !== undefined) {
-        var list = board.lists[indexToUpdate];
-        var cardIndexToDelete = list.cards.findIndex(function (c) {
-          return c._id == req.params.cid;
-        });
-        if (cardIndexToDelete !== undefined) {
-          list.cards.splice(cardIndexToDelete, 1);
-          board.lists.set(indexToUpdate, list);
+      var list = board.lists.id(req.params.lid);
+      if (list) {
+        var card = list.cards.id(req.params.cid);
+        if (card) {
+          card.remove();
           board.save(function (err) {
             if (err) {
               console.log(err);
@@ -162,23 +146,15 @@ router.patch('/:bid/list/:lid/card/:cid', function (req, res) {
     if (err) {
       console.log(err);
     } else {
-      var indexToUpdate = board.lists.findIndex(function (l) {
-        return l._id == req.params.lid;
-      });
-      if (indexToUpdate !== undefined) {
-        var list = board.lists[indexToUpdate];
-        var cardIndexToUpdate = list.cards.findIndex(function (c) {
-          return c._id == req.params.cid;
-        });
-        if (cardIndexToUpdate !== undefined) {
-          var card = list.cards[cardIndexToUpdate];
+      var list = board.lists.id(req.params.lid);
+      if (list) {
+        var card = list.cards.id(req.params.cid);
+        if (card) {
           for (var key in req.body) {
             card[key] = req.body[key];
           }
-          list.cards[cardIndexToUpdate] = card;
-          board.lists.set(indexToUpdate, list);
           board.save(function (err, board) {
-            sendResource(err, board.lists[indexToUpdate], res);
+            sendResource(err, list, res);
           });
         }
       }
@@ -191,29 +167,18 @@ router.post('/:bid/list/:lid/card/:cid/comment', function (req, res) {
     if (err) {
       console.log(err);
     } else {
-      var indexToUpdate = board.lists.findIndex(function (l) {
-        return l._id == req.params.lid;
-      });
-      if (indexToUpdate !== undefined) {
-        var list = board.lists[indexToUpdate];
-        var cardIndexToUpdate = list.cards.findIndex(function (c) {
-          return c._id == req.params.cid;
-        });
-        if (cardIndexToUpdate !== undefined) {
-          var card = list.cards[cardIndexToUpdate];
-          var commentData = {
+      var list = board.lists.id(req.params.lid);
+      if (list) {
+        var card = list.cards.id(req.params.cid);
+        if (card) {
+          var comment = {
             content: req.body.content,
             username: req.session.user.username,
             datetimePosted: new Date(),
           }
-          if (!card.comments) {
-            card.comments = [];
-          }
-          card.comments.push(commentData);
-          list.cards[cardIndexToUpdate] = card;
-          board.lists.set(indexToUpdate, list);
+          card.comments.push(comment);
           board.save(function (err) {
-            sendResource(err, commentData, res);
+            sendResource(err, comment, res);
           });
         }
       }
