@@ -1,10 +1,10 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var schema = new Schema({
-    name: String,
     creator: String,
+    lists: Array,
     members: Array,
-    lists: [] 
+    name: String,
 }, { versionKey: false});
 
 module.exports = mongoose.model('Board', schema);

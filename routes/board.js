@@ -6,6 +6,7 @@ var requireLogin = require('../libs/requireLogin');
 var Board = require('../models/board');
 var List = require('../models/list');
 var Card = require('../models/card');
+var boardpageStyle = '../stylesheets/boardpage.css';
 
 router.use(requireLogin);
 
@@ -30,11 +31,11 @@ router.post('/', function (req, res) {
 });
 
 router.get('/:bid', function (req, res) {
-  res.render('boardpage', { title: 'Prello', stylesheet: '../stylesheets/boardpage.css' });
+  res.render('boardpage', { title: 'Prello', stylesheet: boardpageStyle });
 });
 
 router.get('/:bid/list', function (req, res) {
-  Board.findById(mongoose.Types.ObjectId(req.params.bid), function (err, board) {
+  Board.findById(req.params.bid, function (err, board) {
     if (err) {
       console.log(err);
     } else {
@@ -44,7 +45,7 @@ router.get('/:bid/list', function (req, res) {
 });
 
 router.post('/:bid/list', function (req, res) {
-  Board.findById(mongoose.Types.ObjectId(req.params.bid), function (err, board) {
+  Board.findById(req.params.bid, function (err, board) {
     if (err) {
       console.log(err);
     } else {
@@ -64,7 +65,7 @@ router.post('/:bid/list', function (req, res) {
 });
 
 router.delete('/:bid/list/:lid', function (req, res) {
-  Board.findById(mongoose.Types.ObjectId(req.params.bid), function (err, board) {
+  Board.findById(req.params.bid, function (err, board) {
     if (err) {
       console.log(err);
     } else {
@@ -85,7 +86,7 @@ router.delete('/:bid/list/:lid', function (req, res) {
 });
 
 router.patch('/:bid/list/:lid', function (req, res) {
-  Board.findById(mongoose.Types.ObjectId(req.params.bid), function (err, board) {
+  Board.findById(req.params.bid, function (err, board) {
     if (err) {
       console.log(err);
     } else {
@@ -109,7 +110,7 @@ router.patch('/:bid/list/:lid', function (req, res) {
 });
 
 router.post('/:bid/list/:lid/card', function (req, res) {
-  Board.findById(mongoose.Types.ObjectId(req.params.bid), function (err, board) {
+  Board.findById(req.params.bid, function (err, board) {
     if (err) {
       console.log(err);
     } else {
@@ -127,7 +128,6 @@ router.post('/:bid/list/:lid/card', function (req, res) {
         );
         list.cards.push(newCard);
         board.lists.set(indexToUpdate, list);
-        console.log(board.lists);
         board.save(function (err, board) {
           if (err) {
             console.log(err);
@@ -141,7 +141,7 @@ router.post('/:bid/list/:lid/card', function (req, res) {
 });
 
 router.delete('/:bid/list/:lid/card/:cid', function (req, res) {
-  Board.findById(mongoose.Types.ObjectId(req.params.bid), function (err, board) {
+  Board.findById(req.params.bid, function (err, board) {
     if (err) {
       console.log(err);
     } else {
@@ -169,7 +169,7 @@ router.delete('/:bid/list/:lid/card/:cid', function (req, res) {
 });
 
 router.patch('/:bid/list/:lid/card/:cid', function (req, res) {
-  Board.findById(mongoose.Types.ObjectId(req.params.bid), function (err, board) {
+  Board.findById(req.params.bid, function (err, board) {
     if (err) {
       console.log(err);
     } else {
@@ -184,7 +184,6 @@ router.patch('/:bid/list/:lid/card/:cid', function (req, res) {
         if (cardIndexToUpdate !== undefined) {
           var card = req.body;
           card._id = mongoose.Types.ObjectId(req.body._id);
-          console.log(board.lists[indexToUpdate].cards);
           board.lists[indexToUpdate].cards[cardIndexToUpdate] = card;
           board.lists.set(indexToUpdate, list);
           board.save(function (err, board) {
@@ -201,7 +200,7 @@ router.patch('/:bid/list/:lid/card/:cid', function (req, res) {
 });
 
 router.post('/:bid/list/:lid/card/:cid/comment', function (req, res) {
-  Board.findById(mongoose.Types.ObjectId(req.params.bid), function (err, board) {
+  Board.findById(req.params.bid, function (err, board) {
     if (err) {
       console.log(err);
     } else {
