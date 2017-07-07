@@ -17,10 +17,6 @@ function sendResource(err, resource, res) {
   }
 }
 
-function getBoard(bid) {
-  
-}
-
 router.get('/', function (req, res) {
   Board.find({ creator: req.user.username }, function (err, boards) {
     sendResource(err, boards, res);
@@ -178,7 +174,7 @@ router.post('/:bid/list/:lid/card/:cid/comment', function (req, res) {
           }
           card.comments.push(comment);
           board.save(function (err) {
-            sendResource(err, comment, res);
+            sendResource(err, card.comments[card.comments.length-1], res);
           });
         }
       }
