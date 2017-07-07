@@ -20,33 +20,8 @@ router.get('/login', function (req, res, next) {
 });
 
 router.post('/login', function (req, res, next) {
-  var notice;
-  if (req.body['reg-username']) {
-    User.findOne({ email: req.body['reg-email'] }, function (err, user) {
-      if (!user) {
-        var newUser = new User({
-          username: req.body['reg-username'],
-          email: req.body['reg-email'],
-          password: req.body['reg-password']
-        });
-        newUser.save(function (err) {
-          if (err) {
-            console.log(err);
-            notice = 'Could not create account at this time.';
-          } else {
-            notice = `Account "${req.body['reg-email']}" created sucessfully!`;
-          }
-          res.render('login', { title: 'Log In', stylesheet: loginStyle, notice: notice });
-        });
-      } else {
-        notice = `Account with the email "${req.body['reg-email']}" already exists!`
-        res.render('login', { title: 'Log In', stylesheet: loginStyle, notice: notice });
-      }
-    });
-  }
-  else if (req.body['login-email']) {
-    User.findOne({ email: req.body['login-email'] }, function (err, user) {
-      if (user && req.body['login-password'] === user.password) {
+    User.findOne({ email: req.body.email }, function (err, user) {
+      if (user && req.body.password === user.password) {
         // set cookie with user info
         req.session.user = user;
         res.redirect('/');
@@ -55,7 +30,31 @@ router.post('/login', function (req, res, next) {
         res.render('login', { title: 'Log In', stylesheet: loginStyle, notice: notice });
       }
     });
-  }
+});
+
+router.post('/register', function (req, res, next) {
+  var notice;
+  User.findOne({ email: req.body.email }, function (err, user) {
+    if (!user) {
+      var newUser = new User({
+        username: req.body.username,
+        email: req.body.email,
+        password: req.body.password
+      });
+      newUser.save(function (err) {
+        if (err) {
+          console.log(err);
+          notice = 'Could not create account at this time.';
+        } else {
+          notice = `Account "${req.body.email}" created sucessfully!`;
+        }
+        res.render('login', { title: 'Log In', stylesheet: loginStyle, notice: notice });
+      });
+    } else {
+      notice = `Account with the email "${req.body.email}" already exists!`
+      res.render('login', { title: 'Log In', stylesheet: loginStyle, notice: notice });
+    }
+  });
 });
 
 router.get('/logout', function (req, res, next) {
