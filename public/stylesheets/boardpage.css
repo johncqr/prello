@@ -135,10 +135,11 @@ body {
     color: #000;
     display: none;
     padding: 4px;
-    position: fixed;
-    z-index: 5;
+    position: absolute;
+    right: 0;
     width: 180px;
     min-height: 200px;
+    z-index: 5;
 }
 
 .add-label-selector {
@@ -411,7 +412,7 @@ ul {
 }
 
 .modal-bg {
-    position: absolute;
+    position: fixed;
     background-color: rgba(0,0,0,0.5);
     top: 0;
     left: 0;
@@ -426,7 +427,9 @@ ul {
 }
 
 .card-page-topbar-right {
-    float: right;
+    position: absolute;
+    top: 0;
+    right: 0;
 }
 
 .card-section-name {
