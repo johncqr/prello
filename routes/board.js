@@ -11,9 +11,17 @@ router.use(requireLogin);
 
 var boardpageStyle = '../stylesheets/boardpage.css';
 
+function sendResource(err, resource, res) {
+  if (err) {
+    console.log(err);
+  } else {
+    res.json(resource);
+  }
+}
+
 router.get('/', function (req, res) {
   Board.find({ creator: req.user.username }, function (err, boards) {
-    res.json(boards);
+    sendResource(err, boards, res);
   });
 });
 
@@ -23,11 +31,7 @@ router.post('/', function (req, res) {
     creator: req.user.username
   });
   newBoard.save(function (err, board) {
-    if (err) {
-      console.log(err);
-    } else {
-      res.json(board);
-    }
+    sendResource(err, board, res);
   });
 });
 
@@ -37,11 +41,7 @@ router.get('/:bid', function (req, res) {
 
 router.get('/:bid/list', function (req, res) {
   Board.findById(req.params.bid, function (err, board) {
-    if (err) {
-      console.log(err);
-    } else {
-      res.json(board.lists);
-    }
+    sendResource(err, board.lists, res);
   });
 });
 
@@ -55,11 +55,7 @@ router.post('/:bid/list', function (req, res) {
       });
       board.lists.push(newList);
       board.save(function (err, board) {
-        if (err) {
-          console.log(err);
-        } else {
-          res.json(board.lists[board.lists.length-1]);
-        }
+        sendResource(err, board.lists[board.lists.length-1], res);
       });
     }
   });
@@ -99,11 +95,7 @@ router.patch('/:bid/list/:lid', function (req, res) {
         list.name = req.body.name;
         board.lists.set(indexToUpdate, list);
         board.save(function (err, board) {
-          if (err) {
-            console.log(err);
-          } else {
-            res.json(board.lists);
-          }
+          sendResource(err, board.lists, res);
         });
       }
     }
@@ -130,11 +122,7 @@ router.post('/:bid/list/:lid/card', function (req, res) {
         list.cards.push(newCard);
         board.lists.set(indexToUpdate, list);
         board.save(function (err, board) {
-          if (err) {
-            console.log(err);
-          } else {
-            res.json(board.lists[indexToUpdate]);
-          }
+          sendResource(err, board.lists[indexToUpdate], res);
         });
       }
     }
@@ -188,11 +176,7 @@ router.patch('/:bid/list/:lid/card/:cid', function (req, res) {
           board.lists[indexToUpdate].cards[cardIndexToUpdate] = card;
           board.lists.set(indexToUpdate, list);
           board.save(function (err, board) {
-            if (err) {
-              console.log(err);
-            } else {
-              res.json(board.lists[indexToUpdate]);
-            }
+            sendResource(err, board.lists[indexToUpdate], res);
           });
         }
       }
@@ -227,11 +211,7 @@ router.post('/:bid/list/:lid/card/:cid/comment', function (req, res) {
           list.cards[cardIndexToUpdate] = card;
           board.lists.set(indexToUpdate, list);
           board.save(function (err) {
-            if (err) {
-              console.log(err);
-            } else {
-              res.json(commentData);
-            }
+            sendResource(err, commentData, res);
           });
         }
       }
