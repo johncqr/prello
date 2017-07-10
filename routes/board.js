@@ -35,7 +35,8 @@ function handleSaveError(err, res) {
 
 function contains(arr, o) {
   for (var i = 0; i < arr.length; ++i) {
-    if (String(arr[i]) == o) {
+    if (arr[i] == o) {
+      console.log(arr[i], o);
       return true;
     }
   }
@@ -45,10 +46,11 @@ function contains(arr, o) {
 function checkPermission(req, res, next) {
   Board.findById(req.params.bid, function (err, board) {
     if (checkExistResource(board, res)) {
-      if (contains(board.members, req.user._id)) {
+      if (contains(board.members, req.user.username)) {
         next();
       } else {
-        res.render('error', { title: 'Oops!', message: 'You do not have access to this board!', stylesheet: errorStyle });
+        res.send('meow');
+        // res.render('error', { title: 'Oops!', message: 'You do not have access to this board!', stylesheet: errorStyle });
       }
     }
   });
@@ -64,7 +66,7 @@ router.post('/', function (req, res) {
   var newBoard = new Board({
     name: req.body.name,
     creator: req.user.username,
-    members: [req.user._id]
+    members: [req.user.username]
   });
   newBoard.save(function (err, board) {
     sendResource(err, board, res);
@@ -75,7 +77,7 @@ router.get('/:bid', checkPermission, function (req, res) {
   Board.findById(req.params.bid, function (err, board) {
     if (checkExistResource(board, res)) {
       Board.find({ creator: req.user.username }, function (err, boards) {
-        res.render('boardpage', { title: board.name, boards, stylesheet: boardpageStyle });
+        res.render('boardpage', { title: board.name, boards, members: board.members, stylesheet: boardpageStyle });
       });
     }
   });

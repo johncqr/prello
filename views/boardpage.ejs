@@ -11,7 +11,7 @@
                                     <%= boards[i].name %>
                                 </li>
                             </a>
-                            <% } %>
+                        <% } %>
                     </ul>
                 </div>
             </div>
@@ -39,10 +39,12 @@
                             <span id="board-menu-close-btn">X</span>
                         </div>
                         <div class="board-menu-section">
-                            <ul class="card-member-list">
-                                <li class="card-member">User1</li>
-                                <li class="card-member">User2</li>
-                                <li class="card-member">User3</li>
+                            <ul id="board-member-list">
+                                <% for (var i = 0; i < members.length; ++i) { %>
+                                        <li class="card-member">
+                                            <%= members[i] %>
+                                        </li>
+                                <% } %>
                             </ul>
                             <div class="btn">Add Members...</div>
                         </div>
