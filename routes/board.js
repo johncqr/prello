@@ -8,6 +8,7 @@ var router = express.Router();
 router.use(requireLogin);
 
 var boardpageStyle = '../stylesheets/boardpage.css';
+var errorStyle = '../stylesheets/error.css';
 var errorRequestMessage = 'Error handling request!';
 
 function sendResource(err, resource, res) {
@@ -32,6 +33,27 @@ function handleSaveError(err, res) {
   res.status(500).send('Error handling your request!');
 }
 
+function contains(arr, o) {
+  for (var i = 0; i < arr.length; ++i) {
+    if (String(arr[i]) == o) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function checkPermission(req, res, next) {
+  Board.findById(req.params.bid, function (err, board) {
+    if (checkExistResource(board, res)) {
+      if (contains(board.members, req.user._id)) {
+        next();
+      } else {
+        res.render('error', { title: 'Oops!', message: 'You do not have access to this board!', stylesheet: errorStyle });
+      }
+    }
+  });
+}
+
 router.get('/', function (req, res) {
   Board.find({ creator: req.user.username }, function (err, boards) {
     sendResource(err, boards, res);
@@ -41,14 +63,15 @@ router.get('/', function (req, res) {
 router.post('/', function (req, res) {
   var newBoard = new Board({
     name: req.body.name,
-    creator: req.user.username
+    creator: req.user.username,
+    members: [req.user._id]
   });
   newBoard.save(function (err, board) {
     sendResource(err, board, res);
   });
 });
 
-router.get('/:bid', function (req, res) {
+router.get('/:bid', checkPermission, function (req, res) {
   Board.findById(req.params.bid, function (err, board) {
     if (checkExistResource(board, res)) {
       Board.find({ creator: req.user.username }, function (err, boards) {
@@ -58,7 +81,7 @@ router.get('/:bid', function (req, res) {
   });
 });
 
-router.delete('/:bid', function (req, res) {
+router.delete('/:bid', checkPermission, function (req, res) {
   Board.findById(req.params.bid, function (err, board) {
     if (err) {
       console.log(err);
@@ -71,7 +94,7 @@ router.delete('/:bid', function (req, res) {
   });
 });
 
-router.get('/:bid/list', function (req, res) {
+router.get('/:bid/list', checkPermission, function (req, res) {
   Board.findById(req.params.bid, function (err, board) {
     if (checkExistResource(board, res)) {
       sendResource(err, board.lists, res);
@@ -79,7 +102,7 @@ router.get('/:bid/list', function (req, res) {
   });
 });
 
-router.post('/:bid/list', function (req, res) {
+router.post('/:bid/list', checkPermission, function (req, res) {
   Board.findById(req.params.bid, function (err, board) {
     if (err) {
       console.log(err);
@@ -100,7 +123,7 @@ router.post('/:bid/list', function (req, res) {
   });
 });
 
-router.delete('/:bid/list/:lid', function (req, res) {
+router.delete('/:bid/list/:lid', checkPermission, function (req, res) {
   Board.findById(req.params.bid, function (err, board) {
     if (err) {
       console.log(err);
@@ -122,7 +145,7 @@ router.delete('/:bid/list/:lid', function (req, res) {
   });
 });
 
-router.patch('/:bid/list/:lid', function (req, res) {
+router.patch('/:bid/list/:lid', checkPermission, function (req, res) {
   Board.findById(req.params.bid, function (err, board) {
     if (err) {
       console.log(err);
@@ -143,7 +166,7 @@ router.patch('/:bid/list/:lid', function (req, res) {
   });
 });
 
-router.post('/:bid/list/:lid/card', function (req, res) {
+router.post('/:bid/list/:lid/card', checkPermission, function (req, res) {
   Board.findById(req.params.bid, function (err, board) {
     if (err) {
       console.log(err);
@@ -169,7 +192,7 @@ router.post('/:bid/list/:lid/card', function (req, res) {
   });
 });
 
-router.delete('/:bid/list/:lid/card/:cid', function (req, res) {
+router.delete('/:bid/list/:lid/card/:cid', checkPermission, function (req, res) {
   Board.findById(req.params.bid, function (err, board) {
     if (err) {
       console.log(err);
@@ -193,7 +216,7 @@ router.delete('/:bid/list/:lid/card/:cid', function (req, res) {
   res.send();
 });
 
-router.patch('/:bid/list/:lid/card/:cid', function (req, res) {
+router.patch('/:bid/list/:lid/card/:cid', checkPermission, function (req, res) {
   Board.findById(req.params.bid, function (err, board) {
     if (err) {
       console.log(err);
@@ -219,7 +242,7 @@ router.patch('/:bid/list/:lid/card/:cid', function (req, res) {
   });
 });
 
-router.post('/:bid/list/:lid/card/:cid/comment', function (req, res) {
+router.post('/:bid/list/:lid/card/:cid/comment', checkPermission, function (req, res) {
   Board.findById(req.params.bid, function (err, board) {
     if (err) {
       console.log(err);
@@ -247,6 +270,5 @@ router.post('/:bid/list/:lid/card/:cid/comment', function (req, res) {
     }
   });
 });
-
 
 module.exports = router;
