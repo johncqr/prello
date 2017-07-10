@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 var requireLogin = require('../libs/requireLogin');
 
 var Board = require('../models/board');
+var User = require('../models/user');
 
 var router = express.Router();
 router.use(requireLogin);
@@ -49,15 +50,14 @@ function checkPermission(req, res, next) {
       if (contains(board.members, req.user.username)) {
         next();
       } else {
-        res.send('meow');
-        // res.render('error', { title: 'Oops!', message: 'You do not have access to this board!', stylesheet: errorStyle });
+        res.render('error', { title: 'Oops!', message: 'You do not have access to this board!', stylesheet: errorStyle });
       }
     }
   });
 }
 
 router.get('/', function (req, res) {
-  Board.find({ creator: req.user.username }, function (err, boards) {
+  Board.find({ members: req.user.username }, function (err, boards) {
     sendResource(err, boards, res);
   });
 });
@@ -76,7 +76,7 @@ router.post('/', function (req, res) {
 router.get('/:bid', checkPermission, function (req, res) {
   Board.findById(req.params.bid, function (err, board) {
     if (checkExistResource(board, res)) {
-      Board.find({ creator: req.user.username }, function (err, boards) {
+      Board.find({ members: req.user.username }, function (err, boards) {
         res.render('boardpage', { title: board.name, boards, members: board.members, stylesheet: boardpageStyle });
       });
     }
@@ -93,6 +93,21 @@ router.delete('/:bid', checkPermission, function (req, res) {
       }
       board.remove();
     }
+  });
+});
+
+router.post('/:bid/member', checkPermission, function (req, res) {
+  Board.findById(req.params.bid, function (err, board) {
+    User.findOne({ username: req.body.username }, function (err, user) {
+      if (user) {
+        board.members.push(user.username);
+        board.save(function (err) {
+          if (err) {
+            handleSaveError(err, res);
+          }
+        });
+      }
+    });
   });
 });
 

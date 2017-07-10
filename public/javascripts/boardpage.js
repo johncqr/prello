@@ -28,6 +28,9 @@ $(function () {
     var $addLabelMenu = $('#add-label-menu');
     var $boardsList = $('#boards-list');
     var $boardMenu = $('#board-menu');
+    var $boardMemberList = $('#board-member-list');
+    var $boardMemberAddMenu = $('#board-member-add-menu');
+    var $boardMemberInput = $('#new-board-member-input');
     var $newCardModal = $('#new-card-modal');
     var $formListAdderContainer = $('#form-list-adder-container');
     var $listAdderBtn = $('#list-adder-btn');
@@ -61,6 +64,21 @@ $(function () {
 
     function closeBoardMenu() {
         $boardMenu.css('right', '-320px');
+    }
+    
+    function toggleBoardMemberAddMenu() {
+        $boardMemberAddMenu.toggle();
+    }
+
+    function addBoardMember() {
+        $.ajax({
+            url: `${HOST}/member`,
+            data: {
+                username: $boardMemberInput.val()
+            },
+            type: 'POST',
+        });
+        $boardMemberInput.val('');
     }
 
     function openNewCard() {
@@ -437,6 +455,8 @@ $(function () {
     $('#delete-card-btn').click(deleteCard);
     $('.add-label-selector').click(addNewLabel);
     $('#send-comment-btn').click(addNewComment);
+    $('#board-member-add-menu-btn').click(toggleBoardMemberAddMenu);
+    $('#add-board-member-btn').click(addBoardMember);
     $cardName.click(openCardNameEdit);
     $editDescBtn.click(openCardDescEdit);
     $editCardDescSubmit.click(updateCardDesc);

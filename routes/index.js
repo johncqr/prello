@@ -9,7 +9,7 @@ var boardStyle = 'stylesheets/boards.css';
 var loginStyle = 'stylesheets/login.css';
 
 router.get('/', requireLogin, function(req, res) {
-  Board.find({ creator: req.user.username }, function (err, boards) {
+  Board.find({ members: req.user.username }, function (err, boards) {
     res.render('index', { title: 'Boards', boards, stylesheet: boardStyle });
   });
 });
