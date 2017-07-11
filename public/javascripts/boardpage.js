@@ -31,6 +31,7 @@ $(function () {
     var $boardMemberList = $('#board-member-list');
     var $boardMemberAddMenu = $('#board-member-add-menu');
     var $boardMemberInput = $('#new-board-member-input');
+    var $addMemberNotice = $('#add-member-notice');
     var $newCardModal = $('#new-card-modal');
     var $formListAdderContainer = $('#form-list-adder-container');
     var $listAdderBtn = $('#list-adder-btn');
@@ -71,14 +72,27 @@ $(function () {
     }
 
     function addBoardMember() {
-        $.ajax({
-            url: `${HOST}/member`,
-            data: {
-                username: $boardMemberInput.val()
-            },
-            type: 'POST',
-        });
-        $boardMemberInput.val('');
+        if ($boardMemberInput.val()) {
+            $.ajax({
+                url: `${HOST}/member`,
+                data: {
+                    username: $boardMemberInput.val()
+                },
+                type: 'POST',
+                dataType: 'json',
+            }).done(function(json) {
+                $boardMemberInput.val('');
+                $addMemberNotice.text(json.statusMsg);
+                if (json.username) {
+                    $boardMemberList.append($('<li></li>', {
+                        class: 'card-member',
+                        text: json.username,
+                    }));
+                }
+            });
+        } else {
+            $addMemberNotice.text('Blank username!')
+        }
     }
 
     function openNewCard() {

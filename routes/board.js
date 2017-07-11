@@ -37,7 +37,6 @@ function handleSaveError(err, res) {
 function contains(arr, o) {
   for (var i = 0; i < arr.length; ++i) {
     if (arr[i] == o) {
-      console.log(arr[i], o);
       return true;
     }
   }
@@ -104,8 +103,13 @@ router.post('/:bid/member', checkPermission, function (req, res) {
         board.save(function (err) {
           if (err) {
             handleSaveError(err, res);
+            res.json({ statusMsg: 'Failed to add user' });
+          } else {
+            res.json({ statusMsg: `${user.username} added`, username: user.username });
           }
         });
+      } else {
+        res.json({ statusMsg: 'Failed to add user' });
       }
     });
   });
