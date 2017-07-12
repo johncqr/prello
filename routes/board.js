@@ -274,6 +274,9 @@ router.patch('/:bid/list/:lid/card/:cid', checkPermission, function (req, res) {
             for (var key in req.body) {
               card[key] = req.body[key];
             }
+            if (req.body.labels == 0) {
+              card[key] = [];
+            }
             board.save(function (err, board) {
               if (err) {
                 handleSaveError(err, res);

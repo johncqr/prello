@@ -389,9 +389,11 @@ $(function () {
     function deleteLabel() {
         var $labelToDelete = $(this);
         var labelIndex = $labelToDelete.index();
-        console.log(labelIndex);
         var labels = map[currentLid].cards[currentCid].labels;
         labels.splice(labelIndex, 1);
+        if (labels.length === 0) {
+            labels = 0;
+        }
         $.ajax({
             url: `${HOST}/list/${currentLid}/card/${currentCid}`,
             data: {
@@ -485,6 +487,10 @@ $(function () {
                     }
                     break;
                 case 'labels':
+                    if (data.cardData.labels == 0) {
+                        map[data.lid].cards[data.cid].labels = [];
+                        data.cardData.labels = [];
+                    }
                     var $surfaceLabelList = $card.find('.card-label-surface-list');
                     $surfaceLabelList.empty();
                     data.cardData.labels.forEach(function (la) {
