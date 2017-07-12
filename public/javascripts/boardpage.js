@@ -17,6 +17,7 @@ var currentCid;
 
 $(function () {
     // cached selectors
+    var $userMenu = $('#user-menu');
     var $lol = $('#lol');
     var $newCardNameInput = $('#new-card-name-input');
     var $newCardDescInput = $('#new-card-desc-input');
@@ -163,6 +164,14 @@ $(function () {
     function sendToBoardPage() {
         var bid = $(this).attr('data-bid');
         window.location.href = `/board/${bid}`;
+    }
+
+    function sendToLogOut() {
+        window.location.href = '/logout';
+    }
+
+    function toggleUserMenu() {
+        $userMenu.toggle();
     }
 
     function closeAddLabelMenu() {
@@ -523,6 +532,7 @@ $(function () {
         }
     });
 
+    $('#user-btn').click(toggleUserMenu);
     $('#list-adder-btn').click(openListAdderForm);
     $('#list-adder-close-btn').click(closeListAdderForm);
     $('#boards-list-btn').click(toggleBoardsLists);
@@ -540,6 +550,7 @@ $(function () {
     $('#send-comment-btn').click(addNewComment);
     $('#board-member-add-menu-btn').click(toggleBoardMemberAddMenu);
     $('#add-board-member-btn').click(addBoardMember);
+    $('#logout-btn').click(sendToLogOut);
     $cardPageName.click(openCardNameEdit);
     $editDescBtn.click(openCardDescEdit);
     $editCardDescSubmit.click(updateCardDesc);

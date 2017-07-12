@@ -10,7 +10,7 @@ var loginStyle = 'stylesheets/login.css';
 
 router.get('/', requireLogin, function(req, res) {
   Board.find({ members: req.user.username }, function (err, boards) {
-    res.render('index', { title: 'Boards', boards, stylesheet: boardStyle });
+    res.render('index', { title: 'Boards', username: req.user.username, boards, stylesheet: boardStyle });
   });
 });
 

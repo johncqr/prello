@@ -11,6 +11,20 @@ a {
     text-decoration: none;
 }
 
+#user-menu {
+    background-color: #EDEFF0;
+    box-shadow: 0 0 6px rgba(0,0,0,.4);
+    border-radius: 2px;
+    color: #000;
+    padding: 4px;
+    text-align: center;
+    top: 40px;
+    position: fixed;
+    display: none;
+    width: 200px;
+    right: 0;
+}
+
 .navbar {
     background-color: #0067A3;
     color: #FFF;
@@ -70,6 +84,7 @@ label {
     box-shadow: 0 0 6px rgba(0,0,0,.4);
     margin: 5px;
     padding: 3px 8px;
+    display: inline-block;
 }
 
 .btn:hover {

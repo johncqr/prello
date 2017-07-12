@@ -4,15 +4,21 @@ var HOST = `http://localhost:${PORT}`;
 
 
 $(function () {
-    $boardsList = $('#boards-list');
-    $createBoardMenu = $('#create-board-menu');
-    $personalBoards = $('#personal-boards .boards-container');
-    $personalBoardEntries = $('.board-entry-list');
-    $createBoardInput = $('#create-board-input');
+    var $userMenu = $('#user-menu');
+    var $boardsList = $('#boards-list');
+    var $createBoardMenu = $('#create-board-menu');
+    var $personalBoards = $('#personal-boards .boards-container');
+    var $personalBoardEntries = $('.board-entry-list');
+    var $createBoardInput = $('#create-board-input');
 
     function toggleBoardsList() {
         $boardsList.toggle();
     }
+
+    function toggleUserMenu() {
+        $userMenu.toggle();
+    }
+
 
     function toggleCreateBoardMenu() {
         $createBoardMenu.toggle();
@@ -90,6 +96,12 @@ $(function () {
         window.location.href = `/board/${bid}`;
     }
 
+    function sendToLogOut() {
+        window.location.href = '/logout';
+    }
+
+    $('#user-btn').click(toggleUserMenu);
+    $('#logout-btn').click(sendToLogOut);
     $('#boards-list-btn').click(toggleBoardsList);
     $('#create-board-btn').click(toggleCreateBoardMenu);
     $('#create-board-submit-btn').click(addNewBoard);
