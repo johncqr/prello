@@ -353,15 +353,19 @@ $(function () {
                 content: $commentInput.val()
             },
             type: 'POST'
-        }).done(function (comment) {
-            $commentInput.val('');
-            if (!map[currentLid].cards[currentCid].comments) {
-                map[currentLid].cards[currentCid].comments = [];
-            }
-            map[currentLid].cards[currentCid].comments.push(comment);
-            $cardActivityList.prepend(createComment(comment));
         });
+        $commentInput.val('');
     }
+
+    socket.on('newComment', function (data) {
+        if (!map[currentLid].cards[currentCid].comments) {
+            map[currentLid].cards[currentCid].comments = [];
+        }
+        map[data.lid].cards[data.cid].comments.push(data.commentData);
+        if (isSpecificCardPageOpen(data.lid, data.cid)) {
+            $cardActivityList.prepend(createComment(data.commentData));
+        }
+    });
 
     function updateListName() {
         var value;

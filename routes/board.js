@@ -312,7 +312,13 @@ router.post('/:bid/list/:lid/card/:cid/comment', checkPermission, function (req,
               if (err) {
                 handleSaveError(err, res);
               }
-              sendResource(err, card.comments[card.comments.length - 1], res);
+              var commentData = card.comments[card.comments.length - 1];
+              emitToBoard(req.params.bid, 'newComment', {
+                lid: req.params.lid,
+                cid: req.params.cid,
+                commentData: commentData,
+              });
+              sendResource(err, commentData, res);
             });
           }
         }
