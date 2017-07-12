@@ -421,13 +421,6 @@ $(function () {
         }
     }
 
-    socket.on('newBoardMember', function (data) {
-        $boardMemberList.append($('<li></li>', {
-            class: 'card-member',
-            text: data.username,
-        }));
-    });
-
     function initData(data) {
         for (var i = 0; i < data.length; ++i) {
             var $list = createList(data[i]);
@@ -442,6 +435,13 @@ $(function () {
     }).done(initData);
 
     // socket.io events
+
+    socket.on('newBoardMember', function (data) {
+        $boardMemberList.append($('<li></li>', {
+            class: 'card-member',
+            text: data.username,
+        }));
+    });
 
     socket.on('newList', function (data) {
         $newList = createList(data);
