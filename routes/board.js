@@ -8,6 +8,8 @@ var User = require('../models/user');
 var router = express.Router();
 router.use(requireLogin);
 
+var io = require('../libs/socketio');
+
 var boardpageStyle = '../stylesheets/boardpage.css';
 var errorStyle = '../stylesheets/error.css';
 var errorRequestMessage = 'Error handling request!';
@@ -19,6 +21,10 @@ function sendResource(err, resource, res) {
   } else {
     res.json(resource);
   }
+}
+
+function emitToBoard(bid, eventName, data) {
+  io.getInstance().to(bid).emit(eventName, data);
 }
 
 function checkExistResource(resource, res) {
@@ -137,7 +143,9 @@ router.post('/:bid/list', checkPermission, function (req, res) {
           if (err) {
             handleSaveError(err, res);
           }
-          sendResource(err, board.lists[board.lists.length - 1], res);
+          var list = board.lists[board.lists.length-1];
+          emitToBoard(req.params.bid, 'newList', list);
+          sendResource(err, list, res);
         });
       }
     }
@@ -157,6 +165,9 @@ router.delete('/:bid/list/:lid', checkPermission, function (req, res) {
             if (err) {
               handleSaveError(err, res);
             } else {
+              emitToBoard(req.params.bid, 'deleteList', {
+                lid: req.params.lid
+              });
               res.send();
             }
           });
@@ -205,6 +216,10 @@ router.post('/:bid/list/:lid/card', checkPermission, function (req, res) {
             if (err) {
               handleSaveError(err, res);
             }
+            emitToBoard(req.params.bid, 'newCard', {
+              cardData: list.cards[list.cards.length-1],
+              lid: req.params.lid,
+            });
             sendResource(err, list, res);
           });
         }
@@ -227,6 +242,11 @@ router.delete('/:bid/list/:lid/card/:cid', checkPermission, function (req, res) 
             board.save(function (err) {
               if (err) {
                 handleSaveError(err, res);
+              } else {
+                emitToBoard(req.params.bid, 'deleteCard', {
+                  lid: req.params.lid,
+                  cid: req.params.cid
+                });
               }
             });
           }

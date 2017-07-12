@@ -6,6 +6,10 @@ var HOST = `http://localhost:${PORT}/board/${BID}`;
 // in-memory data to prevent constant API calls
 var map = {};
 
+// socket.io
+var socket = io();
+socket.emit('join', { roomid: BID });
+
 // used to see where to add/edit cards
 var $currentList;
 var $currentCard;
@@ -46,6 +50,14 @@ $(function () {
     var $commentInput = $('#comment-input');
     var $cardActivityList = $('#card-activity-list');
 
+    // helper functions
+    function findList(lid) {
+        return $lol.find(`li[data-lid='${lid}']`);
+    }
+
+    function findCard(lid, cid) {
+        return findList(lid).find(`li[data-cid='${cid}']`);
+    }
     // menu event listeners
     function closeAddLabelMenu() {
         $addLabelMenu.hide();
@@ -177,12 +189,13 @@ $(function () {
                 name
             },
             type: 'POST',
-            dataType: 'json',
-        }).done(function (json) {
-            $newList = createList(json);
-            $newList.insertBefore($listAdder);
         });
     }
+
+    socket.on('newList', function (data) {
+        $newList = createList(data);
+        $newList.insertBefore($listAdder);
+    });
 
     function addNewList() {
         if ($newListName.val() != '') {
@@ -201,25 +214,30 @@ $(function () {
                     desc: $newCardDescInput.val(),
                 },
                 type: 'POST',
-                dataType: 'json'
-            }).done(function (json) {
-                var cardData = json.cards[json.cards.length - 1];
-                var $newCard = createCard(cardData, currentLid);
-                $currentList.find('.card-list').append($newCard);
-                closeNewCard();
+                dataType: 'json',
             });
+            closeNewCard();
         }
     }
+
+    socket.on('newCard', function (data) {
+        var $newCard = createCard(data.cardData, data.lid);
+        findList(data.lid).find('.card-list').append($newCard);
+    });
 
     function deleteCard() {
         $.ajax({
             url: `${HOST}/list/${currentLid}/card/${currentCid}`,
             type: 'DELETE'
         });
-        delete map[currentLid].cards[currentCid];
-        $currentCard.remove();
         closeFullCard();
     }
+
+    socket.on('deleteCard', function (data) {
+        delete map[data.lid].cards[data.cid];
+        findCard(data.lid, data.cid).remove();
+    });
+
 
     function deleteList() {
         var $listToDelete = $(this).closest('.list');
@@ -228,9 +246,12 @@ $(function () {
             url: `${HOST}/list/${lidToDelete}`,
             type: 'DELETE'
         });
-        delete map[lidToDelete];
-        $listToDelete.remove();
     }
+
+    socket.on('deleteList', function (data) {
+        delete map[data.lid];
+        findList(data.lid).remove();
+    });
 
     function createCardLabel(la) {
         var $cardLabel = $('<li></li>', { class: 'card-label card-label-' + la.color })
