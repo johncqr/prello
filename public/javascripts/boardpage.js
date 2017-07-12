@@ -366,7 +366,6 @@ $(function () {
         var lid = $this.closest('.list').attr('data-lid');
         var $listName = $this.next();
         if ((value = $this.val()) !== '') {
-            map[lid].name = $this.val();
             $.ajax({
                 url: `${HOST}/list/${lid}`,
                 data: {
@@ -374,11 +373,15 @@ $(function () {
                 },
                 type: 'PATCH'
             });
-            $listName.text($this.val());
         }
         $listName.show();
         $this.remove();
     }
+
+    socket.on('editList', function (data) {
+        map[data.lid] = data.name;
+        findList(data.lid).find('.list-name').text(data.name);
+    });
 
     function openListNameEdit() {
         var $this = $(this);

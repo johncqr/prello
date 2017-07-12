@@ -190,6 +190,10 @@ router.patch('/:bid/list/:lid', checkPermission, function (req, res) {
             if (err) {
               handleSaveError(err, res);
             }
+            emitToBoard(req.params.bid, 'editList', {
+              lid: req.params.lid,
+              name: req.body.name
+            });
             sendResource(err, board.lists, res);
           });
         }
