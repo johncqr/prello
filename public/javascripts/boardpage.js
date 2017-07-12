@@ -61,83 +61,45 @@ $(function () {
         return $fullCardModal.is(':visible') && currentLid === lid && currentCid === cid;
     }
 
-    // menu event listeners
-    function closeAddLabelMenu() {
-        $addLabelMenu.hide();
-    }
+    function updateFullCardModal(c) {
+        $cardPageName.text(c.name);
+        $cardPageDesc.text(c.desc);
+        $cardPageAuthor.text(c.author);
+        $cardPageLabelList.empty();
+        $cardActivityList.empty();
 
-    function toggleAddLabelMenu() {
-        $addLabelMenu.toggle();
-    }
+        // populate label list
+        if (c.labels) {
+            for (var i = 0; i < c.labels.length; ++i) {
+                $cardPageLabelList.append(createCardLabel(c.labels[i]));
+            }
+        }
 
-    function toggleBoardsLists() {
-        $boardsList.toggle();
-    }
-
-    function openBoardMenu() {
-        $boardMenu.css('right', '0');
-    }
-
-    function closeBoardMenu() {
-        $boardMenu.css('right', '-320px');
-    }
-    
-    function toggleBoardMemberAddMenu() {
-        $boardMemberAddMenu.toggle();
-    }
-
-    function addBoardMember() {
-        if ($boardMemberInput.val()) {
-            $.ajax({
-                url: `${HOST}/member`,
-                data: {
-                    username: $boardMemberInput.val()
-                },
-                type: 'POST',
-                dataType: 'json',
-            }).done(function(json) {
-                $boardMemberInput.val('');
-                $addMemberNotice.text(json.statusMsg);
-                if (json.username) {
-                    $boardMemberList.append($('<li></li>', {
-                        class: 'card-member',
-                        text: json.username,
-                    }));
-                }
-            });
-        } else {
-            $addMemberNotice.text('Blank username!')
+        // populate comment list
+        if (c.comments) {
+            for (var i = 0; i < c.comments.length; ++i) {
+                $cardActivityList.prepend(createComment(c.comments[i]));
+            }
         }
     }
 
-    function openNewCard() {
-        $newCardModal.show();
-        $newCardNameInput.focus();
-        $currentList = $(this).parent();
-        currentLid = $currentList.attr('data-lid');
-    }
+    // jQuery element creation
+    function createList(l) {
+        map[l._id] = { name: l.name, cards: {} };
+        var $newList = $('<li></li>', { class: 'list', 'data-lid': l._id });
+        $('<div></div>', { class: 'list-topbar' })
+            .append($('<h4></h4>', { class: 'list-name', text: l.name }))
+            .append($('<div></div>', { class: 'btn list-delete-btn', text: 'X' }))
+            .appendTo($newList);
 
-    function closeNewCard() {
-        $newCardModal.hide();
-        $newCardNameInput.val('');
-        $newCardDescInput.val('');
-    }
+        var $newCardList = $('<ul></ul>', { class: 'card-list' }).appendTo($newList);
+        for (var i = 0; i < l.cards.length; ++i) {
+            $newCardList.append(createCard(l.cards[i], l._id));
+        }
 
-    function openListAdderForm() {
-        $formListAdderContainer.show();
-        $listAdderInput.focus();
-        $listAdderBtn.hide();
-    }
-
-    function closeListAdderForm() {
-        $formListAdderContainer.hide();
-        $listAdderBtn.show();
-    }
-
-    function createLabelSurface(la) {
-        var $newLabelSurface = $('<li></li>',
-            { class: 'card-label-surface card-label-' + la.color });
-        return $newLabelSurface;
+        $('<p></p>', { class: 'card-add-link', text: 'Add a card...' })
+            .appendTo($newList);
+        return $newList;
     }
 
     function createCard(c, lid) {
@@ -166,26 +128,115 @@ $(function () {
         return $newCard;
     }
 
-    function createList(l) {
-        map[l._id] = { name: l.name, cards: {} };
-        var $newList = $('<li></li>', { class: 'list', 'data-lid': l._id });
-        $('<div></div>', { class: 'list-topbar' })
-            .append($('<h4></h4>', { class: 'list-name', text: l.name }))
-            .append($('<div></div>', { class: 'btn list-delete-btn', text: 'X' }))
-            .appendTo($newList);
-
-        var $newCardList = $('<ul></ul>', { class: 'card-list' }).appendTo($newList);
-        for (var i = 0; i < l.cards.length; ++i) {
-            $newCardList.append(createCard(l.cards[i], l._id));
-        }
-
-        $('<p></p>', { class: 'card-add-link', text: 'Add a card...' })
-            .appendTo($newList);
-        return $newList;
+    function createLabelSurface(la) {
+        var $newLabelSurface = $('<li></li>',
+            { class: 'card-label-surface card-label-' + la.color });
+        return $newLabelSurface;
     }
 
+    function createCardLabel(la) {
+        var $cardLabel = $('<li></li>', { class: 'card-label card-label-' + la.color })
+            .append($('<span></span>', { class: 'card-label-text', text: la.desc }));
+        return $cardLabel;
+    }
+
+    function createComment(comment) {
+        var $comment = $('<li></li>', {
+            class: 'card-activity'
+        })
+            .append($('<p></p>', {
+                class: 'card-comment-username',
+                text: comment.username
+            }))
+            .append($('<p></p>', {
+                class: 'card-comment-content',
+                text: comment.content
+            }))
+            .append($('<p></p>', {
+                class: 'card-comment-time',
+                text: Date(comment.datetimePosted)
+            }));
+        return $comment;
+    }
+
+    // event listeners
+    function closeAddLabelMenu() {
+        $addLabelMenu.hide();
+    }
+
+    function toggleAddLabelMenu() {
+        $addLabelMenu.toggle();
+    }
+
+    function toggleBoardsLists() {
+        $boardsList.toggle();
+    }
+
+    function openBoardMenu() {
+        $boardMenu.css('right', '0');
+    }
+
+    function closeBoardMenu() {
+        $boardMenu.css('right', '-320px');
+    }
+
+    function toggleBoardMemberAddMenu() {
+        $boardMemberAddMenu.toggle();
+    }
+
+    function openListNameEdit() {
+        var $this = $(this);
+        var $editListNameInput = $('<input>', { type: 'text', class: 'edit-list-name-input' })
+            .val($this.text());
+        $this.before($editListNameInput);
+        $editListNameInput.focus().select();
+        $this.hide();
+    }
+
+    function openCardNameEdit() {
+        $editCardNameInput
+            .val($cardPageName.text())
+            .show();
+        $editCardNameInput.focus().select();
+        $cardPageName.hide();
+    }
+
+    function openCardDescEdit() {
+        $editCardDescInput
+            .val($cardPageDesc.text())
+            .show();
+        $editCardDescSubmit.show();
+        $editCardDescInput.focus().select();
+        $editDescBtn.hide();
+        $cardPageDesc.hide();
+    }
+
+    function openNewCard() {
+        $newCardModal.show();
+        $newCardNameInput.focus();
+        $currentList = $(this).parent();
+        currentLid = $currentList.attr('data-lid');
+    }
+
+    function closeNewCard() {
+        $newCardModal.hide();
+        $newCardNameInput.val('');
+        $newCardDescInput.val('');
+    }
+
+    function openListAdderForm() {
+        $formListAdderContainer.show();
+        $listAdderInput.focus();
+        $listAdderBtn.hide();
+    }
+
+    function closeListAdderForm() {
+        $formListAdderContainer.hide();
+        $listAdderBtn.show();
+    }
+
+    // ajax calls
     function addNewListFromName(name) {
-        var $newList;
         $.ajax({
             url: `${HOST}/list`,
             data: {
@@ -194,11 +245,6 @@ $(function () {
             type: 'POST',
         });
     }
-
-    socket.on('newList', function (data) {
-        $newList = createList(data);
-        $newList.insertBefore($listAdder);
-    });
 
     function addNewList() {
         if ($newListName.val() != '') {
@@ -223,11 +269,6 @@ $(function () {
         }
     }
 
-    socket.on('newCard', function (data) {
-        var $newCard = createCard(data.cardData, data.lid);
-        findList(data.lid).find('.card-list').append($newCard);
-    });
-
     function deleteCard() {
         $.ajax({
             url: `${HOST}/list/${currentLid}/card/${currentCid}`,
@@ -236,15 +277,6 @@ $(function () {
         closeFullCard();
     }
 
-    socket.on('deleteCard', function (data) {
-        delete map[data.lid].cards[data.cid];
-        if (isSpecificCardPageOpen(data.lid, data.cid)) {
-            $fullCardModal.hide();
-        }
-        findCard(data.lid, data.cid).remove();
-    });
-
-
     function deleteList() {
         var $listToDelete = $(this).closest('.list');
         var lidToDelete = $listToDelete.attr('data-lid');
@@ -252,39 +284,6 @@ $(function () {
             url: `${HOST}/list/${lidToDelete}`,
             type: 'DELETE'
         });
-    }
-
-    socket.on('deleteList', function (data) {
-        delete map[data.lid];
-        findList(data.lid).remove();
-    });
-
-    function createCardLabel(la) {
-        var $cardLabel = $('<li></li>', { class: 'card-label card-label-' + la.color })
-            .append($('<span></span>', { class: 'card-label-text', text: la.desc }));
-        return $cardLabel;
-    }
-
-    function updateFullCardModal(c) {
-        $cardPageName.text(c.name);
-        $cardPageDesc.text(c.desc);
-        $cardPageAuthor.text(c.author);
-        $cardPageLabelList.empty();
-        $cardActivityList.empty();
-
-        // populate label list
-        if (c.labels) {
-            for (var i = 0; i < c.labels.length; ++i) {
-                $cardPageLabelList.append(createCardLabel(c.labels[i]));
-            }
-        }
-
-        // populate comment list
-        if (c.comments) {
-            for (var i = 0; i < c.comments.length; ++i) {
-                $cardActivityList.prepend(createComment(c.comments[i]));
-            }
-        }
     }
 
     function openFullCard() {
@@ -313,40 +312,19 @@ $(function () {
             color: $(this).find('span').text(),
             desc: $addLabelDesc.val()
         }
-        if (!map[currentLid].cards[currentCid].labels) {
-            map[currentLid].cards[currentCid].labels = [];
+        var labels = map[currentLid].cards[currentCid].labels;
+        if (!labels) {
+            labels = [];
         }
-        map[currentLid].cards[currentCid].labels.push(labelData);
-        var currentCardData = map[currentLid].cards[currentCid];
+        labels.push(labelData);
         $.ajax({
             url: `${HOST}/list/${currentLid}/card/${currentCid}`,
             data: {
-                labels: currentCardData.labels,
+                labels: labels,
             },
             type: 'PATCH'
         });
         $addLabelDesc.val('');
-        $currentCard.find('.card-label-surface-list').append(createLabelSurface(labelData));
-        $cardPageLabelList.append(createCardLabel(labelData));
-    }
-
-    function createComment(comment) {
-        var $comment =  $('<li></li>', {
-            class: 'card-activity'
-        })
-            .append($('<p></p>', {
-                class: 'card-comment-username',
-                text: comment.username
-            }))
-            .append($('<p></p>', {
-                class: 'card-comment-content',
-                text: comment.content
-            }))
-            .append($('<p></p>', {
-                class: 'card-comment-time',
-                text: Date(comment.datetimePosted)
-            }));
-        return $comment;
     }
 
     function addNewComment() {
@@ -359,16 +337,6 @@ $(function () {
         });
         $commentInput.val('');
     }
-
-    socket.on('newComment', function (data) {
-        if (!map[currentLid].cards[currentCid].comments) {
-            map[currentLid].cards[currentCid].comments = [];
-        }
-        map[data.lid].cards[data.cid].comments.push(data.commentData);
-        if (isSpecificCardPageOpen(data.lid, data.cid)) {
-            $cardActivityList.prepend(createComment(data.commentData));
-        }
-    });
 
     function updateListName() {
         var value;
@@ -388,20 +356,6 @@ $(function () {
         $this.remove();
     }
 
-    socket.on('editList', function (data) {
-        map[data.lid] = data.name;
-        findList(data.lid).find('.list-name').text(data.name);
-    });
-
-    function openListNameEdit() {
-        var $this = $(this);
-        var $editListNameInput = $('<input>', { type: 'text', class: 'edit-list-name-input' })
-            .val($this.text());
-        $this.before($editListNameInput);
-        $editListNameInput.focus().select();
-        $this.hide();
-    }
-
     function updateCardName() {
         var newName;
         if ((newName = $editCardNameInput.val()) !== '') {
@@ -415,14 +369,6 @@ $(function () {
         }
         $cardPageName.show();
         $editCardNameInput.hide();
-    }
-
-    function openCardNameEdit() {
-        $editCardNameInput
-            .val($cardPageName.text())
-            .show();
-        $editCardNameInput.focus().select();
-        $cardPageName.hide();
     }
 
     function updateCardDesc() {
@@ -440,19 +386,10 @@ $(function () {
         $editCardDescSubmit.hide();
     }
 
-    function openCardDescEdit() {
-        $editCardDescInput
-            .val($cardPageDesc.text())
-            .show();
-        $editCardDescSubmit.show();
-        $editCardDescInput.focus().select();
-        $editDescBtn.hide();
-        $cardPageDesc.hide();
-    }
-
     function deleteLabel() {
         var $labelToDelete = $(this);
         var labelIndex = $labelToDelete.index();
+        console.log(labelIndex);
         var labels = map[currentLid].cards[currentCid].labels;
         labels.splice(labelIndex, 1);
         $.ajax({
@@ -463,6 +400,73 @@ $(function () {
             type: 'PATCH'
         });
     }
+
+    function addBoardMember() {
+        if ($boardMemberInput.val()) {
+            $.ajax({
+                url: `${HOST}/member`,
+                data: {
+                    username: $boardMemberInput.val()
+                },
+                type: 'POST',
+                dataType: 'json',
+            }).done(function (json) {
+                $boardMemberInput.val('');
+                $addMemberNotice.text(json.statusMsg);
+                if (json.username) {
+                    $boardMemberList.append($('<li></li>', {
+                        class: 'card-member',
+                        text: json.username,
+                    }));
+                }
+            });
+        } else {
+            $addMemberNotice.text('Blank username!')
+        }
+    }
+
+    function initData(data) {
+        for (var i = 0; i < data.length; ++i) {
+            var $list = createList(data[i]);
+            $list.insertBefore($listAdder);
+        }
+    }
+
+    $.ajax({
+        url: `${HOST}/list`,
+        type: 'GET',
+        dataType: 'json',
+    }).done(initData);
+
+    // socket.io events
+
+    socket.on('newList', function (data) {
+        $newList = createList(data);
+        $newList.insertBefore($listAdder);
+    });
+
+    socket.on('deleteList', function (data) {
+        delete map[data.lid];
+        findList(data.lid).remove();
+    });
+
+    socket.on('editList', function (data) {
+        map[data.lid] = data.name;
+        findList(data.lid).find('.list-name').text(data.name);
+    });
+
+    socket.on('newCard', function (data) {
+        var $newCard = createCard(data.cardData, data.lid);
+        findList(data.lid).find('.card-list').append($newCard);
+    });
+
+    socket.on('deleteCard', function (data) {
+        delete map[data.lid].cards[data.cid];
+        if (isSpecificCardPageOpen(data.lid, data.cid)) {
+            $fullCardModal.hide();
+        }
+        findCard(data.lid, data.cid).remove();
+    });
 
     socket.on('editCard', function (data) {
         for (var key in data.cardData) {
@@ -497,19 +501,15 @@ $(function () {
         }
     });
 
-    function initData(data) {
-        for (var i = 0; i < data.length; ++i) {
-            var $list = createList(data[i]);
-            $list.insertBefore($listAdder);
+    socket.on('newComment', function (data) {
+        if (!map[currentLid].cards[currentCid].comments) {
+            map[currentLid].cards[currentCid].comments = [];
         }
-    }
-
-    $.ajax({
-        url: `${HOST}/list`,
-        type: 'GET',
-        dataType: 'json',
-    }).done(initData);
-
+        map[data.lid].cards[data.cid].comments.push(data.commentData);
+        if (isSpecificCardPageOpen(data.lid, data.cid)) {
+            $cardActivityList.prepend(createComment(data.commentData));
+        }
+    });
 
     $('#list-adder-btn').click(openListAdderForm);
     $('#list-adder-close-btn').click(closeListAdderForm);
@@ -559,5 +559,4 @@ $(function () {
         }
     });
     $fullCardModal.on('click', '.card-label', deleteLabel);
-}
-);
+});
