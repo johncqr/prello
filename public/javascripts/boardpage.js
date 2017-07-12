@@ -415,17 +415,18 @@ $(function () {
             }).done(function (json) {
                 $boardMemberInput.val('');
                 $addMemberNotice.text(json.statusMsg);
-                if (json.username) {
-                    $boardMemberList.append($('<li></li>', {
-                        class: 'card-member',
-                        text: json.username,
-                    }));
-                }
             });
         } else {
             $addMemberNotice.text('Blank username!')
         }
     }
+
+    socket.on('newBoardMember', function (data) {
+        $boardMemberList.append($('<li></li>', {
+            class: 'card-member',
+            text: data.username,
+        }));
+    });
 
     function initData(data) {
         for (var i = 0; i < data.length; ++i) {

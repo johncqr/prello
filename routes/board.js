@@ -112,6 +112,9 @@ router.post('/:bid/member', checkPermission, function (req, res) {
             res.json({ statusMsg: 'Failed to add user' });
           } else {
             res.json({ statusMsg: `${user.username} added`, username: user.username });
+            emitToBoard(req.params.bid, 'newBoardMember', {
+              username: user.username,
+            });
           }
         });
       } else {
