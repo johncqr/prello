@@ -5,11 +5,11 @@
             <div id="boards-list">
                 <div class="boards-list-sep"><span class="boards-list-sep-name">Personal Boards</span></div>
                 <ul class="board-entry-list">
-                <% for (var i = 0; i < boards.length; ++i) { %>
-                <a href="/board/<%= boards[i]._id %>" data-bid="<%= boards[i]._id %>" >
-                    <li class="board-entry"><%= boards[i].name %></li>
-                </a>
-                <% } %>
+                    <% for (var i = 0; i < boards.length; ++i) { %>
+                        <li class="board-entry" data-bid="<%= boards[i]._id %>">
+                                <%= boards[i].name %>
+                        </li>
+                    <% } %>
                 </ul>
             </div>
         </div>
@@ -18,7 +18,9 @@
         </div>
         <div class="navbar-right">
             <div id="create-board-btn" class="navbar-btn">+</div>
-            <a href="/logout"><div id="logout-btn" class="navbar-btn">Log Out</div></a>
+            <a href="/logout">
+                <div id="logout-btn" class="navbar-btn">Log Out</div>
+            </a>
             <div id="create-board-menu">
                 <label>Title</label>
                 <input id="create-board-input" placeholder="Enter board name...">
@@ -30,12 +32,12 @@
         <p class="collection-name">Personal Boards</p>
         <div class="boards-container">
             <% for (var i = 0; i < boards.length; ++i) { %>
-                <a href="/board/<%= boards[i]._id %>">
-                    <div class="board" data-bid="<%= boards[i]._id %>">
-                        <h3 class="board-name"><%= boards[i].name %></h3>
-                        <div class="delete-btn">X</div>
-                    </div>
-                </a>
+                <div class="board" data-bid="<%= boards[i]._id %>">
+                    <h3 class="board-name">
+                        <%= boards[i].name %>
+                    </h3>
+                    <div class="delete-btn">X</div>
+                </div>
             <% } %>
         </div>
     </div>

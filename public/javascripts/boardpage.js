@@ -159,6 +159,12 @@ $(function () {
     }
 
     // event listeners
+    
+    function sendToBoardPage() {
+        var bid = $(this).attr('data-bid');
+        window.location.href = `/board/${bid}`;
+    }
+
     function closeAddLabelMenu() {
         $addLabelMenu.hide();
     }
@@ -565,4 +571,5 @@ $(function () {
         }
     });
     $fullCardModal.on('click', '.card-label', deleteLabel);
+    $boardsList.on('click', '.board-entry', sendToBoardPage);
 });

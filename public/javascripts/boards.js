@@ -85,8 +85,15 @@ $(function () {
         }
     }
 
+    function sendToBoardPage() {
+        var bid = $(this).attr('data-bid');
+        window.location.href = `/board/${bid}`;
+    }
+
     $('#boards-list-btn').click(toggleBoardsList);
     $('#create-board-btn').click(toggleCreateBoardMenu);
     $('#create-board-submit-btn').click(addNewBoard);
     $('#personal-boards').on('click', '.delete-btn', deleteBoard);
+    $('#personal-boards').on('click', '.board', sendToBoardPage);
+    $('#boards-list').on('click', '.board-entry', sendToBoardPage);
 });
