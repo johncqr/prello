@@ -75,7 +75,7 @@ $(function () {
             type: 'DELETE',
         });
         $board.remove()
-        $boardsList.find(`a[data-bid='${bid}']`).remove();
+        $boardsList.find(`li[data-bid='${bid}']`).remove();
     }
 
     function addNewBoard() {
