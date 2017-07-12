@@ -44,14 +44,16 @@ router.post('/register', function (req, res, next) {
         email: req.body.email,
         password: req.body.password
       });
-      newUser.save(function (err) {
+      newUser.save(function (err, user) {
         if (err) {
           console.log(err);
           notice = 'Could not create account at this time.';
+          res.render('login', { title: 'Log In', stylesheet: loginStyle, notice: notice });
         } else {
           notice = `Account "${req.body.email}" created sucessfully!`;
+          req.session.user = user;
+          res.redirect('/');
         }
-        res.render('login', { title: 'Log In', stylesheet: loginStyle, notice: notice });
       });
     } else {
       notice = `Account with the email "${req.body.email}" already exists!`
