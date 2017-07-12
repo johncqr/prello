@@ -1,5 +1,4 @@
 // API information
-var BID = window.location.pathname.split('/')[2];
 var PORT = 3000;
 var HOST = `http://localhost:${PORT}/board/${BID}`;
 
@@ -8,7 +7,7 @@ var map = {};
 
 // socket.io
 var socket = io();
-socket.emit('join', { roomid: BID });
+socket.emit('join', { roomid: BID }); // BID passed through template
 
 // used to see where to add/edit cards
 var $currentList;
