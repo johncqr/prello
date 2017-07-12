@@ -238,6 +238,9 @@ $(function () {
 
     socket.on('deleteCard', function (data) {
         delete map[data.lid].cards[data.cid];
+        if (isSpecificCardPageOpen(data.lid, data.cid)) {
+            $fullCardModal.hide();
+        }
         findCard(data.lid, data.cid).remove();
     });
 
