@@ -42,8 +42,6 @@ $(function () {
     var $listAdder = $('#list-adder');
     var $listAdderInput = $('#list-adder-input');
     var $editCardNameInput = $('#edit-card-name-input');
-    var $cardName = $('#current-card-page-name');
-    var $cardDesc = $('#current-card-page-description');
     var $editDescBtn = $('#current-card-page-edit-desc-btn');
     var $editCardDescInput = $('#edit-card-desc-input');
     var $editCardDescSubmit = $('#edit-card-desc-submit-btn')
@@ -58,6 +56,11 @@ $(function () {
     function findCard(lid, cid) {
         return findList(lid).find(`li[data-cid='${cid}']`);
     }
+
+    function isSpecificCardPageOpen(lid, cid) {
+        return $fullCardModal.is(':visible') && currentLid === lid && currentCid === cid;
+    }
+
     // menu event listeners
     function closeAddLabelMenu() {
         $addLabelMenu.hide();
@@ -395,43 +398,36 @@ $(function () {
     function updateCardName() {
         var newName;
         if ((newName = $editCardNameInput.val()) !== '') {
-            map[currentLid].cards[currentCid].name = newName;
-            var currentCardData = map[currentLid].cards[currentCid];
             $.ajax({
                 url: `${HOST}/list/${currentLid}/card/${currentCid}`,
                 data: {
-                    name: currentCardData.name,
+                    name: newName,
                 },
                 type: 'PATCH'
             });
-            $cardName.text(newName);
-            $currentCard.find('.card-name').text(newName);
         }
-        $cardName.show();
+        $cardPageName.show();
         $editCardNameInput.hide();
     }
 
     function openCardNameEdit() {
         $editCardNameInput
-            .val($cardName.text())
+            .val($cardPageName.text())
             .show();
         $editCardNameInput.focus().select();
-        $cardName.hide();
+        $cardPageName.hide();
     }
 
     function updateCardDesc() {
         var newDesc = $editCardDescInput.val();
-        map[currentLid].cards[currentCid].desc = newDesc;
-        var currentCardData = map[currentLid].cards[currentCid];
         $.ajax({
             url: `${HOST}/list/${currentLid}/card/${currentCid}`,
             data: {
-                desc: currentCardData.desc,
+                desc: newDesc,
             },
             type: 'PATCH'
         });
-        $cardDesc.text(newDesc);
-        $cardDesc.show();
+        $cardPageDesc.show();
         $editDescBtn.show();
         $editCardDescInput.hide();
         $editCardDescSubmit.hide();
@@ -439,30 +435,60 @@ $(function () {
 
     function openCardDescEdit() {
         $editCardDescInput
-            .val($cardDesc.text())
+            .val($cardPageDesc.text())
             .show();
         $editCardDescSubmit.show();
         $editCardDescInput.focus().select();
         $editDescBtn.hide();
-        $cardDesc.hide();
+        $cardPageDesc.hide();
     }
 
     function deleteLabel() {
         var $labelToDelete = $(this);
         var labelIndex = $labelToDelete.index();
-        map[currentLid].cards[currentCid].labels.splice(labelIndex, 1);
-        var currentCardData = map[currentLid].cards[currentCid];
+        var labels = map[currentLid].cards[currentCid].labels;
+        labels.splice(labelIndex, 1);
         $.ajax({
             url: `${HOST}/list/${currentLid}/card/${currentCid}`,
             data: {
-                labels: currentCardData.labels,
+                labels: labels,
             },
             type: 'PATCH'
         });
-        console.log(labelIndex);
-        $currentCard.find(`.card-label-surface-list li:nth-child(${labelIndex + 1})`).remove();
-        $labelToDelete.remove();
     }
+
+    socket.on('editCard', function (data) {
+        for (var key in data.cardData) {
+            map[data.lid].cards[data.cid][key] = data.cardData[key];
+            $card = findCard(data.lid, data.cid);
+            switch (key) {
+                case 'name':
+                    $card.find('.card-name').text(data.cardData.name);
+                    if (isSpecificCardPageOpen(data.lid, data.cid)) {
+                        $cardPageName.text(data.cardData.name);
+                    }
+                    break;
+                case 'desc':
+                    if (isSpecificCardPageOpen(data.lid, data.cid)) {
+                        $cardPageDesc.text(data.cardData.desc);
+                    }
+                    break;
+                case 'labels':
+                    var $surfaceLabelList = $card.find('.card-label-surface-list');
+                    $surfaceLabelList.empty();
+                    data.cardData.labels.forEach(function (la) {
+                        $surfaceLabelList.append(createLabelSurface(la));
+                    });
+                    if (isSpecificCardPageOpen(data.lid, data.cid)) {
+                        $cardPageLabelList.empty();
+                        data.cardData.labels.forEach(function (la) {
+                            $cardPageLabelList.append(createCardLabel(la));
+                        });
+                    }
+                    break;
+            }
+        }
+    });
 
     function initData(data) {
         for (var i = 0; i < data.length; ++i) {
@@ -495,7 +521,7 @@ $(function () {
     $('#send-comment-btn').click(addNewComment);
     $('#board-member-add-menu-btn').click(toggleBoardMemberAddMenu);
     $('#add-board-member-btn').click(addBoardMember);
-    $cardName.click(openCardNameEdit);
+    $cardPageName.click(openCardNameEdit);
     $editDescBtn.click(openCardDescEdit);
     $editCardDescSubmit.click(updateCardDesc);
     $editCardNameInput.keypress(function (e) {
