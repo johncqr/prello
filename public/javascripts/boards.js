@@ -67,7 +67,7 @@ $(function () {
     }
     
     function deleteBoard(e) {
-        e.preventDefault();
+        e.stopPropagation();
         var $board = $(this).closest('.board');
         var bid = $board.attr('data-bid');
         $.ajax({
