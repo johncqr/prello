@@ -29,7 +29,7 @@ function emitToBoard(bid, eventName, data) {
 
 function checkExistResource(resource, res) {
   if (!resource) {
-    res.status(404).send('Resource not found!');
+    res.status(404).render('error', { title: 'Oops', message: 'Something went wrong!', stylesheet: errorStyle});
     return false;
   } 
   return true;
