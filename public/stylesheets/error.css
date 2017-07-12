@@ -1,5 +1,36 @@
+.navbar {
+    background-color: #0067A3;
+    color: #FFF;
+    height: 40px;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+
+.navbar-mid {
+    font-weight: bold;
+    font-size: 20px;
+    position: absolute;
+    left: 50%;
+    top: -10px;
+    transform: translateX(-50%);
+}
+
+#logo {
+    font-family: 'Brush Script MT', 'Helvetica', 'Lucida Sans Regular';
+}
+
+a {
+    text-decoration: none;
+}
+
 body {
     text-align: center;
     font-family: 'Helvetica', 'Lucida Sans Regular';
     background-color: #FFF;
+}
+
+#error-page {
+    margin-top: 50px;
 }
