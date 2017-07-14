@@ -99,6 +99,7 @@ body {
 .board-page {
     margin-top: 50px;
     height: 100%;
+    bottom: 0;
 }
 
 .board-name {
@@ -240,9 +241,13 @@ ul {
 
 #lol {
     margin-top: 40px;
-    height: 100%;
     white-space: nowrap;
     position: fixed;
+    width: 100%;
+    overflow-x: scroll;
+    bottom: 0;
+    top: 50px;
+    z-index: -1;
 }
 
 .navbar-btn {
@@ -301,7 +306,7 @@ ul {
     border-radius: 5px;
     color: #000;
     display: inline-block;
-    max-height: 85%;
+    max-height: 95%;
     margin: 0 5px;
     overflow-x: hidden;
     padding: 5px;
