@@ -1,5 +1,4 @@
 var express = require('express');
-var mongoose = require('mongoose');
 var requireLogin = require('../libs/requireLogin');
 
 var Board = require('../models/board');
@@ -10,8 +9,8 @@ router.use(requireLogin);
 
 var io = require('../libs/socketio');
 
-var boardpageStyle = '../stylesheets/boardpage.css';
-var errorStyle = '../stylesheets/error.css';
+var boardpageStyle = '/stylesheets/boardpage.css';
+var errorStyle = '/stylesheets/error.css';
 var errorRequestMessage = 'Error handling request!';
 
 function sendResource(err, resource, res) {

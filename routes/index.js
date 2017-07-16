@@ -5,8 +5,8 @@ var requireLogin = require('../libs/requireLogin');
 var User = require('../models/user');
 var Board = require('../models/board');
 
-var boardStyle = 'stylesheets/boards.css';
-var loginStyle = 'stylesheets/login.css';
+var boardStyle = '/stylesheets/boards.css';
+var loginStyle = '/stylesheets/login.css';
 
 router.get('/', requireLogin, function(req, res) {
   Board.find({ members: req.user.username }, function (err, boards) {

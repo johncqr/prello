@@ -97,8 +97,8 @@ body {
 }
 
 .board-page {
-    margin-top: 50px;
-    height: 100%;
+    position: fixed;
+    top: 50px;
     bottom: 0;
 }
 
@@ -240,13 +240,13 @@ ul {
 }
 
 #lol {
-    margin-top: 40px;
     white-space: nowrap;
     position: fixed;
-    width: 100%;
+    left: 0;
+    right: 0;
     overflow-x: scroll;
     bottom: 0;
-    top: 50px;
+    top: 90px;
     z-index: -1;
 }
 
