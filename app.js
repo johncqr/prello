@@ -10,6 +10,7 @@ var cors = require('./libs/cors')
 
 var board = require('./routes/board');
 var index = require('./routes/index');
+var forgot = require('./routes/forgot');
 
 var User = require('./models/user');
 
@@ -60,6 +61,7 @@ app.use(function(req, res, next) {
 });
 
 app.use('/', index);
+app.use('/forgot', forgot);
 app.use('/board', cors, board);
 
 // catch 404 and forward to error handler

@@ -1,0 +1,22 @@
+<%- include('common/header', {title: title, stylesheet: stylesheet}); %>
+    <div class="navbar">
+        <div class="navbar-mid">
+            <p id="logo"><a href="/">Prello</a></p>
+        </div>
+    </div>
+    <div class="page-container">
+        <% if (notice) { %>
+            <div id="notice">
+                <%= notice %>
+            </div>
+        <% } %>
+        <div class="fields">
+            <p class="page-section">Reset Password</p>
+            <label for="email">Email</label>
+            <input id="email-input" type="email" name="email" placeholder="e.g email@domain.com"><br>
+            <span id="reset-submit" class="submit-btn">Reset</span> 
+        </div>
+    </div>
+    <script src="/javascripts/jquery-3.2.1.js"></script>
+    <script src="/javascripts/forgot.js"></script>
+<%- include('common/footer'); %>
