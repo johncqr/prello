@@ -20,26 +20,27 @@ function performRehash(req, res, base) {
         if (key) {
             performRehash(req, res, hash);
         } else {
-            var newForgotKey = new ForgotKey({
-                hashCode: hash,
-                email: req.body.email,
-                used: false,
-            });
-
-            newForgotKey.save(function (err, key) {
-                if (err) {
-                    res.render('forgot', {
-                        title: 'Forgot Password',
-                        stylesheet: forgotStyle,
-                        notice: 'We could not reset your password at this time.'
-                    });
-                } else {
-                    res.render('forgotLink', {
-                        title: 'Forgot Password',
-                        stylesheet: forgotLinkStyle,
-                        hash: key.hashCode,
-                    });
-                }
+            User.findOne({ email: req.body.email }, function (err, user) {
+                var newForgotKey = new ForgotKey({
+                    hashCode: hash,
+                    userId: user._id,
+                    used: false,
+                });
+                newForgotKey.save(function (err, key) {
+                    if (err) {
+                        res.render('forgot', {
+                            title: 'Forgot Password',
+                            stylesheet: forgotStyle,
+                            notice: 'We could not reset your password at this time.'
+                        });
+                    } else {
+                        res.render('forgotLink', {
+                            title: 'Forgot Password',
+                            stylesheet: forgotLinkStyle,
+                            hash: key.hashCode,
+                        });
+                    }
+                });
             });
         }
     });
@@ -77,7 +78,7 @@ router.post('/:hash', function (req, res, next) {
         if (err || !key || key.used) {
             res.redirect('/');
         } else {
-            User.findOne({ email: key.email }, function (err, user) {
+            User.findById(key.userId, function (err, user) {
                 user.password = makeHash(req.body.password);
                 key.used = true;
                 key.save();

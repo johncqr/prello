@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var forgotKeySchema = new Schema({
     hashCode: String,
-    email: String,
+    userId: String,
     used: Boolean
 }, { versionKey: false });
 
