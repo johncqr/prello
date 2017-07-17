@@ -14,28 +14,12 @@ router.get('/', function (req, res, next) {
   res.render('forgot', { title: 'Forgot Password', stylesheet: forgotStyle, notice: '' });
 });
 
-router.post('/', function (req, res, next) {
-    User.findOne({ email: req.body.email }, function (err, user) {
-        if (!user) {
-            res.render('forgot', {
-                title: 'Forgot Password',
-                stylesheet: forgotStyle,
-                notice: 'We could not find that email in our records.' });
+function performRehash(req, res, base) {
+    var hash = makeHash(base + Date.now().toString());
+    ForgotKey.findOne({ hashCode: hash }, function (err, key) {
+        if (key) {
+            performRehash(req, res, hash);
         } else {
-            var hash = makeHash(req.body.email + Date.now().toString());
-            // var notDuplicate = false;
-
-            // while (!notDuplicate) {
-            //     ForgotKey.findOne({ hashCode: hash }, function (err, key) {
-            //         console.log('yes');
-            //         if (!key) {
-            //             notDuplicate = true;
-            //         } else {
-            //             makeHash(hash);
-            //         }
-            //     });
-            // }
-
             var newForgotKey = new ForgotKey({
                 hashCode: hash,
                 email: req.body.email,
@@ -51,12 +35,26 @@ router.post('/', function (req, res, next) {
                     });
                 } else {
                     res.render('forgotLink', {
-                        title: 'Link to Reset',
+                        title: 'Forgot Password',
                         stylesheet: forgotLinkStyle,
                         hash: key.hashCode,
                     });
                 }
             });
+        }
+    });
+}
+
+
+router.post('/', function (req, res, next) {
+    User.findOne({ email: req.body.email }, function (err, user) {
+        if (!user) {
+            res.render('forgot', {
+                title: 'Forgot Password',
+                stylesheet: forgotStyle,
+                notice: 'We could not find that email in our records.' });
+        } else {
+            performRehash(req, res, req.body.email);
         }
     });
 });
