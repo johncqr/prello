@@ -40,20 +40,27 @@ router.post('/register', function (req, res, next) {
   var notice;
   User.findOne({ email: req.body.email }, function (err, user) {
     if (!user) {
-      var newUser = new User({
-        username: req.body.username,
-        email: req.body.email,
-        password: makeHash(req.body.password),
-      });
-      newUser.save(function (err, user) {
-        if (err) {
-          console.log(err);
-          notice = 'Could not create account at this time.';
-          res.render('login', { title: 'Log In', stylesheet: loginStyle, notice: notice });
+      User.findOne({ username: req.body.username }, function (err, user) {
+        if (!user) {
+          var newUser = new User({
+            username: req.body.username,
+            email: req.body.email,
+            password: makeHash(req.body.password),
+          });
+          newUser.save(function (err, user) {
+            if (err) {
+              console.log(err);
+              notice = 'Could not create account at this time.';
+              res.render('login', { title: 'Log In', stylesheet: loginStyle, notice: notice });
+            } else {
+              notice = `Account "${req.body.email}" created sucessfully!`;
+              req.session.user = user;
+              res.redirect('/');
+            }
+          });
         } else {
-          notice = `Account "${req.body.email}" created sucessfully!`;
-          req.session.user = user;
-          res.redirect('/');
+          notice = `Account with the username "${req.body.username}" already exists!`
+          res.render('login', { title: 'Log In', stylesheet: loginStyle, notice: notice });
         }
       });
     } else {
