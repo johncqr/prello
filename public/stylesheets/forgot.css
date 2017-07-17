@@ -1,0 +1,41 @@
+body {
+    font-family: 'Helvetica', 'Lucida Sans Regular';
+    background-color: #FFF;
+}
+
+#logo {
+    font-family: 'Brush Script MT', 'Helvetica', 'Lucida Sans Regular';
+}
+
+.navbar {
+    background-color: #0067A3;
+    color: #FFF;
+    height: 40px;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+
+.navbar-mid {
+    font-weight: bold;
+    font-size: 20px;
+    position: absolute;
+    left: 50%;
+    top: -10px;
+    transform: translateX(-50%);
+}
+
+.page-container {
+    margin-top: 60px;
+}
+
+.main-body {
+    margin: 0 auto;
+    width: 600px;
+}
+
+.link-text {
+    font-size: 2rem;
+    font-weight: bold;
+}

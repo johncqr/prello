@@ -12,11 +12,11 @@
         <% } %>
         <div class="fields">
             <p class="page-section">Reset Password</p>
-            <label for="email">Email</label>
-            <input id="email-input" type="email" name="email" placeholder="e.g email@domain.com"><br>
-            <span id="reset-submit" class="submit-btn">Reset</span> 
+            <form id="form-registration" action="/forgot" method="POST">
+                <label for="email">Email</label>
+                <input type="email" name="email" placeholder="e.g email@domain.com" required>
+                <input class="submit-btn" type="submit" value="Reset">
+            </form>
         </div>
     </div>
-    <script src="/javascripts/jquery-3.2.1.js"></script>
-    <script src="/javascripts/forgot.js"></script>
 <%- include('common/footer'); %>

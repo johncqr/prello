@@ -1,0 +1,15 @@
+<%- include('common/header', {title: title, stylesheet: stylesheet}); %>
+    <div class="navbar">
+        <div class="navbar-mid">
+            <p id="logo"><a href="/">Prello</a></p>
+        </div>
+    </div>
+    <div class="page-container">
+        <div class="main-body">
+            <p>It seems you forgot your password! Click on the following link to reset it:</p>
+            <p>
+            <a href="/forgot/<%= hash %>" class="link-text">Reset My Password</a>
+            </p>
+        </div>
+    </div>
+<%- include('common/footer'); %>

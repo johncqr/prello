@@ -1,0 +1,20 @@
+<%- include('common/header', {title: title, stylesheet: stylesheet}); %>
+    <div class="navbar">
+        <div class="navbar-mid">
+            <p id="logo"><a href="/">Prello</a></p>
+        </div>
+    </div>
+    <div class="page-container">
+        <div class="fields">
+            <p class="page-section">Change Password</p>
+            <form id="form-change-password" method="POST">
+                <label for="password">Password</label>
+                <input id="password" type="password" name="password" placeholder="e.g ********" required>
+                <label for="passwordConfirm">Confirm Password</label>
+                <input id="password-confirm" type="password" name="passwordConfirm" placeholder="Confirm Password" required>
+                <input class="submit-btn" type="submit" value="Change">
+            </form>
+        </div>
+    </div>
+    <script src="/javascripts/forgotChange.js"></script>
+<%- include('common/footer'); %>
