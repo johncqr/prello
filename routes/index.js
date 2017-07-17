@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var requireLogin = require('../libs/requireLogin');
+var makeHash = require('../libs/makeHash');
 
 var User = require('../models/user');
 var Board = require('../models/board');
@@ -24,7 +25,7 @@ router.get('/login', function (req, res, next) {
 
 router.post('/login', function (req, res, next) {
     User.findOne({ email: req.body.email }, function (err, user) {
-      if (user && req.body.password === user.password) {
+      if (user && makeHash(req.body.password) === user.password) {
         // set cookie with user info
         req.session.user = user;
         res.redirect('/');
@@ -42,7 +43,7 @@ router.post('/register', function (req, res, next) {
       var newUser = new User({
         username: req.body.username,
         email: req.body.email,
-        password: req.body.password
+        password: makeHash(req.body.password),
       });
       newUser.save(function (err, user) {
         if (err) {
