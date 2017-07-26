@@ -284,16 +284,6 @@ $(function () {
         });
     }
 
-    function openFullCard() {
-        $currentCard = $(this);
-        currentLid = $currentCard.attr('data-lid');
-        currentCid = $currentCard.attr('data-cid');
-        var cardData = map[currentLid].cards[currentCid];
-        updateFullCardModal(cardData);
-        $fullCardModal.show();
-        $editCardNameInput.hide();
-    }
-
     function closeFullCard() {
         if ($editCardNameInput.is(':visible')) {
             updateCardName();
@@ -501,7 +491,7 @@ $(function () {
         render() {
             let surfaceLabels = this.props.labels.map(this.renderLabel);
             return (
-                <li className="card" data-lid={this.props.lid} data-cid={this.props.cid}>
+                <li className="card" data-lid={this.props.lid} data-cid={this.props.cid} onClick={this.props.onClick}>
                     <ul className="card-label-surface-list">
                         {surfaceLabels}
                     </ul>
@@ -524,7 +514,7 @@ $(function () {
 
         render() {
             let cards = this.props.cards.map((c) => {
-                return <Card key={c._id} lid={this.props.lid} cid={c._id} labels={c.labels} name={c.name} author={c.author} />;
+                return <Card key={c._id} lid={this.props.lid} cid={c._id} onClick={() => this.props.onOpenCard(this.props.lid, c._id)} labels={c.labels} name={c.name} author={c.author} />;
             });
 
             return (
@@ -650,9 +640,17 @@ $(function () {
             });
         }
 
+        handleOpenCard(lid, cid) {
+            var listData = this.state.data.find((l) => l._id === lid);
+            var cardData = listData.cards.find((c) => c._id === cid);
+            updateFullCardModal(cardData);
+            $fullCardModal.show();
+            $editCardNameInput.hide();
+        }
+
         render() {
             let lists = this.state.data.map((l) => {
-                return <List key={l._id} lid={l._id} name={l.name} cards={l.cards} onDeleteList={this.handleDeleteList.bind(this)}/>
+                return <List key={l._id} lid={l._id} name={l.name} cards={l.cards} onOpenCard={this.handleOpenCard.bind(this)} onDeleteList={this.handleDeleteList.bind(this)}/>
             });
             return (
                 <ul id="lol">
@@ -662,8 +660,6 @@ $(function () {
             );
         }
     }
-
-    ReactDOM.render(<Board />, document.getElementById('board-data'));
 
     $('#user-btn').click(toggleUserMenu);
     $('#list-adder-btn').click(openListAdderForm);
@@ -704,7 +700,6 @@ $(function () {
     })
 
     // Event delegation
-    $lol.on('click', '.card', openFullCard);
     $lol.on('click', '.list-name', openListNameEdit);
     $lol.on('keypress', '.edit-list-name-input', function (e) {
         if (e.which === 13) {
@@ -714,4 +709,5 @@ $(function () {
     $fullCardModal.on('click', '.card-label', deleteLabel);
     $boardsList.on('click', '.board-entry', sendToBoardPage);
 
+    ReactDOM.render(<Board />, document.getElementById('board-data'));
 });
