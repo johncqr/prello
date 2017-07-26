@@ -275,15 +275,6 @@ $(function () {
         closeFullCard();
     }
 
-    function deleteList() {
-        var $listToDelete = $(this).closest('.list');
-        var lidToDelete = $listToDelete.attr('data-lid');
-        $.ajax({
-            url: `${HOST}/list/${lidToDelete}`,
-            type: 'DELETE'
-        });
-    }
-
     function closeFullCard() {
         if ($editCardNameInput.is(':visible')) {
             updateCardName();
@@ -461,15 +452,6 @@ $(function () {
         }
     });
 
-    socket.on('newComment', function (data) {
-        if (!map[currentLid].cards[currentCid].comments) {
-            map[currentLid].cards[currentCid].comments = [];
-        }
-        map[data.lid].cards[data.cid].comments.push(data.commentData);
-        if (isSpecificCardPageOpen(data.lid, data.cid)) {
-            $cardActivityList.prepend(createComment(data.commentData));
-        }
-    });
 
     class Card extends React.Component {
         renderLabel(la) {
@@ -615,6 +597,22 @@ $(function () {
                 this.setState({
                     data: newData,
                 });
+            });
+
+            socket.on('newComment', (data) => {
+                let newData = this.state.data.slice();
+                let listIndex = this._findIndexOfList(data.lid);
+                let cardIndex = this._findIndexOfCard(listIndex, data.cid);
+                if (!newData[listIndex].cards[cardIndex].comments) {
+                    newData[listIndex].cards[cardIndex].comments = [];
+                }
+                newData[listIndex].cards[cardIndex].comments.push(data.commentData);
+                this.setState({
+                    data: newData,
+                });
+                if (isSpecificCardPageOpen(data.lid, data.cid)) {
+                    $cardActivityList.prepend(createComment(data.commentData));
+                }
             });
         }
 
