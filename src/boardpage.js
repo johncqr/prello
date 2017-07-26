@@ -424,15 +424,6 @@ $(function () {
         findList(data.lid).find('.list-name').text(data.name);
     });
 
-
-    socket.on('deleteCard', function (data) {
-        delete map[data.lid].cards[data.cid];
-        if (isSpecificCardPageOpen(data.lid, data.cid)) {
-            $fullCardModal.hide();
-        }
-        findCard(data.lid, data.cid).remove();
-    });
-
     socket.on('editCard', function (data) {
         for (var key in data.cardData) {
             map[data.lid].cards[data.cid][key] = data.cardData[key];
@@ -615,12 +606,24 @@ $(function () {
                     data: newData,
                 });
             });
+            
+            socket.on('deleteCard', (data) => {
+                let newData = this.state.data.slice();
+                let listIndex = this._findIndexOfList(data.lid);
+                let cardIndex = this._findIndexOfCard(listIndex, data.cid);
+                newData[listIndex].cards.splice(cardIndex, 1);
+                this.setState({
+                    data: newData,
+                });
+            });
         }
 
         _findIndexOfList(lid) {
-            return this.state.data.findIndex(function (l) {
-                return lid === l._id;
-            });
+            return this.state.data.findIndex((l) => lid === l._id);
+        }
+
+        _findIndexOfCard(listIndex, cid) {
+            return this.state.data[listIndex].cards.findIndex((c) => cid === c._id);
         }
 
         handleAddList(name) {
@@ -641,6 +644,8 @@ $(function () {
         }
 
         handleOpenCard(lid, cid) {
+            currentLid = lid;
+            currentCid = cid;
             var listData = this.state.data.find((l) => l._id === lid);
             var cardData = listData.cards.find((c) => c._id === cid);
             updateFullCardModal(cardData);
