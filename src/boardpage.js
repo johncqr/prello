@@ -22,7 +22,7 @@ var currentCid;
 $(function () {
     // cached selectors
     var $userMenu = $('#user-menu');
-    var $lol = $('#lol');
+    var $lol = $('lol');
     var $newCardNameInput = $('#new-card-name-input');
     var $newCardDescInput = $('#new-card-desc-input');
     var $addLabelDesc = $('#add-label-desc');
@@ -164,7 +164,7 @@ $(function () {
     }
 
     // event listeners
-    
+
     function sendToBoardPage() {
         var bid = $(this).attr('data-bid');
         window.location.href = `/board/${bid}`;
@@ -232,8 +232,6 @@ $(function () {
     function openNewCard() {
         $newCardModal.show();
         $newCardNameInput.focus();
-        $currentList = $(this).parent();
-        currentLid = $currentList.attr('data-lid');
     }
 
     function closeNewCard() {
@@ -254,24 +252,6 @@ $(function () {
     }
 
     // ajax calls
-    function addNewListFromName(name) {
-        $.ajax({
-            url: `${HOST}/list`,
-            data: {
-                name
-            },
-            type: 'POST',
-        });
-    }
-
-    function addNewList() {
-        if ($newListName.val() != '') {
-            addNewListFromName($newListName.val());
-            $newListName.val('');
-            closeListAdderForm();
-        }
-    }
-
     function addNewCard() {
         if ($newCardNameInput.val() != '') {
             $.ajax({
@@ -439,19 +419,6 @@ $(function () {
         }
     }
 
-    function initData(data) {
-        for (var i = 0; i < data.length; ++i) {
-            var $list = createList(data[i]);
-            $list.insertBefore($listAdder);
-        }
-    }
-
-    $.ajax({
-        url: `${HOST}/list`,
-        type: 'GET',
-        dataType: 'json',
-    }).done(initData);
-
     // socket.io events
 
     socket.on('newBoardMember', function (data) {
@@ -461,25 +428,12 @@ $(function () {
         }));
     });
 
-    socket.on('newList', function (data) {
-        var $newList = createList(data);
-        $newList.insertBefore($listAdder);
-    });
-
-    socket.on('deleteList', function (data) {
-        delete map[data.lid];
-        findList(data.lid).remove();
-    });
 
     socket.on('editList', function (data) {
         map[data.lid] = data.name;
         findList(data.lid).find('.list-name').text(data.name);
     });
 
-    socket.on('newCard', function (data) {
-        var $newCard = createCard(data.cardData, data.lid);
-        findList(data.lid).find('.card-list').append($newCard);
-    });
 
     socket.on('deleteCard', function (data) {
         delete map[data.lid].cards[data.cid];
@@ -536,6 +490,181 @@ $(function () {
         }
     });
 
+    class Card extends React.Component {
+        renderLabel(la) {
+            return (
+                <li className={"card-label-surface card-label-" + la.color}>
+                </li>
+            );
+        }
+
+        render() {
+            let surfaceLabels = this.props.labels.map(this.renderLabel);
+            return (
+                <li className="card" data-lid={this.props.lid} data-cid={this.props.cid}>
+                    <ul className="card-label-surface-list">
+                        {surfaceLabels}
+                    </ul>
+                    <p className="card-name">{this.props.name}</p>
+                    <div className="card-author">
+                        <span className="card-member">{this.props.author}</span>
+                    </div>
+                    <div className="div-clearer"></div>
+                </li>
+            );
+        }
+    }
+
+    class List extends React.Component {
+
+        handleClickCardAddLink() {
+            currentLid = this.props.lid;
+            openNewCard();
+        }
+
+        render() {
+            let cards = this.props.cards.map((c) => {
+                return <Card key={c._id} lid={this.props.lid} cid={c._id} labels={c.labels} name={c.name} author={c.author} />;
+            });
+
+            return (
+                <li className="list" data-lid={this.props.lid}>
+                    <div className="list-topbar">
+                        <h4 className="list-name">{this.props.name}</h4>
+                        <div className="btn list-delete-btn" onClick={() => this.props.onDeleteList(this.props.lid)}>X</div>
+                        <ul className="card-list">
+                            {cards}
+                        </ul>
+                        <p className="card-add-link" onClick={this.handleClickCardAddLink.bind(this)}>Add a card...</p>
+                    </div>
+                </li>
+            );
+        }
+    }
+
+    class ListAdder extends React.Component {
+        constructor() {
+            super();
+            this.state = {
+                open: false,
+                name: '',
+            }
+        }
+
+        handleListAdderToggle() {
+            this.setState({ open: !this.state.open });
+        }
+
+        handleSaveList() {
+            if (this.state.name !== '') {
+                this.props.onAddList(this.state.name);
+                this.setState({ open: false, val: '' });
+            }
+        }
+
+        handleChange(e) {
+            this.setState({ name: e.target.value });
+        }
+
+        render() {
+            return (
+                <li id="list-adder" className="list">
+                    {!this.state.open && <div id="list-adder-btn" className="btn" onClick={() => this.handleListAdderToggle()}>Add a list...</div>}
+                    {this.state.open &&
+                        <div id="form-list-adder-container">
+                            <input id="list-adder-input" onChange={this.handleChange.bind(this)} placeholder="Add a list..." />
+                            <div id="list-adder-submit-btn" className="btn" onClick= {() => this.handleSaveList()}>Save</div>
+                            <div id="list-adder-close-btn" className="btn" onClick={() => this.handleListAdderToggle()}>X</div>
+                        </div>
+                    }
+                </li>
+            );
+        }
+
+    }
+
+    class Board extends React.Component {
+        constructor() {
+            super();
+            this.state = {
+                data: [],
+            }
+        }
+
+        componentDidMount() {
+            $.ajax({
+                url: `${HOST}/list`,
+                type: 'GET',
+                dataType: 'json',
+            }).done((json) => {
+                this.setState({
+                    data: json,
+                });
+            });
+
+            socket.on('deleteList', (data) => {
+                let newData = this.state.data.slice();
+                newData.splice(this._findIndexOfList(data.lid), 1);
+                this.setState({
+                    data: newData,
+                });
+            });
+
+            socket.on('newList', (data) => {
+                let newData = this.state.data.slice();
+                newData.push(data);
+                this.setState({
+                    data: newData,
+                });
+            });
+
+            socket.on('newCard', (data) => {
+                let newData = this.state.data.slice();
+                newData[this._findIndexOfList(data.lid)].cards.push(data.cardData);
+                this.setState({
+                    data: newData,
+                });
+            });
+        }
+
+        _findIndexOfList(lid) {
+            return this.state.data.findIndex(function (l) {
+                return lid === l._id;
+            });
+        }
+
+        handleAddList(name) {
+            $.ajax({
+                url: `${HOST}/list`,
+                data: {
+                    name
+                },
+                type: 'POST',
+            });
+        }
+
+        handleDeleteList(lid) {
+            $.ajax({
+                url: `${HOST}/list/${lid}`,
+                type: 'DELETE'
+            });
+        }
+
+        render() {
+            let lists = this.state.data.map((l) => {
+                return <List key={l._id} lid={l._id} name={l.name} cards={l.cards} onDeleteList={this.handleDeleteList.bind(this)}/>
+            });
+            return (
+                <ul id="lol">
+                    {lists}
+                    <ListAdder onAddList={(name) => this.handleAddList(name)}/>
+                </ul>
+            );
+        }
+    }
+
+    ReactDOM.render(<Board />, document.getElementById('board-data'));
+
     $('#user-btn').click(toggleUserMenu);
     $('#list-adder-btn').click(openListAdderForm);
     $('#list-adder-close-btn').click(closeListAdderForm);
@@ -547,7 +676,6 @@ $(function () {
     $('#close-new-card-btn').click(closeNewCard);
     $('#close-card-btn').click(closeFullCard);
     $('#card-modal-bg').click(closeFullCard);
-    $('#list-adder-submit-btn').click(addNewList);
     $('#add-card-btn').click(addNewCard);
     $('#delete-card-btn').click(deleteCard);
     $('.add-label-selector').click(addNewLabel);
@@ -576,8 +704,6 @@ $(function () {
     })
 
     // Event delegation
-    $lol.on('click', '.card-add-link', openNewCard);
-    $lol.on('click', '.list-delete-btn', deleteList);
     $lol.on('click', '.card', openFullCard);
     $lol.on('click', '.list-name', openListNameEdit);
     $lol.on('keypress', '.edit-list-name-input', function (e) {
@@ -587,4 +713,5 @@ $(function () {
     });
     $fullCardModal.on('click', '.card-label', deleteLabel);
     $boardsList.on('click', '.board-entry', sendToBoardPage);
+
 });

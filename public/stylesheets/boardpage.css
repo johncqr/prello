@@ -297,10 +297,6 @@ ul {
     float: right;
 }
 
-#form-list-adder-container {
-    display: none;
-}
-
 .list {
     background-color: #E2E4E6;
     border-radius: 5px;
@@ -309,7 +305,7 @@ ul {
     max-height: 95%;
     margin: 0 5px;
     overflow-x: hidden;
-    padding: 5px;
+    padding: 15px 5px;
     vertical-align: top;
     width: 200px;
     white-space: normal;
