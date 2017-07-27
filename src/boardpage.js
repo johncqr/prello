@@ -14,8 +14,6 @@ var socket = io();
 socket.emit('join', { roomid: BID }); // BID passed through template
 
 // used to see where to add/edit cards
-var $currentList;
-var $currentCard;
 var currentLid;
 var currentCid;
 
@@ -41,10 +39,6 @@ $(function () {
     var $boardMemberInput = $('#new-board-member-input');
     var $addMemberNotice = $('#add-member-notice');
     var $newCardModal = $('#new-card-modal');
-    var $formListAdderContainer = $('#form-list-adder-container');
-    var $listAdderBtn = $('#list-adder-btn');
-    var $listAdder = $('#list-adder');
-    var $listAdderInput = $('#list-adder-input');
     var $editCardNameInput = $('#edit-card-name-input');
     var $editDescBtn = $('#current-card-page-edit-desc-btn');
     var $editCardDescInput = $('#edit-card-desc-input');
@@ -53,14 +47,6 @@ $(function () {
     var $cardActivityList = $('#card-activity-list');
 
     // helper functions
-    function findList(lid) {
-        return $lol.find(`li[data-lid='${lid}']`);
-    }
-
-    function findCard(lid, cid) {
-        return findList(lid).find(`li[data-cid='${cid}']`);
-    }
-
     function isSpecificCardPageOpen(lid, cid) {
         return $fullCardModal.is(':visible') && currentLid === lid && currentCid === cid;
     }
@@ -71,14 +57,12 @@ $(function () {
         $cardPageAuthor.text(c.author);
         $cardPageLabelList.empty();
         $cardActivityList.empty();
-
         // populate label list
         if (c.labels) {
             for (var i = 0; i < c.labels.length; ++i) {
                 $cardPageLabelList.append(createCardLabel(c.labels[i]));
             }
         }
-
         // populate comment list
         if (c.comments) {
             for (var i = 0; i < c.comments.length; ++i) {
@@ -88,50 +72,6 @@ $(function () {
     }
 
     // jQuery element creation
-    function createList(l) {
-        map[l._id] = { name: l.name, cards: {} };
-        var $newList = $('<li></li>', { class: 'list', 'data-lid': l._id });
-        $('<div></div>', { class: 'list-topbar' })
-            .append($('<h4></h4>', { class: 'list-name', text: l.name }))
-            .append($('<div></div>', { class: 'btn list-delete-btn', text: 'X' }))
-            .appendTo($newList);
-
-        var $newCardList = $('<ul></ul>', { class: 'card-list' }).appendTo($newList);
-        for (var i = 0; i < l.cards.length; ++i) {
-            $newCardList.append(createCard(l.cards[i], l._id));
-        }
-
-        $('<p></p>', { class: 'card-add-link', text: 'Add a card...' })
-            .appendTo($newList);
-        return $newList;
-    }
-
-    function createCard(c, lid) {
-        map[lid].cards[c._id] = { name: c.name, desc: c.desc, labels: c.labels, author: c.author, comments: c.comments };
-        var $newCard = $('<li></li>', { class: 'card', 'data-lid': lid, 'data-cid': c._id });
-        var $newCardLabelList = $('<ul></ul>', { class: 'card-label-surface-list' });
-        if (c.labels) {
-            for (var i = 0; i < c.labels.length; ++i) {
-                $newCardLabelList.append(createLabelSurface(c.labels[i]));
-            }
-        }
-        var $newCardName = $('<p></p>', {
-            class: 'card-name',
-            text: c.name
-        });
-        var $newCardAuthor = $('<div></div>', {
-            class: 'card-author',
-        }).append($('<span></span>', {
-            class: 'card-member',
-            text: c.author
-        }));
-        $newCard.append($newCardLabelList)
-            .append($newCardName)
-            .append($newCardAuthor)
-            .append($('<div class="div-clearer"></div>'));
-        return $newCard;
-    }
-
     function createLabelSurface(la) {
         var $newLabelSurface = $('<li></li>',
             { class: 'card-label-surface card-label-' + la.color });
@@ -202,15 +142,6 @@ $(function () {
         $boardMemberAddMenu.toggle();
     }
 
-    function openListNameEdit() {
-        var $this = $(this);
-        var $editListNameInput = $('<input>', { type: 'text', class: 'edit-list-name-input' })
-            .val($this.text());
-        $this.before($editListNameInput);
-        $editListNameInput.focus().select();
-        $this.hide();
-    }
-
     function openCardNameEdit() {
         $editCardNameInput
             .val($cardPageName.text())
@@ -238,17 +169,6 @@ $(function () {
         $newCardModal.hide();
         $newCardNameInput.val('');
         $newCardDescInput.val('');
-    }
-
-    function openListAdderForm() {
-        $formListAdderContainer.show();
-        $listAdderInput.focus();
-        $listAdderBtn.hide();
-    }
-
-    function closeListAdderForm() {
-        $formListAdderContainer.hide();
-        $listAdderBtn.show();
     }
 
     // ajax calls
@@ -315,24 +235,6 @@ $(function () {
             type: 'POST'
         });
         $commentInput.val('');
-    }
-
-    function updateListName() {
-        var value;
-        var $this = $(this);
-        var lid = $this.closest('.list').attr('data-lid');
-        var $listName = $this.next();
-        if ((value = $this.val()) !== '') {
-            $.ajax({
-                url: `${HOST}/list/${lid}`,
-                data: {
-                    name: $this.val()
-                },
-                type: 'PATCH'
-            });
-        }
-        $listName.show();
-        $this.remove();
     }
 
     function updateCardName() {
@@ -410,49 +312,6 @@ $(function () {
     });
 
 
-    socket.on('editList', function (data) {
-        map[data.lid] = data.name;
-        findList(data.lid).find('.list-name').text(data.name);
-    });
-
-    socket.on('editCard', function (data) {
-        for (var key in data.cardData) {
-            map[data.lid].cards[data.cid][key] = data.cardData[key];
-            $card = findCard(data.lid, data.cid);
-            switch (key) {
-                case 'name':
-                    $card.find('.card-name').text(data.cardData.name);
-                    if (isSpecificCardPageOpen(data.lid, data.cid)) {
-                        $cardPageName.text(data.cardData.name);
-                    }
-                    break;
-                case 'desc':
-                    if (isSpecificCardPageOpen(data.lid, data.cid)) {
-                        $cardPageDesc.text(data.cardData.desc);
-                    }
-                    break;
-                case 'labels':
-                    if (data.cardData.labels == 0) {
-                        map[data.lid].cards[data.cid].labels = [];
-                        data.cardData.labels = [];
-                    }
-                    var $surfaceLabelList = $card.find('.card-label-surface-list');
-                    $surfaceLabelList.empty();
-                    data.cardData.labels.forEach(function (la) {
-                        $surfaceLabelList.append(createLabelSurface(la));
-                    });
-                    if (isSpecificCardPageOpen(data.lid, data.cid)) {
-                        $cardPageLabelList.empty();
-                        data.cardData.labels.forEach(function (la) {
-                            $cardPageLabelList.append(createCardLabel(la));
-                        });
-                    }
-                    break;
-            }
-        }
-    });
-
-
     class Card extends React.Component {
         renderLabel(la) {
             return (
@@ -479,10 +338,27 @@ $(function () {
     }
 
     class List extends React.Component {
+        constructor() {
+            super();
+            this.state = {
+                listNameEditOpen: false,
+            }
+        }
+
+        toggleListNameEditOpen() {
+            this.setState({ listNameEditOpen: !this.state.listNameEditOpen });
+        }
 
         handleClickCardAddLink() {
             currentLid = this.props.lid;
             openNewCard();
+        }
+
+        handleKeypress(e) {
+            if (e.which === 13 && e.target.value !== '') {
+                this.props.onListNameChange(this.props.lid, e.target.value);
+                this.toggleListNameEditOpen();
+            }
         }
 
         render() {
@@ -493,7 +369,10 @@ $(function () {
             return (
                 <li className="list" data-lid={this.props.lid}>
                     <div className="list-topbar">
-                        <h4 className="list-name">{this.props.name}</h4>
+                        { !this.state.listNameEditOpen && <h4 className="list-name" onClick={this.toggleListNameEditOpen.bind(this)}>{this.props.name}</h4>}
+                        { this.state.listNameEditOpen &&
+                            <input type="text" className="edit-list-name-input" onKeyPress={this.handleKeypress.bind(this)} defaultValue={this.props.name} />
+                        }
                         <div className="btn list-delete-btn" onClick={() => this.props.onDeleteList(this.props.lid)}>X</div>
                         <ul className="card-list">
                             {cards}
@@ -581,6 +460,14 @@ $(function () {
                 });
             });
 
+            socket.on('editList', (data) => {
+                let newData = this.state.data.slice();
+                newData[this._findIndexOfList(data.lid)].name = data.name;
+                this.setState({
+                    data: newData,
+                });
+            });
+
             socket.on('newCard', (data) => {
                 let newData = this.state.data.slice();
                 newData[this._findIndexOfList(data.lid)].cards.push(data.cardData);
@@ -614,6 +501,43 @@ $(function () {
                     $cardActivityList.prepend(createComment(data.commentData));
                 }
             });
+
+            socket.on('editCard', (data) => {
+                let newData = this.state.data.slice();
+                let listIndex = this._findIndexOfList(data.lid);
+                let cardIndex = this._findIndexOfCard(listIndex, data.cid);
+                for (var key in data.cardData) {
+                    newData[listIndex].cards[cardIndex][key] = data.cardData[key];
+                    switch (key) {
+                        case 'name':
+                            if (isSpecificCardPageOpen(data.lid, data.cid)) {
+                                $cardPageName.text(data.cardData.name);
+                            }
+                            break;
+                        case 'desc':
+                            if (isSpecificCardPageOpen(data.lid, data.cid)) {
+                                $cardPageDesc.text(data.cardData.desc);
+                            }
+                            break;
+                        case 'labels':
+                            if (data.cardData.labels == 0) {
+                                newData[listIndex].cards[cardIndex][key] = data.cardData[key];
+                                data.cardData.labels = [];
+                            }
+                            if (isSpecificCardPageOpen(data.lid, data.cid)) {
+                                $cardPageLabelList.empty();
+                                data.cardData.labels.forEach(function (la) {
+                                    $cardPageLabelList.append(createCardLabel(la));
+                                });
+                            }
+                            break;
+                    }
+                }
+                this.setState({
+                    data: newData,
+                });
+            });
+
         }
 
         _findIndexOfList(lid) {
@@ -631,6 +555,16 @@ $(function () {
                     name
                 },
                 type: 'POST',
+            });
+        }
+
+        handleListNameChange(lid, name) {
+            $.ajax({
+                url: `${HOST}/list/${lid}`,
+                data: {
+                    name: name,
+                },
+                type: 'PATCH'
             });
         }
 
@@ -653,7 +587,10 @@ $(function () {
 
         render() {
             let lists = this.state.data.map((l) => {
-                return <List key={l._id} lid={l._id} name={l.name} cards={l.cards} onOpenCard={this.handleOpenCard.bind(this)} onDeleteList={this.handleDeleteList.bind(this)}/>
+                return <List key={l._id} lid={l._id} name={l.name} cards={l.cards}
+                             onOpenCard={this.handleOpenCard.bind(this)}
+                             onDeleteList={this.handleDeleteList.bind(this)}
+                             onListNameChange={this.handleListNameChange.bind(this)} />
             });
             return (
                 <ul id="lol">
@@ -665,8 +602,6 @@ $(function () {
     }
 
     $('#user-btn').click(toggleUserMenu);
-    $('#list-adder-btn').click(openListAdderForm);
-    $('#list-adder-close-btn').click(closeListAdderForm);
     $('#boards-list-btn').click(toggleBoardsLists);
     $('#board-menu-btn').click(openBoardMenu);
     $('#board-menu-close-btn').click(closeBoardMenu);
@@ -691,24 +626,7 @@ $(function () {
         }
     });
 
-    $listAdderInput.keypress(function (e) {
-        if (e.which === 13) {
-            addNewList();
-        }
-    })
-    $newCardNameInput.keypress(function (e) {
-        if (e.which === 13) {
-            addNewCard();
-        }
-    })
-
     // Event delegation
-    $lol.on('click', '.list-name', openListNameEdit);
-    $lol.on('keypress', '.edit-list-name-input', function (e) {
-        if (e.which === 13) {
-            updateListName.call(this);
-        }
-    });
     $fullCardModal.on('click', '.card-label', deleteLabel);
     $boardsList.on('click', '.board-entry', sendToBoardPage);
 
