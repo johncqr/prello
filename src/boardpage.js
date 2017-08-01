@@ -46,31 +46,6 @@ $(function () {
     var $commentInput = $('#comment-input');
     var $cardActivityList = $('#card-activity-list');
 
-    // helper functions
-    function isSpecificCardPageOpen(lid, cid) {
-        return $fullCardModal.is(':visible') && currentLid === lid && currentCid === cid;
-    }
-
-    function updateFullCardModal(c) {
-        $cardPageName.text(c.name);
-        $cardPageDesc.text(c.desc);
-        $cardPageAuthor.text(c.author);
-        $cardPageLabelList.empty();
-        $cardActivityList.empty();
-        // populate label list
-        if (c.labels) {
-            for (var i = 0; i < c.labels.length; ++i) {
-                $cardPageLabelList.append(createCardLabel(c.labels[i]));
-            }
-        }
-        // populate comment list
-        if (c.comments) {
-            for (var i = 0; i < c.comments.length; ++i) {
-                $cardActivityList.prepend(createComment(c.comments[i]));
-            }
-        }
-    }
-
     // jQuery element creation
     function createLabelSurface(la) {
         var $newLabelSurface = $('<li></li>',
@@ -82,25 +57,6 @@ $(function () {
         var $cardLabel = $('<li></li>', { class: 'card-label card-label-' + la.color })
             .append($('<span></span>', { class: 'card-label-text', text: la.desc }));
         return $cardLabel;
-    }
-
-    function createComment(comment) {
-        var $comment = $('<li></li>', {
-            class: 'card-activity'
-        })
-            .append($('<p></p>', {
-                class: 'card-comment-username',
-                text: comment.username
-            }))
-            .append($('<p></p>', {
-                class: 'card-comment-content',
-                text: comment.content
-            }))
-            .append($('<p></p>', {
-                class: 'card-comment-time',
-                text: Date(comment.datetimePosted)
-            }));
-        return $comment;
     }
 
     // event listeners
@@ -141,25 +97,6 @@ $(function () {
     function toggleBoardMemberAddMenu() {
         $boardMemberAddMenu.toggle();
     }
-
-    function openCardNameEdit() {
-        $editCardNameInput
-            .val($cardPageName.text())
-            .show();
-        $editCardNameInput.focus().select();
-        $cardPageName.hide();
-    }
-
-    function openCardDescEdit() {
-        $editCardDescInput
-            .val($cardPageDesc.text())
-            .show();
-        $editCardDescSubmit.show();
-        $editCardDescInput.focus().select();
-        $editDescBtn.hide();
-        $cardPageDesc.hide();
-    }
-
     function openNewCard() {
         $newCardModal.show();
         $newCardNameInput.focus();
@@ -187,25 +124,6 @@ $(function () {
         }
     }
 
-    function deleteCard() {
-        $.ajax({
-            url: `${HOST}/list/${currentLid}/card/${currentCid}`,
-            type: 'DELETE'
-        });
-        closeFullCard();
-    }
-
-    function closeFullCard() {
-        if ($editCardNameInput.is(':visible')) {
-            updateCardName();
-        }
-        if ($editCardDescSubmit.is(':visible')) {
-            updateCardDesc();
-        }
-        $fullCardModal.hide();
-        closeAddLabelMenu();
-    }
-
     function addNewLabel() {
         var labelData = {
             color: $(this).find('span').text(),
@@ -224,47 +142,6 @@ $(function () {
             type: 'PATCH'
         });
         $addLabelDesc.val('');
-    }
-
-    function addNewComment() {
-        $.ajax({
-            url: `${HOST}/list/${currentLid}/card/${currentCid}/comment`,
-            data: {
-                content: $commentInput.val()
-            },
-            type: 'POST'
-        });
-        $commentInput.val('');
-    }
-
-    function updateCardName() {
-        var newName;
-        if ((newName = $editCardNameInput.val()) !== '') {
-            $.ajax({
-                url: `${HOST}/list/${currentLid}/card/${currentCid}`,
-                data: {
-                    name: newName,
-                },
-                type: 'PATCH'
-            });
-        }
-        $cardPageName.show();
-        $editCardNameInput.hide();
-    }
-
-    function updateCardDesc() {
-        var newDesc = $editCardDescInput.val();
-        $.ajax({
-            url: `${HOST}/list/${currentLid}/card/${currentCid}`,
-            data: {
-                desc: newDesc,
-            },
-            type: 'PATCH'
-        });
-        $cardPageDesc.show();
-        $editDescBtn.show();
-        $editCardDescInput.hide();
-        $editCardDescSubmit.hide();
     }
 
     function deleteLabel() {
@@ -311,6 +188,23 @@ $(function () {
         }));
     });
 
+    class CardComment extends React.Component {
+        render() {
+            return (
+                <li className="card-activity">
+                    <p className="card-comment-username">
+                        {this.props.username}
+                    </p>
+                    <p className="card-comment-content">
+                        {this.props.content}
+                    </p>
+                    <p className="card-comment-time">
+                        {this.props.datetimePosted}
+                    </p>
+                </li>
+            );
+        }
+    }
 
     class Card extends React.Component {
         renderLabel(la) {
@@ -369,8 +263,8 @@ $(function () {
             return (
                 <li className="list" data-lid={this.props.lid}>
                     <div className="list-topbar">
-                        { !this.state.listNameEditOpen && <h4 className="list-name" onClick={this.toggleListNameEditOpen.bind(this)}>{this.props.name}</h4>}
-                        { this.state.listNameEditOpen &&
+                        {!this.state.listNameEditOpen && <h4 className="list-name" onClick={this.toggleListNameEditOpen.bind(this)}>{this.props.name}</h4>}
+                        {this.state.listNameEditOpen &&
                             <input type="text" className="edit-list-name-input" onKeyPress={this.handleKeypress.bind(this)} defaultValue={this.props.name} />
                         }
                         <div className="btn list-delete-btn" onClick={() => this.props.onDeleteList(this.props.lid)}>X</div>
@@ -415,7 +309,7 @@ $(function () {
                     {this.state.open &&
                         <div id="form-list-adder-container">
                             <input id="list-adder-input" onChange={this.handleChange.bind(this)} placeholder="Add a list..." />
-                            <div id="list-adder-submit-btn" className="btn" onClick= {() => this.handleSaveList()}>Save</div>
+                            <div id="list-adder-submit-btn" className="btn" onClick={() => this.handleSaveList()}>Save</div>
                             <div id="list-adder-close-btn" className="btn" onClick={() => this.handleListAdderToggle()}>X</div>
                         </div>
                     }
@@ -425,13 +319,161 @@ $(function () {
 
     }
 
+    class InfoModal extends React.Component {
+        constructor(props) {
+            super();
+            this.state = {
+                commentContent: '',
+                desc: props.desc,
+                cardNameEditOpen: false,
+                cardDescEditOpen: false,
+                cardLabelMenuOpen: false,
+            }
+        }
+        
+        handleClose() {
+            this.setState({
+                cardNameEditOpen: false,
+                cardDescEditOpen: false,
+                cardLabelMenuOpen: false,
+            });
+            this.props.onClose();
+        }
+
+        handleCommentChange(e) {
+            this.setState({ commentContent: e.target.value });
+        }
+
+        handleNameKeypress(e) {
+            if (e.which === 13 && e.target.value !== '') {
+                this.props.onCardNameChange(e.target.value);
+                this.setState({ cardNameEditOpen: false });
+            }
+        }
+
+        handleDescEditChange(e) {
+            this.setState({ desc: e.target.value });
+        }
+
+        handleDescEditOpen() {
+            this.setState({ cardDescEditOpen: true });
+        }
+
+        handleDescEditSubmit() {
+            this.props.onCardDescChange(this.state.desc);
+            this.setState({ cardDescEditOpen: false });
+        }
+
+        handleNameClick() {
+            this.setState({ cardNameEditOpen: true });
+        }
+
+        handleSendComment() {
+            this.props.onComment(this.state.commentContent);
+            this.setState({ commentContent: '' });
+        }
+
+        render() {
+            let comments = this.props.comments.map((c) => {
+                return <CardComment username={c.username} content={c.content} datetimePosted={c.datetimePosted} />
+            });
+
+            return (
+                <div id="card-modal" className="modal">
+                    <div id="current-card-page" className="card-page">
+                        <div className="card-page-topbar">
+                            <div className="card-page-topbar-left">
+                                { !this.state.cardNameEditOpen &&
+                                <h3 id="current-card-page-name" className="card-page-name" onClick={this.handleNameClick.bind(this)}>
+                                    {this.props.name}
+                                </h3>
+                                }
+                                { this.state.cardNameEditOpen &&
+                                <input type="text" id="edit-card-name-input" defaultValue={this.props.name} onKeyPress={this.handleNameKeypress.bind(this)} className="card-page-name" />
+                                }
+                            </div>
+                            <div className="card-page-topbar-right">
+                                <div id="close-card-btn" className="btn" onClick={this.handleClose.bind(this)}>X</div>
+                            </div>
+                        </div>
+                        <div className="flex-container">
+                            <div className="card-info">
+                                <p className="card-section-name">Author</p>
+                                <span id="current-card-page-author" className="card-member">
+                                    {this.props.author}
+                                </span>
+                                <p className="card-section-name">Description</p>
+                                { !this.state.cardDescEditOpen &&
+                                <div>
+                                    <p id="current-card-page-description" className="card-page-description" value={this.state.desc} onChange={this.handleDescEditChange.bind(this)}>
+                                        {this.props.desc}
+                                    </p>
+                                    <div id="current-card-page-edit-desc-btn" className="btn" onClick={this.handleDescEditOpen.bind(this)}>Edit description...</div>
+                                </div>
+                                }
+                                { this.state.cardDescEditOpen &&
+                                <div>
+                                    <textarea id="edit-card-desc-input" rows="3" cols="35" value={this.state.desc} onChange={this.handleDescEditChange.bind(this)} />
+                                    <div id="edit-card-desc-submit-btn" className="btn" onClick={this.handleDescEditSubmit.bind(this)}>Submit</div>
+                                </div>
+                                }
+                                <p className="card-section-name">Labels</p>
+                                <ul id="current-card-page-label-list" className="card-label-list">
+                                </ul>
+                                <p className="card-section-name">Members</p>
+                                <ul className="card-member-list">
+                                </ul>
+                                <p className="card-section-name">Add Comment</p>
+                                <textarea id="comment-input" value={this.state.commentContent} onChange={this.handleCommentChange.bind(this)} rows="3" cols="35" />
+                                <div id="send-comment-btn" className="btn" onClick={this.handleSendComment.bind(this)}>Send</div>
+                                <p className="card-section-name">Activity</p>
+                                <ul id="card-activity-list">
+                                    {comments}
+                                </ul>
+                            </div>
+                            <div className="card-options">
+                                <p className="card-section-name">Add</p>
+                                <ul className="card-option-list">
+                                    <li className="btn">Members</li>
+                                    <li id="add-label-btn" className="btn">Labels</li>
+                                    { this.state.cardLabelMenuOpen &&
+                                    <div id="add-label-menu">
+                                        <input id="add-label-desc" placeholder="Enter label description..." />
+                                        <ul id="add-label-list">
+                                            <li className="add-label-selector card-label-green"><span className="card-label-text">green</span></li>
+                                            <li className="add-label-selector card-label-yellow"><span className="card-label-text">yellow</span></li>
+                                            <li className="add-label-selector card-label-orange"><span className="card-label-text">orange</span></li>
+                                            <li className="add-label-selector card-label-red"><span className="card-label-text">red</span></li>
+                                            <li className="add-label-selector card-label-purple"><span className="card-label-text">purple</span></li>
+                                            <li className="add-label-selector card-label-blue"><span className="card-label-text">blue</span></li>
+                                        </ul>
+                                    </div>
+                                    }
+                                </ul>
+                                <p className="card-section-name">Options</p>
+                                <ul className="card-option-list">
+                                    <li id="delete-card-btn" className="btn" onClick={this.props.onDelete}>Delete</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="card-modal-bg" className="modal-bg"></div>
+                </div >
+            );
+        }
+    }
+
     class Board extends React.Component {
         constructor() {
             super();
             this.state = {
                 data: [],
+                cardModalOpen: false,
+                currentLid,
+                currentCid,
             }
         }
+        // TODO: re-add all card functions with state
 
         componentDidMount() {
             $.ajax({
@@ -475,7 +517,7 @@ $(function () {
                     data: newData,
                 });
             });
-            
+
             socket.on('deleteCard', (data) => {
                 let newData = this.state.data.slice();
                 let listIndex = this._findIndexOfList(data.lid);
@@ -497,9 +539,6 @@ $(function () {
                 this.setState({
                     data: newData,
                 });
-                if (isSpecificCardPageOpen(data.lid, data.cid)) {
-                    $cardActivityList.prepend(createComment(data.commentData));
-                }
             });
 
             socket.on('editCard', (data) => {
@@ -508,30 +547,6 @@ $(function () {
                 let cardIndex = this._findIndexOfCard(listIndex, data.cid);
                 for (var key in data.cardData) {
                     newData[listIndex].cards[cardIndex][key] = data.cardData[key];
-                    switch (key) {
-                        case 'name':
-                            if (isSpecificCardPageOpen(data.lid, data.cid)) {
-                                $cardPageName.text(data.cardData.name);
-                            }
-                            break;
-                        case 'desc':
-                            if (isSpecificCardPageOpen(data.lid, data.cid)) {
-                                $cardPageDesc.text(data.cardData.desc);
-                            }
-                            break;
-                        case 'labels':
-                            if (data.cardData.labels == 0) {
-                                newData[listIndex].cards[cardIndex][key] = data.cardData[key];
-                                data.cardData.labels = [];
-                            }
-                            if (isSpecificCardPageOpen(data.lid, data.cid)) {
-                                $cardPageLabelList.empty();
-                                data.cardData.labels.forEach(function (la) {
-                                    $cardPageLabelList.append(createCardLabel(la));
-                                });
-                            }
-                            break;
-                    }
                 }
                 this.setState({
                     data: newData,
@@ -546,6 +561,12 @@ $(function () {
 
         _findIndexOfCard(listIndex, cid) {
             return this.state.data[listIndex].cards.findIndex((c) => cid === c._id);
+        }
+
+        _findCardData(lid, cid) {
+            let listIndex = this._findIndexOfList(lid);
+            let cardIndex = this._findIndexOfCard(listIndex, cid);
+            return this.state.data[listIndex].cards[cardIndex];
         }
 
         handleAddList(name) {
@@ -576,27 +597,90 @@ $(function () {
         }
 
         handleOpenCard(lid, cid) {
-            currentLid = lid;
-            currentCid = cid;
-            var listData = this.state.data.find((l) => l._id === lid);
-            var cardData = listData.cards.find((c) => c._id === cid);
-            updateFullCardModal(cardData);
-            $fullCardModal.show();
-            $editCardNameInput.hide();
+            this.setState({
+                cardModalOpen: true,
+                currentLid: lid,
+                currentCid: cid,
+            });
+        }
+
+        handleCloseCard() {
+            this.setState({
+                cardModalOpen: false,
+            });
+        }
+
+        handleDeleteCard() {
+            $.ajax({
+                url: `${HOST}/list/${this.state.currentLid}/card/${this.state.currentCid}`,
+                type: 'DELETE',
+            });
+            this.handleCloseCard();
+        }
+
+        handleNewComment(content) {
+            $.ajax({
+                url: `${HOST}/list/${this.state.currentLid}/card/${this.state.currentCid}/comment`,
+                data: {
+                    content: content
+                },
+                type: 'POST',
+            });
+        }
+
+        handleCardNameChange(name) {
+            $.ajax({
+                url: `${HOST}/list/${this.state.currentLid}/card/${this.state.currentCid}`,
+                data: {
+                    name: name,
+                },
+                type: 'PATCH',
+            });
+        }
+
+        handleCardDescChange(desc) {
+            $.ajax({
+                url: `${HOST}/list/${this.state.currentLid}/card/${this.state.currentCid}`,
+                data: {
+                    desc: desc,
+                },
+                type: 'PATCH'
+            });
         }
 
         render() {
             let lists = this.state.data.map((l) => {
                 return <List key={l._id} lid={l._id} name={l.name} cards={l.cards}
-                             onOpenCard={this.handleOpenCard.bind(this)}
-                             onDeleteList={this.handleDeleteList.bind(this)}
-                             onListNameChange={this.handleListNameChange.bind(this)} />
+                    onOpenCard={this.handleOpenCard.bind(this)}
+                    onDeleteList={this.handleDeleteList.bind(this)}
+                    onListNameChange={this.handleListNameChange.bind(this)} />
             });
+
+            let cardData;
+            if (this.state.cardModalOpen) {
+                cardData = this._findCardData(this.state.currentLid, this.state.currentCid);
+            }
+
             return (
+                <div>
                 <ul id="lol">
                     {lists}
-                    <ListAdder onAddList={(name) => this.handleAddList(name)}/>
+                    <ListAdder onAddList={(name) => this.handleAddList(name)} />
                 </ul>
+                { this.state.cardModalOpen &&
+                    <InfoModal
+                    name={cardData.name}
+                    author={cardData.author}
+                    desc={cardData.desc}
+                    comments={cardData.comments}
+                    onClose={this.handleCloseCard.bind(this)}
+                    onDelete={this.handleDeleteCard.bind(this)}
+                    onComment={this.handleNewComment.bind(this)}
+                    onCardNameChange={this.handleCardNameChange.bind(this)}
+                    onCardDescChange={this.handleCardDescChange.bind(this)}
+                    />
+                }
+                </div>
             );
         }
     }
@@ -608,23 +692,11 @@ $(function () {
     $('#add-label-btn').click(toggleAddLabelMenu);
     $('#new-card-modal-bg').click(closeNewCard);
     $('#close-new-card-btn').click(closeNewCard);
-    $('#close-card-btn').click(closeFullCard);
-    $('#card-modal-bg').click(closeFullCard);
     $('#add-card-btn').click(addNewCard);
-    $('#delete-card-btn').click(deleteCard);
     $('.add-label-selector').click(addNewLabel);
-    $('#send-comment-btn').click(addNewComment);
     $('#board-member-add-menu-btn').click(toggleBoardMemberAddMenu);
     $('#add-board-member-btn').click(addBoardMember);
     $('#logout-btn').click(sendToLogOut);
-    $cardPageName.click(openCardNameEdit);
-    $editDescBtn.click(openCardDescEdit);
-    $editCardDescSubmit.click(updateCardDesc);
-    $editCardNameInput.keypress(function (e) {
-        if (e.which === 13) {
-            updateCardName();
-        }
-    });
 
     // Event delegation
     $fullCardModal.on('click', '.card-label', deleteLabel);
