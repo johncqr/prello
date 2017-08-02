@@ -150,7 +150,7 @@ $(function () {
                 <div className="board-toolbar">
                     <div className="board-toolbar-left">
                         <h2 className="board-name">
-                            {this.props.title}
+                            {this.props.name}
                         </h2>
                     </div>
                     <div className="board-toolbar-right">
@@ -276,7 +276,7 @@ $(function () {
                         <p id="logo"><a href="/">Prello</a></p>
                     </div>
                     <div className="navbar-right">
-                        <div id="user-btn" className="navbar-btn" onClick={this.toggleUserMenu.bind(this)}>PlaceholderUser</div>
+                        <div id="user-btn" className="navbar-btn" onClick={this.toggleUserMenu.bind(this)}>{USERNAME}</div>
                         {this.state.userMenuOpen &&
                             <div id="user-menu">
                                 <div id="logout-btn" onClick={this.handleLogOut.bind(this)} className="btn">Log Out</div>
@@ -615,6 +615,9 @@ $(function () {
             this.state = {
                 data: [],
                 boards: [],
+                boardId: '',
+                boardName: '',
+                boardMembers: [],
                 cardModalOpen: false,
                 currentLid: '',
                 currentCid: '',
@@ -623,12 +626,15 @@ $(function () {
 
         componentDidMount() {
             $.ajax({
-                url: `${HOST}/list`,
+                url: `${HOST}/info`,
                 type: 'GET',
                 dataType: 'json',
             }).done((json) => {
                 this.setState({
-                    data: json,
+                    boardId: json._id,
+                    boardName: json.name,
+                    boardMembers: json.members,
+                    data: json.lists,
                 });
             });
 
@@ -848,7 +854,9 @@ $(function () {
                 <div>
                     <Navbar boards={this.state.boards}/>
                     <div className="board-page">
-                        <BoardToolbar members={[]}/>
+                        <BoardToolbar members={this.state.boardMembers}
+                                      name={this.state.boardName}
+                        />
                         <ul id="lol">
                             {lists}
                             <ListAdder onAddList={(name) => this.handleAddList(name)} />

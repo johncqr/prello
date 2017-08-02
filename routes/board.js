@@ -87,6 +87,15 @@ router.get('/:bid', checkPermission, function (req, res) {
   });
 });
 
+router.get('/:bid/info', checkPermission, function (req, res) {
+  Board.findById(req.params.bid, function (err, board) {
+    if (checkExistResource(board, res)) {
+      res.json(board);
+    }
+  });
+});
+
+
 router.delete('/:bid', checkPermission, function (req, res) {
   Board.findById(req.params.bid, function (err, board) {
     if (err) {
