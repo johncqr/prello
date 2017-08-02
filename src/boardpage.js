@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 
 // API information
 var PORT = 3000;
+var BASE = `http://localhost:${PORT}`
 var HOST = `http://localhost:${PORT}/board/${BID}`;
 
 // socket.io
@@ -42,17 +43,6 @@ $(function () {
         var $cardLabel = $('<li></li>', { class: 'card-label card-label-' + la.color })
             .append($('<span></span>', { class: 'card-label-text', text: la.desc }));
         return $cardLabel;
-    }
-
-    // event listeners
-
-    function sendToBoardPage() {
-        var bid = $(this).attr('data-bid');
-        window.location.href = `/board/${bid}`;
-    }
-
-    function sendToLogOut() {
-        window.location.href = '/logout';
     }
 
     function closeAddLabelMenu() {
@@ -234,6 +224,10 @@ $(function () {
             }
         }
 
+        sendToBoardPage(bid) {
+            window.location.href = `/board/${bid}`;
+        }
+
         toggleBoardsList() {
             this.setState({
                 boardsListOpen: !this.state.boardsListOpen,
@@ -252,7 +246,9 @@ $(function () {
 
         renderBoardEntry(boardData) {
             return (
-                <li className="board-entry" data-bid={boardData._id}>
+                <li className="board-entry" key={boardData._id} data-bid={boardData._id}
+                    onClick={() => this.sendToBoardPage(boardData._id)}
+                >
                     {boardData.name}
                 </li>
             );
@@ -618,6 +614,7 @@ $(function () {
             super();
             this.state = {
                 data: [],
+                boards: [],
                 cardModalOpen: false,
                 currentLid: '',
                 currentCid: '',
@@ -632,6 +629,16 @@ $(function () {
             }).done((json) => {
                 this.setState({
                     data: json,
+                });
+            });
+
+            $.ajax({
+                url: `${BASE}/board`,
+                type: 'GET',
+                dataType: 'json',
+            }).done((json) => {
+                this.setState({
+                    boards: json,
                 });
             });
 
@@ -839,7 +846,7 @@ $(function () {
 
             return (
                 <div>
-                    <Navbar boards={[]}/>
+                    <Navbar boards={this.state.boards}/>
                     <div className="board-page">
                         <BoardToolbar members={[]}/>
                         <ul id="lol">
