@@ -12,26 +12,6 @@ var socket = io();
 socket.emit('join', { roomid: BID }); // BID passed through template
 
 $(function () {
-    // cached selectors
-    var $userMenu = $('#user-menu');
-    var $newCardNameInput = $('#new-card-name-input');
-    var $newCardDescInput = $('#new-card-desc-input');
-    var $addLabelDesc = $('#add-label-desc');
-    var $cardPage = $('#current-card-page');
-    var $cardPageName = $('#current-card-page-name');
-    var $cardPageDesc = $('#current-card-page-description');
-    var $cardPageAuthor = $('#current-card-page-author');
-    var $cardPageLabelList = $('#current-card-page-label-list');
-    var $fullCardModal = $('#card-modal');
-    var $newListName = $('#list-adder-input');
-    var $addLabelMenu = $('#add-label-menu');
-    var $boardsList = $('#boards-list');
-    var $boardMenu = $('#board-menu');
-    var $boardMemberList = $('#board-member-list');
-    var $boardMemberAddMenu = $('#board-member-add-menu');
-    var $boardMemberInput = $('#new-board-member-input');
-    var $addMemberNotice = $('#add-member-notice');
-
     // jQuery element creation
     function createLabelSurface(la) {
         var $newLabelSurface = $('<li></li>',
@@ -94,51 +74,45 @@ $(function () {
     //     });
     // }
 
-    function addBoardMember() {
-        if ($boardMemberInput.val()) {
-            $.ajax({
-                url: `${HOST}/member`,
-                data: {
-                    username: $boardMemberInput.val()
-                },
-                type: 'POST',
-                dataType: 'json',
-            }).done(function (json) {
-                $boardMemberInput.val('');
-                $addMemberNotice.text(json.statusMsg);
-            });
-        } else {
-            $addMemberNotice.text('Blank username!')
-        }
-    }
-
     // socket.io events
-
-    socket.on('newBoardMember', function (data) {
-        $boardMemberList.append($('<li></li>', {
-            class: 'card-member',
-            text: data.username,
-        }));
-    });
 
     class BoardToolbar extends React.Component {
         constructor() {
             super();
             this.state = {
                 boardMenuOpen: false,
+                addMemberMenuOpen: false,
+                newMemberInput: '',
             }
         }
 
         renderMember(m) {
-            <li class="card-member">
-                {m}
-            </li>
+            return (
+                <li className="card-member">
+                    {m}
+                </li>
+            );
         }
 
         toggleBoardMenu() {
             this.setState(prevState => {
                 return { boardMenuOpen: !prevState.boardMenuOpen, }
             });
+        }
+
+        toggleAddMemberMenu() {
+            this.setState(prevState => {
+                return { addMemberMenuOpen: !prevState.addMemberMenuOpen, }
+            });
+        }
+
+        handleNewMemberInputChange(e) {
+            this.setState({ newMemberInput: e.target.value });
+        }
+
+        handleNewMemberSubmit() {
+            this.props.onNewMember(this.state.newMemberInput);
+            this.setState({ newMemberInput: '' });
         }
         
         render() {
@@ -168,12 +142,14 @@ $(function () {
                                         <ul id="board-member-list">
                                             {members}
                                         </ul>
-                                        <div id="board-member-add-menu-btn" className="btn">Add Members...</div>
+                                        <div id="board-member-add-menu-btn" className="btn" onClick={this.toggleAddMemberMenu.bind(this)}>Add Members...</div>
+                                        { this.state.addMemberMenuOpen && 
                                         <div id="board-member-add-menu">
-                                            <input id="new-board-member-input" placeholder="Member username..." />
-                                            <div id="add-board-member-btn" className="btn">Add</div>
+                                            <input id="new-board-member-input" value={this.state.newMemberInput} onChange={this.handleNewMemberInputChange.bind(this)} placeholder="Member username..." />
+                                            <div id="add-board-member-btn" className="btn" onClick={this.handleNewMemberSubmit.bind(this)}>Add</div>
                                             <div id="add-member-notice"></div>
                                         </div>
+                                        }
                                     </div>
                                     <div className="board-menu-section">
                                         <ul className="board-menu-option-list">
@@ -715,6 +691,13 @@ $(function () {
                 });
             });
 
+            socket.on('newBoardMember', function (data) {
+                let newBoardMembers = this.state.boardMembers.slice();
+                newBoardMembers.push(data.username);
+                this.state({ boardMembers: newBoardMembers });
+            });
+
+
         }
 
         _findIndexOfList(lid) {
@@ -768,6 +751,17 @@ $(function () {
             $.ajax({
                 url: `${HOST}/list/${lid}`,
                 type: 'DELETE'
+            });
+        }
+
+        handleNewMember(name) {
+            $.ajax({
+                url: `${HOST}/member`,
+                data: {
+                    username: name
+                },
+                type: 'POST',
+                dataType: 'json',
             });
         }
 
@@ -856,6 +850,7 @@ $(function () {
                     <div className="board-page">
                         <BoardToolbar members={this.state.boardMembers}
                                       name={this.state.boardName}
+                                      onNewMember={this.handleNewMember.bind(this)}
                         />
                         <ul id="lol">
                             {lists}
