@@ -6,21 +6,13 @@ import ReactDOM from 'react-dom';
 var PORT = 3000;
 var HOST = `http://localhost:${PORT}/board/${BID}`;
 
-// in-memory data to prevent constant API calls
-var map = {};
-
 // socket.io
 var socket = io();
 socket.emit('join', { roomid: BID }); // BID passed through template
 
-// used to see where to add/edit cards
-var currentLid;
-var currentCid;
-
 $(function () {
     // cached selectors
     var $userMenu = $('#user-menu');
-    var $lol = $('lol');
     var $newCardNameInput = $('#new-card-name-input');
     var $newCardDescInput = $('#new-card-desc-input');
     var $addLabelDesc = $('#add-label-desc');
@@ -38,13 +30,6 @@ $(function () {
     var $boardMemberAddMenu = $('#board-member-add-menu');
     var $boardMemberInput = $('#new-board-member-input');
     var $addMemberNotice = $('#add-member-notice');
-    var $newCardModal = $('#new-card-modal');
-    var $editCardNameInput = $('#edit-card-name-input');
-    var $editDescBtn = $('#current-card-page-edit-desc-btn');
-    var $editCardDescInput = $('#edit-card-desc-input');
-    var $editCardDescSubmit = $('#edit-card-desc-submit-btn')
-    var $commentInput = $('#comment-input');
-    var $cardActivityList = $('#card-activity-list');
 
     // jQuery element creation
     function createLabelSurface(la) {
@@ -70,10 +55,6 @@ $(function () {
         window.location.href = '/logout';
     }
 
-    function toggleUserMenu() {
-        $userMenu.toggle();
-    }
-
     function closeAddLabelMenu() {
         $addLabelMenu.hide();
     }
@@ -82,58 +63,46 @@ $(function () {
         $addLabelMenu.toggle();
     }
 
-    function toggleBoardsLists() {
-        $boardsList.toggle();
-    }
-
-    function openBoardMenu() {
-        $boardMenu.css('right', '0');
-    }
-
-    function closeBoardMenu() {
-        $boardMenu.css('right', '-320px');
-    }
-
     function toggleBoardMemberAddMenu() {
         $boardMemberAddMenu.toggle();
     }
 
-    function addNewLabel() {
-        var labelData = {
-            color: $(this).find('span').text(),
-            desc: $addLabelDesc.val()
-        }
-        var labels = map[currentLid].cards[currentCid].labels;
-        if (!labels) {
-            labels = [];
-        }
-        labels.push(labelData);
-        $.ajax({
-            url: `${HOST}/list/${currentLid}/card/${currentCid}`,
-            data: {
-                labels: labels,
-            },
-            type: 'PATCH'
-        });
-        $addLabelDesc.val('');
-    }
+    // function addNewLabel() {
+    //     var labelData = {
+    //         color: $(this).find('span').text(),
+    //         desc: $addLabelDesc.val()
+    //     }
+    //     var labels = map[currentLid].cards[currentCid].labels;
+    //     if (!labels) {
+    //         labels = [];
+    //     }
+    //     labels.push(labelData);
+    //     $.ajax({
+    //         url: `${HOST}/list/${currentLid}/card/${currentCid}`,
+    //         data: {
+    //             labels: labels,
+    //         },
+    //         type: 'PATCH'
+    //     });
+    //     $addLabelDesc.val('');
+    // }
 
-    function deleteLabel() {
-        var $labelToDelete = $(this);
-        var labelIndex = $labelToDelete.index();
-        var labels = map[currentLid].cards[currentCid].labels;
-        labels.splice(labelIndex, 1);
-        if (labels.length === 0) {
-            labels = 0;
-        }
-        $.ajax({
-            url: `${HOST}/list/${currentLid}/card/${currentCid}`,
-            data: {
-                labels: labels,
-            },
-            type: 'PATCH'
-        });
-    }
+    // function deleteLabel() {
+    //     var $labelToDelete = $(this);
+    //     var labelIndex = $labelToDelete.index();
+    //     var labels = map[currentLid].cards[currentCid].labels;
+    //     labels.splice(labelIndex, 1);
+    //     if (labels.length === 0) {
+    //         labels = 0;
+    //     }
+    //     $.ajax({
+    //         url: `${HOST}/list/${currentLid}/card/${currentCid}`,
+    //         data: {
+    //             labels: labels,
+    //         },
+    //         type: 'PATCH'
+    //     });
+    // }
 
     function addBoardMember() {
         if ($boardMemberInput.val()) {
@@ -161,6 +130,168 @@ $(function () {
             text: data.username,
         }));
     });
+
+    class BoardToolbar extends React.Component {
+        constructor() {
+            super();
+            this.state = {
+                boardMenuOpen: false,
+            }
+        }
+
+        renderMember(m) {
+            <li class="card-member">
+                {m}
+            </li>
+        }
+
+        toggleBoardMenu() {
+            this.setState(prevState => {
+                return { boardMenuOpen: !prevState.boardMenuOpen, }
+            });
+        }
+        
+        render() {
+            let members = this.props.members.map((m) => {
+                return this.renderMember(m);
+            });
+
+            return (
+                <div className="board-toolbar">
+                    <div className="board-toolbar-left">
+                        <h2 className="board-name">
+                            {this.props.title}
+                        </h2>
+                    </div>
+                    <div className="board-toolbar-right">
+                        {!this.state.boardMenuOpen &&
+                            <div id="board-menu-btn" onClick={this.toggleBoardMenu.bind(this)}>Show Menu</div>
+                        }
+                        {this.state.boardMenuOpen &&
+                            <div>
+                                <div id="board-menu">
+                                    <div className="board-menu-section">
+                                        <span className="board-menu-title-text">Menu</span>
+                                        <span id="board-menu-close-btn" onClick={this.toggleBoardMenu.bind(this)}>X</span>
+                                    </div>
+                                    <div className="board-menu-section">
+                                        <ul id="board-member-list">
+                                            {members}
+                                        </ul>
+                                        <div id="board-member-add-menu-btn" className="btn">Add Members...</div>
+                                        <div id="board-member-add-menu">
+                                            <input id="new-board-member-input" placeholder="Member username..." />
+                                            <div id="add-board-member-btn" className="btn">Add</div>
+                                            <div id="add-member-notice"></div>
+                                        </div>
+                                    </div>
+                                    <div className="board-menu-section">
+                                        <ul className="board-menu-option-list">
+                                            <li className="board-menu-option">Change Background</li>
+                                            <li className="board-menu-option">Filter Cards</li>
+                                            <li className="board-menu-option">Power Ups</li>
+                                            <li className="board-menu-option">Stickers</li>
+                                        </ul>
+                                    </div>
+                                    <div className="board-menu-section">
+                                        <p className="board-menu-section-name">Activity</p>
+                                        <ul className="board-menu-activity-list">
+                                            <li className="board-menu-activity">
+                                                <span className="board-menu-activity-username">User</span> did activity.
+                                    <p className="board-menu-activity-time">2 hours ago</p>
+                                            </li>
+                                            <li className="board-menu-activity">
+                                                <span className="board-menu-activity-username">User</span> did activity.
+                                    <p className="board-menu-activity-time">3 hours ago</p>
+                                            </li>
+                                            <li className="board-menu-activity">
+                                                <span className="board-menu-activity-username">User</span> did activity.
+                                    <p className="board-menu-activity-time">3 hours ago</p>
+                                            </li>
+                                            <li className="board-menu-activity">
+                                                <span className="board-menu-activity-username">User</span> did activity.
+                                    <p className="board-menu-activity-time">3 hours ago</p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div className="div-clearer"></div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            );
+        }
+    }
+
+    class Navbar extends React.Component {
+        constructor() {
+            super();
+            this.state = {
+                boardsListOpen: false,
+                userMenuOpen: false,
+            }
+        }
+
+        toggleBoardsList() {
+            this.setState({
+                boardsListOpen: !this.state.boardsListOpen,
+            });
+        }
+        
+        toggleUserMenu() {
+            this.setState({
+                userMenuOpen: !this.state.userMenuOpen,
+            });
+        }
+
+        handleLogOut() {
+            window.location.href = '/logout';
+        }
+
+        renderBoardEntry(boardData) {
+            return (
+                <li className="board-entry" data-bid={boardData._id}>
+                    {boardData.name}
+                </li>
+            );
+        }
+
+        render() {
+            let boardEntries = this.props.boards.map((b) => {
+                return this.renderBoardEntry(b);
+            });
+
+            return (
+                <div className="navbar">
+                    <div className="navbar-left">
+                        <div id="boards-list-btn" className="navbar-btn" onClick={this.toggleBoardsList.bind(this)}>Boards</div>
+                        {this.state.boardsListOpen &&
+                            <div id="boards-list">
+                                <div className="boards-list-sep"><span className="boards-list-sep-name">Personal Boards</span></div>
+                                <ul className="board-entry-list">
+                                    {boardEntries}
+                                </ul>
+                            </div>
+                        }
+                    </div>
+                    <div className="navbar-mid">
+                        <p id="logo"><a href="/">Prello</a></p>
+                    </div>
+                    <div className="navbar-right">
+                        <div id="user-btn" className="navbar-btn" onClick={this.toggleUserMenu.bind(this)}>PlaceholderUser</div>
+                        {this.state.userMenuOpen &&
+                            <div id="user-menu">
+                                <div id="logout-btn" onClick={this.handleLogOut.bind(this)} className="btn">Log Out</div>
+                            </div>
+                        }
+                    </div>
+                </div >
+            );
+
+        }
+    }
 
     class CardComment extends React.Component {
         render() {
@@ -332,7 +463,7 @@ $(function () {
                         <div className="div-clearer"></div>
                         <p id="add-card-btn" className="btn" onClick={this.handleSubmit.bind(this)}>Add Card</p>
                     </div>
-                    <div id="new-card-modal-bg" className="modal-bg"></div>
+                    <div className="modal-bg" onClick={this.props.onCloseNewCard}></div>
                 </div>
             );
         }
@@ -476,7 +607,7 @@ $(function () {
                             </div>
                         </div>
                     </div>
-                    <div id="card-modal-bg" className="modal-bg"></div>
+                    <div onClick={this.handleClose.bind(this)} className="modal-bg"></div>
                 </div >
             );
         }
@@ -488,11 +619,10 @@ $(function () {
             this.state = {
                 data: [],
                 cardModalOpen: false,
-                currentLid,
-                currentCid,
+                currentLid: '',
+                currentCid: '',
             }
         }
-        // TODO: re-add all card functions with state
 
         componentDidMount() {
             $.ajax({
@@ -709,48 +839,38 @@ $(function () {
 
             return (
                 <div>
-                <ul id="lol">
-                    {lists}
-                    <ListAdder onAddList={(name) => this.handleAddList(name)} />
-                </ul>
-                { this.state.cardModalOpen &&
-                    <InfoModal
-                    name={cardData.name}
-                    author={cardData.author}
-                    desc={cardData.desc}
-                    comments={cardData.comments}
-                    onClose={this.handleCloseCard.bind(this)}
-                    onDelete={this.handleDeleteCard.bind(this)}
-                    onComment={this.handleNewComment.bind(this)}
-                    onCardNameChange={this.handleCardNameChange.bind(this)}
-                    onCardDescChange={this.handleCardDescChange.bind(this)}
-                    />
-                }
-                { this.state.newCardModalOpen &&
-                    <NewModal
-                    onAddCard={this.handleAddCard.bind(this)}
-                    onCloseNewCard={this.handleCloseNewCard.bind(this)}
-                    />
+                    <Navbar boards={[]}/>
+                    <div className="board-page">
+                        <BoardToolbar members={[]}/>
+                        <ul id="lol">
+                            {lists}
+                            <ListAdder onAddList={(name) => this.handleAddList(name)} />
+                        </ul>
+                    </div>
+                    {this.state.cardModalOpen &&
+                        <InfoModal
+                            name={cardData.name}
+                            author={cardData.author}
+                            desc={cardData.desc}
+                            comments={cardData.comments}
+                            onClose={this.handleCloseCard.bind(this)}
+                            onDelete={this.handleDeleteCard.bind(this)}
+                            onComment={this.handleNewComment.bind(this)}
+                            onCardNameChange={this.handleCardNameChange.bind(this)}
+                            onCardDescChange={this.handleCardDescChange.bind(this)}
+                        />
+                    }
+                    {this.state.newCardModalOpen &&
+                        <NewModal
+                            onAddCard={this.handleAddCard.bind(this)}
+                            onCloseNewCard={this.handleCloseNewCard.bind(this)}
+                        />
 
-                }
+                    }
                 </div>
             );
         }
     }
 
-    $('#user-btn').click(toggleUserMenu);
-    $('#boards-list-btn').click(toggleBoardsLists);
-    $('#board-menu-btn').click(openBoardMenu);
-    $('#board-menu-close-btn').click(closeBoardMenu);
-    $('#add-label-btn').click(toggleAddLabelMenu);
-    $('.add-label-selector').click(addNewLabel);
-    $('#board-member-add-menu-btn').click(toggleBoardMemberAddMenu);
-    $('#add-board-member-btn').click(addBoardMember);
-    $('#logout-btn').click(sendToLogOut);
-
-    // Event delegation
-    $fullCardModal.on('click', '.card-label', deleteLabel);
-    $boardsList.on('click', '.board-entry', sendToBoardPage);
-
-    ReactDOM.render(<Board />, document.getElementById('board-data'));
+    ReactDOM.render(<Board />, document.getElementById('app'));
 });
