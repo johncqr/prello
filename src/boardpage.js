@@ -19,44 +19,6 @@ $(function () {
         return $newLabelSurface;
     }
 
-    function createCardLabel(la) {
-        var $cardLabel = $('<li></li>', { class: 'card-label card-label-' + la.color })
-            .append($('<span></span>', { class: 'card-label-text', text: la.desc }));
-        return $cardLabel;
-    }
-
-    function closeAddLabelMenu() {
-        $addLabelMenu.hide();
-    }
-
-    function toggleAddLabelMenu() {
-        $addLabelMenu.toggle();
-    }
-
-    function toggleBoardMemberAddMenu() {
-        $boardMemberAddMenu.toggle();
-    }
-
-    // function addNewLabel() {
-    //     var labelData = {
-    //         color: $(this).find('span').text(),
-    //         desc: $addLabelDesc.val()
-    //     }
-    //     var labels = map[currentLid].cards[currentCid].labels;
-    //     if (!labels) {
-    //         labels = [];
-    //     }
-    //     labels.push(labelData);
-    //     $.ajax({
-    //         url: `${HOST}/list/${currentLid}/card/${currentCid}`,
-    //         data: {
-    //             labels: labels,
-    //         },
-    //         type: 'PATCH'
-    //     });
-    //     $addLabelDesc.val('');
-    // }
-
     // function deleteLabel() {
     //     var $labelToDelete = $(this);
     //     var labelIndex = $labelToDelete.index();
@@ -447,10 +409,29 @@ $(function () {
             this.state = {
                 commentContent: '',
                 desc: props.desc,
+                labelDescInput: '',
                 cardNameEditOpen: false,
                 cardDescEditOpen: false,
                 cardLabelMenuOpen: false,
             }
+        }
+
+        renderLabel(l) {
+            return (
+                <li className={'card-label card-label-'+l.color}>
+                    <span className="card-label-text">{l.desc}</span>
+                </li>
+            );
+        }
+
+        renderLabelMaker(color) {
+            return (
+                <li onClick={() => this.handleAddLabel(color)} key={color} className={'add-label-selector card-label-'+color}>
+                    <span className="card-label-text">
+                        {color}
+                    </span>
+                </li>
+            );
         }
         
         handleClose() {
@@ -495,10 +476,33 @@ $(function () {
             this.setState({ commentContent: '' });
         }
 
+        toggleLabelMenu() {
+            this.setState(prevState => {
+                return { cardLabelMenuOpen: !prevState.cardLabelMenuOpen };
+            });
+        }
+
+        handleLabelDescChange(e) {
+            this.setState({ labelDescInput: e.target.value });
+        }
+
+        handleAddLabel(color) {
+            this.props.onAddLabel(this.state.labelDescInput, color);
+            this.setState({ labelDescInput: '' });
+        }
+
         render() {
             let comments = this.props.comments.map((c) => {
                 return <CardComment username={c.username} content={c.content} datetimePosted={c.datetimePosted} />
             });
+
+            let labels = this.props.labels.map((l) => {
+                return this.renderLabel(l);
+            });
+
+            let labelMakers = ['green', 'yellow', 'orange', 'red', 'blue', 'purple'].map((c) => {
+                return this.renderLabelMaker(c);
+            })
 
             return (
                 <div id="card-modal" className="modal">
@@ -541,6 +545,7 @@ $(function () {
                                 }
                                 <p className="card-section-name">Labels</p>
                                 <ul id="current-card-page-label-list" className="card-label-list">
+                                    {labels}
                                 </ul>
                                 <p className="card-section-name">Members</p>
                                 <ul className="card-member-list">
@@ -557,17 +562,12 @@ $(function () {
                                 <p className="card-section-name">Add</p>
                                 <ul className="card-option-list">
                                     <li className="btn">Members</li>
-                                    <li id="add-label-btn" className="btn">Labels</li>
+                                    <li id="add-label-btn" className="btn" onClick={this.toggleLabelMenu.bind(this)}>Labels</li>
                                     { this.state.cardLabelMenuOpen &&
                                     <div id="add-label-menu">
-                                        <input id="add-label-desc" placeholder="Enter label description..." />
+                                        <input id="add-label-desc" onChange={this.handleLabelDescChange.bind(this)} placeholder="Enter label description..." />
                                         <ul id="add-label-list">
-                                            <li className="add-label-selector card-label-green"><span className="card-label-text">green</span></li>
-                                            <li className="add-label-selector card-label-yellow"><span className="card-label-text">yellow</span></li>
-                                            <li className="add-label-selector card-label-orange"><span className="card-label-text">orange</span></li>
-                                            <li className="add-label-selector card-label-red"><span className="card-label-text">red</span></li>
-                                            <li className="add-label-selector card-label-purple"><span className="card-label-text">purple</span></li>
-                                            <li className="add-label-selector card-label-blue"><span className="card-label-text">blue</span></li>
+                                            {labelMakers}
                                         </ul>
                                     </div>
                                     }
@@ -813,6 +813,21 @@ $(function () {
             });
         }
 
+        handleAddLabel(desc, color) {
+            var newLabels = this._findCardData(this.state.currentLid, this.state.currentCid).labels.slice();
+            if (!newLabels) {
+                newLabels = [];
+            }
+            newLabels.push({ desc, color });
+            $.ajax({
+                url: `${HOST}/list/${this.state.currentLid}/card/${this.state.currentCid}`,
+                data: {
+                    labels: newLabels,
+                },
+                type: 'PATCH'
+            });
+        }
+
         handleCardDescChange(desc) {
             $.ajax({
                 url: `${HOST}/list/${this.state.currentLid}/card/${this.state.currentCid}`,
@@ -862,12 +877,14 @@ $(function () {
                             name={cardData.name}
                             author={cardData.author}
                             desc={cardData.desc}
+                            labels={cardData.labels}
                             comments={cardData.comments}
                             onClose={this.handleCloseCard.bind(this)}
                             onDelete={this.handleDeleteCard.bind(this)}
                             onComment={this.handleNewComment.bind(this)}
                             onCardNameChange={this.handleCardNameChange.bind(this)}
                             onCardDescChange={this.handleCardDescChange.bind(this)}
+                            onAddLabel={this.handleAddLabel.bind(this)}
                         />
                     }
                     {this.state.newCardModalOpen &&
