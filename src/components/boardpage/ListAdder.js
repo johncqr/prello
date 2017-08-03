@@ -7,6 +7,10 @@ export default class ListAdder extends React.Component {
             open: false,
             name: '',
         }
+
+        this.handleListAdderToggle = this.handleListAdderToggle.bind(this);
+        this.handleSaveList = this.handleSaveList.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
     handleListAdderToggle() {
@@ -27,12 +31,12 @@ export default class ListAdder extends React.Component {
     render() {
         return (
             <li id="list-adder" className="list">
-                {!this.state.open && <div id="list-adder-btn" className="btn" onClick={() => this.handleListAdderToggle()}>Add a list...</div>}
+                {!this.state.open && <div id="list-adder-btn" className="btn" onClick={this.handleListAdderToggle}>Add a list...</div>}
                 {this.state.open &&
                     <div id="form-list-adder-container">
-                        <input id="list-adder-input" onChange={this.handleChange.bind(this)} placeholder="Add a list..." />
-                        <div id="list-adder-submit-btn" className="btn" onClick={() => this.handleSaveList()}>Save</div>
-                        <div id="list-adder-close-btn" className="btn" onClick={() => this.handleListAdderToggle()}>X</div>
+                        <input id="list-adder-input" onChange={this.handleChange} placeholder="Add a list..." />
+                        <div id="list-adder-submit-btn" className="btn" onClick={this.handleSaveList}>Save</div>
+                        <div id="list-adder-close-btn" className="btn" onClick={this.handleListAdderToggle}>X</div>
                     </div>
                 }
             </li>

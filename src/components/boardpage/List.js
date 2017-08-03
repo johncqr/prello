@@ -31,6 +31,10 @@ export default class List extends React.Component {
         this.state = {
             listNameEditOpen: false,
         }
+
+        this.toggleListNameEditOpen = this.toggleListNameEditOpen.bind(this);
+        this.handleClickCardAddLink = this.handleClickCardAddLink.bind(this);
+        this.handleKeypress = this.handleKeypress.bind(this);
     }
 
     toggleListNameEditOpen() {
@@ -50,21 +54,31 @@ export default class List extends React.Component {
 
     render() {
         let cards = this.props.cards.map((c) => {
-            return <Card key={c._id} lid={this.props.lid} cid={c._id} onClick={() => this.props.onOpenCard(this.props.lid, c._id)} labels={c.labels} name={c.name} author={c.author} />;
+            return <Card lid={this.props.lid} cid={c._id} labels={c.labels} name={c.name} author={c.author}
+                         key={c._id} 
+                         onClick={() => this.props.onOpenCard(this.props.lid, c._id)}
+                    />;
         });
 
         return (
             <li className="list" data-lid={this.props.lid}>
                 <div className="list-topbar">
-                    {!this.state.listNameEditOpen && <h4 className="list-name" onClick={this.toggleListNameEditOpen.bind(this)}>{this.props.name}</h4>}
+                    {!this.state.listNameEditOpen &&
+                        <h4 className="list-name" onClick={this.toggleListNameEditOpen}>
+                            {this.props.name}
+                        </h4>}
                     {this.state.listNameEditOpen &&
-                        <input type="text" className="edit-list-name-input" onKeyPress={this.handleKeypress.bind(this)} defaultValue={this.props.name} />
+                        <input type="text" className="edit-list-name-input"
+                        onKeyPress={this.handleKeypress} defaultValue={this.props.name} />
                     }
-                    <div className="btn list-delete-btn" onClick={() => this.props.onDeleteList(this.props.lid)}>X</div>
+                    <div className="btn list-delete-btn"
+                         onClick={() => this.props.onDeleteList(this.props.lid)}>
+                         X
+                    </div>
                     <ul className="card-list">
                         {cards}
                     </ul>
-                    <p className="card-add-link" onClick={this.handleClickCardAddLink.bind(this)}>Add a card...</p>
+                    <p className="card-add-link" onClick={this.handleClickCardAddLink}>Add a card...</p>
                 </div>
             </li>
         );

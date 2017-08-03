@@ -29,6 +29,20 @@ export default class InfoModal extends React.Component {
             cardDescEditOpen: false,
             cardLabelMenuOpen: false,
         }
+
+        this.renderLabel = this.renderLabel.bind(this);
+        this.renderLabelMaker = this.renderLabelMaker.bind(this);
+        this.handleClose = this.handleClose.bind(this);
+        this.handleCommentChange = this.handleCommentChange.bind(this);
+        this.handleNameKeypress = this.handleNameKeypress.bind(this);
+        this.handleDescEditChange = this.handleDescEditChange.bind(this);
+        this.handleDescEditOpen = this.handleDescEditOpen.bind(this);
+        this.handleDescEditSubmit = this.handleDescEditSubmit.bind(this);
+        this.handleNameClick = this.handleNameClick.bind(this);
+        this.handleSendComment = this.handleSendComment.bind(this);
+        this.toggleLabelMenu = this.toggleLabelMenu.bind(this);
+        this.handleLabelDescChange = this.handleLabelDescChange.bind(this);
+        this.handleAddLabel = this.handleAddLabel.bind(this);
     }
 
     renderLabel(l) {
@@ -125,16 +139,16 @@ export default class InfoModal extends React.Component {
                     <div className="card-page-topbar">
                         <div className="card-page-topbar-left">
                             {!this.state.cardNameEditOpen &&
-                                <h3 id="current-card-page-name" className="card-page-name" onClick={this.handleNameClick.bind(this)}>
+                                <h3 id="current-card-page-name" className="card-page-name" onClick={this.handleNameClick}>
                                     {this.props.name}
                                 </h3>
                             }
                             {this.state.cardNameEditOpen &&
-                                <input type="text" id="edit-card-name-input" defaultValue={this.props.name} onKeyPress={this.handleNameKeypress.bind(this)} className="card-page-name" />
+                                <input type="text" id="edit-card-name-input" defaultValue={this.props.name} onKeyPress={this.handleNameKeypress} className="card-page-name" />
                             }
                         </div>
                         <div className="card-page-topbar-right">
-                            <div id="close-card-btn" className="btn" onClick={this.handleClose.bind(this)}>X</div>
+                            <div id="close-card-btn" className="btn" onClick={this.handleClose}>X</div>
                         </div>
                     </div>
                     <div className="flex-container">
@@ -146,16 +160,16 @@ export default class InfoModal extends React.Component {
                             <p className="card-section-name">Description</p>
                             {!this.state.cardDescEditOpen &&
                                 <div>
-                                    <p id="current-card-page-description" className="card-page-description" value={this.state.desc} onChange={this.handleDescEditChange.bind(this)}>
+                                    <p id="current-card-page-description" className="card-page-description" value={this.state.desc} onChange={this.handleDescEditChange}>
                                         {this.props.desc}
                                     </p>
-                                    <div id="current-card-page-edit-desc-btn" className="btn" onClick={this.handleDescEditOpen.bind(this)}>Edit description...</div>
+                                    <div id="current-card-page-edit-desc-btn" className="btn" onClick={this.handleDescEditOpen}>Edit description...</div>
                                 </div>
                             }
                             {this.state.cardDescEditOpen &&
                                 <div>
-                                    <textarea id="edit-card-desc-input" rows="3" cols="35" value={this.state.desc} onChange={this.handleDescEditChange.bind(this)} />
-                                    <div id="edit-card-desc-submit-btn" className="btn" onClick={this.handleDescEditSubmit.bind(this)}>Submit</div>
+                                    <textarea id="edit-card-desc-input" rows="3" cols="35" value={this.state.desc} onChange={this.handleDescEditChange} />
+                                    <div id="edit-card-desc-submit-btn" className="btn" onClick={this.handleDescEditSubmit}>Submit</div>
                                 </div>
                             }
                             <p className="card-section-name">Labels</p>
@@ -166,8 +180,8 @@ export default class InfoModal extends React.Component {
                             <ul className="card-member-list">
                             </ul>
                             <p className="card-section-name">Add Comment</p>
-                            <textarea id="comment-input" value={this.state.commentContent} onChange={this.handleCommentChange.bind(this)} rows="3" cols="35" />
-                            <div id="send-comment-btn" className="btn" onClick={this.handleSendComment.bind(this)}>Send</div>
+                            <textarea id="comment-input" value={this.state.commentContent} onChange={this.handleCommentChange} rows="3" cols="35" />
+                            <div id="send-comment-btn" className="btn" onClick={this.handleSendComment}>Send</div>
                             <p className="card-section-name">Activity</p>
                             <ul id="card-activity-list">
                                 {comments}
@@ -177,10 +191,10 @@ export default class InfoModal extends React.Component {
                             <p className="card-section-name">Add</p>
                             <ul className="card-option-list">
                                 <li className="btn">Members</li>
-                                <li id="add-label-btn" className="btn" onClick={this.toggleLabelMenu.bind(this)}>Labels</li>
+                                <li id="add-label-btn" className="btn" onClick={this.toggleLabelMenu}>Labels</li>
                                 {this.state.cardLabelMenuOpen &&
                                     <div id="add-label-menu">
-                                        <input id="add-label-desc" onChange={this.handleLabelDescChange.bind(this)} placeholder="Enter label description..." />
+                                        <input id="add-label-desc" onChange={this.handleLabelDescChange} placeholder="Enter label description..." />
                                         <ul id="add-label-list">
                                             {labelMakers}
                                         </ul>
@@ -194,7 +208,7 @@ export default class InfoModal extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div onClick={this.handleClose.bind(this)} className="modal-bg"></div>
+                <div onClick={this.handleClose} className="modal-bg"></div>
             </div >
         );
     }

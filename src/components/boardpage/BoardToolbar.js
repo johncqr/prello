@@ -8,6 +8,12 @@ export default class BoardToolbar extends React.Component {
             addMemberMenuOpen: false,
             newMemberInput: '',
         }
+
+        this.renderMember = this.renderMember.bind(this);
+        this.toggleBoardMenu = this.toggleBoardMenu.bind(this);
+        this.toggleAddMemberMenu = this.toggleAddMemberMenu.bind(this);
+        this.handleNewMemberInputChange = this.handleNewMemberInputChange.bind(this);
+        this.handleNewMemberSubmit = this.handleNewMemberSubmit.bind(this);
     }
 
     renderMember(m) {
@@ -53,24 +59,24 @@ export default class BoardToolbar extends React.Component {
                 </div>
                 <div className="board-toolbar-right">
                     {!this.state.boardMenuOpen &&
-                        <div id="board-menu-btn" onClick={this.toggleBoardMenu.bind(this)}>Show Menu</div>
+                        <div id="board-menu-btn" onClick={this.toggleBoardMenu}>Show Menu</div>
                     }
                     {this.state.boardMenuOpen &&
                         <div>
                             <div id="board-menu">
                                 <div className="board-menu-section">
                                     <span className="board-menu-title-text">Menu</span>
-                                    <span id="board-menu-close-btn" onClick={this.toggleBoardMenu.bind(this)}>X</span>
+                                    <span id="board-menu-close-btn" onClick={this.toggleBoardMenu}>X</span>
                                 </div>
                                 <div className="board-menu-section">
                                     <ul id="board-member-list">
                                         {members}
                                     </ul>
-                                    <div id="board-member-add-menu-btn" className="btn" onClick={this.toggleAddMemberMenu.bind(this)}>Add Members...</div>
+                                    <div id="board-member-add-menu-btn" className="btn" onClick={this.toggleAddMemberMenu}>Add Members...</div>
                                     {this.state.addMemberMenuOpen &&
                                         <div id="board-member-add-menu">
-                                            <input id="new-board-member-input" value={this.state.newMemberInput} onChange={this.handleNewMemberInputChange.bind(this)} placeholder="Member username..." />
-                                            <div id="add-board-member-btn" className="btn" onClick={this.handleNewMemberSubmit.bind(this)}>Add</div>
+                                            <input id="new-board-member-input" value={this.state.newMemberInput} onChange={this.handleNewMemberInputChange} placeholder="Member username..." />
+                                            <div id="add-board-member-btn" className="btn" onClick={this.handleNewMemberSubmit}>Add</div>
                                             <div id="add-member-notice"></div>
                                         </div>
                                     }

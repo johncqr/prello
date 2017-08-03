@@ -7,6 +7,10 @@ export default class NewModal extends React.Component {
             name: '',
             desc: '',
         }
+
+        this.handleNameChange = this.handleNameChange.bind(this);
+        this.handleDescChange = this.handleDescChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleNameChange(e) {
@@ -27,7 +31,7 @@ export default class NewModal extends React.Component {
                 <div id="new-card-page" className="card-page">
                     <div className="card-page-topbar">
                         <div className="card-page-topbar-left">
-                            <input id="new-card-name-input" value={this.state.name} onChange={this.handleNameChange.bind(this)} className="card-page-name" type="text" placeholder="Enter card name..." required />
+                            <input id="new-card-name-input" value={this.state.name} onChange={this.handleNameChange} className="card-page-name" type="text" placeholder="Enter card name..." required />
                         </div>
                         <div className="card-page-topbar-right">
                             <div id="close-new-card-btn" className="btn" onClick={this.props.onCloseNewCard}>X</div>
@@ -35,10 +39,10 @@ export default class NewModal extends React.Component {
                     </div>
                     <div className="card-info">
                         <p className="card-section-name">Description</p>
-                        <textarea id="new-card-desc-input" value={this.state.desc} onChange={this.handleDescChange.bind(this)} rows="3" cols="35" placeholder="Enter description..." />
+                        <textarea id="new-card-desc-input" value={this.state.desc} onChange={this.handleDescChange} rows="3" cols="35" placeholder="Enter description..." />
                     </div>
                     <div className="div-clearer"></div>
-                    <p id="add-card-btn" className="btn" onClick={this.handleSubmit.bind(this)}>Add Card</p>
+                    <p id="add-card-btn" className="btn" onClick={this.handleSubmit}>Add Card</p>
                 </div>
                 <div className="modal-bg" onClick={this.props.onCloseNewCard}></div>
             </div>

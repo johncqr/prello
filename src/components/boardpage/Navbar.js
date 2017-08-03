@@ -7,6 +7,12 @@ export default class Navbar extends React.Component {
             boardsListOpen: false,
             userMenuOpen: false,
         }
+
+        this.sendToBoardPage = this.sendToBoardPage.bind(this);
+        this.toggleBoardsList = this.toggleBoardsList.bind(this);
+        this.toggleUserMenu = this.toggleUserMenu.bind(this);
+        this.handleLogOut = this.handleLogOut.bind(this);
+        this.renderBoardEntry = this.renderBoardEntry.bind(this);
     }
 
     sendToBoardPage(bid) {
@@ -47,7 +53,7 @@ export default class Navbar extends React.Component {
         return (
             <div className="navbar">
                 <div className="navbar-left">
-                    <div id="boards-list-btn" className="navbar-btn" onClick={this.toggleBoardsList.bind(this)}>Boards</div>
+                    <div id="boards-list-btn" className="navbar-btn" onClick={this.toggleBoardsList}>Boards</div>
                     {this.state.boardsListOpen &&
                         <div id="boards-list">
                             <div className="boards-list-sep"><span className="boards-list-sep-name">Personal Boards</span></div>
@@ -61,10 +67,10 @@ export default class Navbar extends React.Component {
                     <p id="logo"><a href="/">Prello</a></p>
                 </div>
                 <div className="navbar-right">
-                    <div id="user-btn" className="navbar-btn" onClick={this.toggleUserMenu.bind(this)}>{this.props.username}</div>
+                    <div id="user-btn" className="navbar-btn" onClick={this.toggleUserMenu}>{this.props.username}</div>
                     {this.state.userMenuOpen &&
                         <div id="user-menu">
-                            <div id="logout-btn" onClick={this.handleLogOut.bind(this)} className="btn">Log Out</div>
+                            <div id="logout-btn" onClick={this.handleLogOut} className="btn">Log Out</div>
                         </div>
                     }
                 </div>
