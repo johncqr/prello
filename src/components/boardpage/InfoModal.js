@@ -108,7 +108,7 @@ export default class InfoModal extends React.Component {
 
     render() {
         let comments = this.props.comments.map((c) => {
-            return <CardComment username={c.username} content={c.content} datetimePosted={c.datetimePosted} />
+            return <CardComment key={c._id} username={c.username} content={c.content} datetimePosted={c.datetimePosted} />
         });
 
         let labels = this.props.labels.map((l) => {
