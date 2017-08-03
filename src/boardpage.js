@@ -28,6 +28,22 @@ class BoardPage extends React.Component {
             cardModalOpen: false,
             newCardModalOpen: false,
         }
+
+        this.handleAddList = this.handleAddList.bind(this);
+        this.handleAddCard = this.handleAddCard.bind(this);
+        this.handleListNameChange = this.handleListNameChange.bind(this);
+        this.handleDeleteList = this.handleDeleteList.bind(this);
+        this.handleNewMember = this.handleNewMember.bind(this);
+        this.handleOpenCard = this.handleOpenCard.bind(this);
+        this.handleCloseCard = this.handleCloseCard.bind(this);
+        this.handleCloseNewCard = this.handleCloseNewCard.bind(this);
+        this.handleDeleteCard = this.handleDeleteCard.bind(this);
+        this.handleNewComment = this.handleNewComment.bind(this);
+        this.handleCardNameChange = this.handleCardNameChange.bind(this);
+        this.handleCardDescChange = this.handleCardDescChange.bind(this);
+        this.handleAddLabel = this.handleAddLabel.bind(this);
+        this.handleDeleteLabel = this.handleDeleteLabel.bind(this);
+        this.handleOpenCardAdder = this.handleOpenCardAdder.bind(this);
     }
 
     componentDidMount() {
@@ -128,7 +144,7 @@ class BoardPage extends React.Component {
             });
         });
 
-        socket.on('newBoardMember', function (data) {
+        socket.on('newBoardMember', (data) => {
             let newBoardMembers = this.state.boardMembers.slice();
             newBoardMembers.push(data.username);
             this.state({ boardMembers: newBoardMembers });
@@ -301,10 +317,10 @@ class BoardPage extends React.Component {
     render() {
         let lists = this.state.data.map((l) => {
             return <List key={l._id} lid={l._id} name={l.name} cards={l.cards}
-                onOpenCard={this.handleOpenCard.bind(this)}
-                onDeleteList={this.handleDeleteList.bind(this)}
-                onListNameChange={this.handleListNameChange.bind(this)}
-                onOpenCardAdder={this.handleOpenCardAdder.bind(this)} />
+                onOpenCard={this.handleOpenCard}
+                onDeleteList={this.handleDeleteList}
+                onListNameChange={this.handleListNameChange}
+                onOpenCardAdder={this.handleOpenCardAdder} />
         });
 
         let cardData;
@@ -321,7 +337,7 @@ class BoardPage extends React.Component {
                 <div className="board-page">
                     <BoardToolbar members={this.state.boardMembers}
                         name={this.state.boardName}
-                        onNewMember={this.handleNewMember.bind(this)}
+                        onNewMember={this.handleNewMember}
                     />
                     <ul id="lol">
                         {lists}
@@ -335,19 +351,19 @@ class BoardPage extends React.Component {
                         desc={cardData.desc}
                         labels={cardData.labels}
                         comments={cardData.comments}
-                        onClose={this.handleCloseCard.bind(this)}
-                        onDelete={this.handleDeleteCard.bind(this)}
-                        onComment={this.handleNewComment.bind(this)}
-                        onCardNameChange={this.handleCardNameChange.bind(this)}
-                        onCardDescChange={this.handleCardDescChange.bind(this)}
-                        onAddLabel={this.handleAddLabel.bind(this)}
-                        onDeleteLabel={this.handleDeleteLabel.bind(this)}
+                        onClose={this.handleCloseCard}
+                        onDelete={this.handleDeleteCard}
+                        onComment={this.handleNewComment}
+                        onCardNameChange={this.handleCardNameChange}
+                        onCardDescChange={this.handleCardDescChange}
+                        onAddLabel={this.handleAddLabel}
+                        onDeleteLabel={this.handleDeleteLabel}
                     />
                 }
                 {this.state.newCardModalOpen &&
                     <NewModal
-                        onAddCard={this.handleAddCard.bind(this)}
-                        onCloseNewCard={this.handleCloseNewCard.bind(this)}
+                        onAddCard={this.handleAddCard}
+                        onCloseNewCard={this.handleCloseNewCard}
                     />
                 }
             </div>
