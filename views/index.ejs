@@ -1,48 +1,7 @@
 <%- include('common/header', {title: title, stylesheet: stylesheet}); %>
-    <div class="navbar">
-        <div class="navbar-left">
-            <div id="boards-list-btn" class="navbar-btn">Boards</div>
-            <div id="boards-list">
-                <div class="boards-list-sep"><span class="boards-list-sep-name">Personal Boards</span></div>
-                <ul class="board-entry-list">
-                    <% for (var i = 0; i < boards.length; ++i) { %>
-                        <li class="board-entry" data-bid="<%= boards[i]._id %>">
-                                <%= boards[i].name %>
-                        </li>
-                    <% } %>
-                </ul>
-            </div>
-        </div>
-        <div class="navbar-mid">
-            <p id="logo"><a href="/">Prello</a></p>
-        </div>
-        <div class="navbar-right">
-            <div id="create-board-btn" class="navbar-btn">+</div>
-                <div id="user-btn" class="navbar-btn"><%= username %></div>
-                <div id="user-menu">
-                    <div id="logout-btn" class="btn">Log Out</div>
-                </div>
-                </ul>
-            <div id="create-board-menu">
-                <label>Title</label>
-                <input id="create-board-input" placeholder="Enter board name...">
-                <div id="create-board-submit-btn" class="btn">Create</div>
-            </div>
-        </div>
-    </div>
-    <div id="personal-boards" class="board-collection">
-        <p class="collection-name">Personal Boards</p>
-        <div class="boards-container">
-            <% for (var i = 0; i < boards.length; ++i) { %>
-                <div class="board" data-bid="<%= boards[i]._id %>">
-                    <h3 class="board-name">
-                        <%= boards[i].name %>
-                    </h3>
-                    <div class="delete-btn">X</div>
-                </div>
-            <% } %>
-        </div>
-    </div>
-    <script src="/javascripts/jquery-3.2.1.js"></script>
+    <div id="app"></div>
+    <script>
+        let USERNAME = "<%= username %>";
+    </script>
     <script src="/javascripts/boards.js"></script>
 <%- include('common/footer'); %>
