@@ -1,42 +1,7 @@
 <%- include('common/header', {title: title, stylesheet: stylesheet}); %>
-    <div class="navbar">
-        <div class="navbar-mid">
-            <p id="logo"><a href="/">Prello</a></p>
-        </div>
-    </div>
-    <div class="page-container">
-        <% if (notice) { %>
-            <div id="notice">
-                <%= notice %>
-            </div>
-        <% } %>
-        <div class="fields registration">
-            <p class="page-section">Create a New Prello Account</p>
-            <form id="form-registration" action="/register" method="POST">
-                <label for="username">Username</label>
-                <input type="text" name="username" placeholder="e.g FirstnameLastname" required>
-                <label for="email">Email</label>
-                <input type="email" name="email" placeholder="e.g email@domain.com" required>
-                <label for="password">Password</label>
-                <input id="password" type="password" name="password" placeholder="e.g ********" required>
-                <label for="passwordConfirm">Confirm Password</label>
-                <input id="password-confirm" type="password" name="passwordConfirm" placeholder="Confirm Password" required>
-                <input class="submit-btn" type="submit" value="Create New Account">
-            </form>
-        </div>
-        <div class="fields login">
-            <p class="page-section">Log In to Prello</p>
-            <form id="form-login" action="/login" method="POST">
-                <label for="email">Email</label>
-                <input type="text" name="email" placeholder="e.g email@domain.com" required>
-                <label for="password">Password</label>
-                <input type="password" name="password" placeholder="e.g ********" required>
-                <label for="rememberMe">Remember Me</label>
-                <input class="remember-checkbox" name="rememberMe" type="checkbox"><br>
-                <input class="submit-btn" type="submit" value="Log In">
-                <a href="/forgot">I forgot my password!</a>
-            </form>
-        </div>
-    </div>
+    <div id="app"></div>
+    <script>
+        let NOTICE = "<%= notice %>";
+    </script>
     <script src="/javascripts/login.js"></script>
 <%- include('common/footer'); %>
