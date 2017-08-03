@@ -10,9 +10,14 @@ export default class Navbar extends React.Component {
             addBoardInput: '',
         }
 
+        this.sendToBoardPage = this.sendToBoardPage.bind(this);
+        this.toggleBoardsList = this.toggleBoardsList.bind(this);
+        this.toggleUserMenu = this.toggleUserMenu.bind(this);
         this.handleAddBoardInputChange = this.handleAddBoardInputChange.bind(this);
         this.handleBoardCreateClick = this.handleBoardCreateClick.bind(this);
         this.toggleAddBoardMenu = this.toggleAddBoardMenu.bind(this);
+        this.handleLogOut = this.handleLogOut.bind(this);
+        this.renderBoardEntry = this.renderBoardEntry.bind(this);
     }
 
     sendToBoardPage(bid) {
@@ -68,7 +73,11 @@ export default class Navbar extends React.Component {
         return (
             <div className="navbar">
                 <div className="navbar-left">
-                    <div id="boards-list-btn" className="navbar-btn" onClick={this.toggleBoardsList.bind(this)}>Boards</div>
+                    <div id="boards-list-btn" className="navbar-btn"
+                         onClick={this.toggleBoardsList}
+                    >
+                        Boards
+                    </div>
                     {this.state.boardsListOpen &&
                         <div id="boards-list">
                             <div className="boards-list-sep"><span className="boards-list-sep-name">Personal Boards</span></div>
@@ -85,12 +94,12 @@ export default class Navbar extends React.Component {
                     <div id="create-board-btn" className="navbar-btn"
                          onClick={this.toggleAddBoardMenu}
                     >+</div>
-                    <div id="user-btn" className="navbar-btn" onClick={this.toggleUserMenu.bind(this)}>
+                    <div id="user-btn" className="navbar-btn" onClick={this.toggleUserMenu}>
                         {this.props.username}
                     </div>
                     {this.state.userMenuOpen &&
                         <div id="user-menu">
-                            <div id="logout-btn" onClick={this.handleLogOut.bind(this)} className="btn">Log Out</div>
+                            <div id="logout-btn" onClick={this.handleLogOut} className="btn">Log Out</div>
                         </div>
                     }
                     {this.state.addBoardMenuOpen &&

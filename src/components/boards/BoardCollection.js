@@ -5,6 +5,7 @@ export default class BoardCollection extends React.Component {
         super();
         this.renderBoard = this.renderBoard.bind(this);
         this.handleDeleteBoard = this.handleDeleteBoard.bind(this);
+        this.sendToBoardPage = this.sendToBoardPage.bind(this);
     }
     renderBoard(b) {
         return (

@@ -6,8 +6,8 @@ module.exports = {
   context: path.join(__dirname, "src"),
   devtool: debug ? "inline-sourcemap" : null,
   // entry: "./boardpage.js",
-  // entry: "./boards.js",
-  entry: "./login.js",
+  entry: "./boards.js",
+  // entry: "./login.js",
   module: {
     loaders: [
       {
@@ -23,8 +23,8 @@ module.exports = {
   output: {
     path: __dirname + "/public/javascripts",
     // filename: "boardpage.js",
-    // filename: "boards.js",
-    filename: "login.js"
+    filename: "boards.js",
+    // filename: "login.js",
   },
   plugins: debug ? [
   ] : [
