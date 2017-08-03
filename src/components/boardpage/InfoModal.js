@@ -194,7 +194,7 @@ export default class InfoModal extends React.Component {
                                 <li id="add-label-btn" className="btn" onClick={this.toggleLabelMenu}>Labels</li>
                                 {this.state.cardLabelMenuOpen &&
                                     <div id="add-label-menu">
-                                        <input id="add-label-desc" onChange={this.handleLabelDescChange} placeholder="Enter label description..." />
+                                        <input id="add-label-desc" value={this.state.labelDescInput} onChange={this.handleLabelDescChange} placeholder="Enter label description..." />
                                         <ul id="add-label-list">
                                             {labelMakers}
                                         </ul>
