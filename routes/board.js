@@ -297,7 +297,7 @@ router.patch('/:bid/list/:lid/card/:cid', checkPermission, function (req, res) {
               emitToBoard(req.params.bid, 'editCard', {
                 lid: req.params.lid,
                 cid: req.params.cid,
-                cardData: req.body,
+                cardData: card,
               });
               sendResource(err, list, res);
             });
