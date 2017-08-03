@@ -187,7 +187,7 @@ class Navbar extends React.Component {
                     <p id="logo"><a href="/">Prello</a></p>
                 </div>
                 <div className="navbar-right">
-                    <div id="user-btn" className="navbar-btn" onClick={this.toggleUserMenu.bind(this)}>{USERNAME}</div>
+                    <div id="user-btn" className="navbar-btn" onClick={this.toggleUserMenu.bind(this)}>{this.props.username}</div>
                     {this.state.userMenuOpen &&
                         <div id="user-menu">
                             <div id="logout-btn" onClick={this.handleLogOut.bind(this)} className="btn">Log Out</div>
@@ -856,7 +856,10 @@ class Board extends React.Component {
 
         return (
             <div>
-                <Navbar boards={this.state.boards} />
+                <Navbar
+                boards={this.state.boards}
+                username={USERNAME}
+                />
                 <div className="board-page">
                     <BoardToolbar members={this.state.boardMembers}
                         name={this.state.boardName}
@@ -888,7 +891,6 @@ class Board extends React.Component {
                         onAddCard={this.handleAddCard.bind(this)}
                         onCloseNewCard={this.handleCloseNewCard.bind(this)}
                     />
-
                 }
             </div>
         );
