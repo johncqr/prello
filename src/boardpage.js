@@ -23,9 +23,10 @@ class BoardPage extends React.Component {
             boardId: '',
             boardName: '',
             boardMembers: [],
-            cardModalOpen: false,
             currentLid: '',
             currentCid: '',
+            cardModalOpen: false,
+            newCardModalOpen: false,
         }
     }
 
@@ -314,8 +315,8 @@ class BoardPage extends React.Component {
         return (
             <div>
                 <Navbar
-                boards={this.state.boards}
-                username={USERNAME}
+                    boards={this.state.boards}
+                    username={USERNAME}
                 />
                 <div className="board-page">
                     <BoardToolbar members={this.state.boardMembers}
