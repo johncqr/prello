@@ -283,10 +283,12 @@ router.patch('/:bid/list/:lid/card/:cid', checkPermission, function (req, res) {
           var card = list.cards.id(req.params.cid);
           if (checkExistResource(card, res)) {
             for (var key in req.body) {
-              card[key] = req.body[key];
+              if (key != 'labels' || req.body.labels != 0) {
+                card[key] = req.body[key];
+              }
             }
             if (req.body.labels == 0) {
-              card[key] = [];
+              card.labels = [];
             }
             board.save(function (err, board) {
               if (err) {

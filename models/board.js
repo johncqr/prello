@@ -1,6 +1,11 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+var labelSchema = new Schema({
+    desc: String,
+    color: String,
+});
+
 var commentSchema = new Schema({
     content: String,
     username: String,
@@ -11,7 +16,7 @@ var cardSchema = new Schema({
     author: String,
     comments: [commentSchema],
     desc: String,
-    labels: Array,
+    labels: [labelSchema],
     name: String,
 }, { versionKey: false});
 
