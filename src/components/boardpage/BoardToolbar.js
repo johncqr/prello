@@ -9,19 +9,10 @@ export default class BoardToolbar extends React.Component {
             newMemberInput: '',
         }
 
-        this.renderMember = this.renderMember.bind(this);
         this.toggleBoardMenu = this.toggleBoardMenu.bind(this);
         this.toggleAddMemberMenu = this.toggleAddMemberMenu.bind(this);
         this.handleNewMemberInputChange = this.handleNewMemberInputChange.bind(this);
         this.handleNewMemberSubmit = this.handleNewMemberSubmit.bind(this);
-    }
-
-    renderMember(m) {
-        return (
-            <li className="card-member">
-                {m}
-            </li>
-        );
     }
 
     toggleBoardMenu() {
@@ -46,8 +37,12 @@ export default class BoardToolbar extends React.Component {
     }
 
     render() {
-        let members = this.props.members.map((m) => {
-            return this.renderMember(m);
+        let members = this.props.members.map((m, i) => {
+            return (
+                <li key={i} className="card-member">
+                    {m}
+                </li>
+            );
         });
 
         return (
