@@ -267,11 +267,9 @@ class BoardPage extends React.Component {
     handleDeleteLabel(id) {
         let newLabels = this._findCardData(this.state.currentLid, this.state.currentCid).labels.slice();
         newLabels.splice(newLabels.findIndex((l) => l._id === id), 1);
-        console.log(newLabels);
         if (newLabels.length === 0) {
             newLabels = 0;
         }
-        console.log(newLabels);
         $.ajax({
             url: `${HOST}/list/${this.state.currentLid}/card/${this.state.currentCid}`,
             data: {
