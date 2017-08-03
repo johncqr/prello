@@ -184,7 +184,7 @@ export default class InfoModal extends React.Component {
                             <div id="send-comment-btn" className="btn" onClick={this.handleSendComment}>Send</div>
                             <p className="card-section-name">Activity</p>
                             <ul id="card-activity-list">
-                                {comments}
+                                {comments.reverse()}
                             </ul>
                         </div>
                         <div className="card-options">
