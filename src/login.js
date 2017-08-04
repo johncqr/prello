@@ -1,21 +1,14 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 import Navbar from './components/login/Navbar';
 import RegistrationForm from './components/login/RegistrationForm';
 import LoginForm from './components/login/LoginForm'
 
-class Login extends React.Component {
+export default class Login extends React.Component {
     constructor() {
         super();
         this.state = {
             notice: '',
-        }
-    }
-
-    componentDidMount() {
-        if (NOTICE) {
-            this.setState({ notice: NOTICE });
         }
     }
 
@@ -36,5 +29,3 @@ class Login extends React.Component {
         );
     }
 }
-
-ReactDOM.render(<Login />, document.getElementById('app'));

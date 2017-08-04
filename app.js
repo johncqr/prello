@@ -6,9 +6,9 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var session = require('client-sessions');
-var cors = require('./libs/cors')
 
-// var board = require('./routes/board');
+var board = require('./routes/api/board');
+var auth = require('./routes/api/auth');
 var index = require('./routes/index');
 var forgot = require('./routes/forgot');
 
@@ -51,7 +51,6 @@ app.use(function(req, res, next) {
         req.user = user;
         delete req.user.password;
         req.session.user = user;
-        res.locals.user = user;
       }
       next();
     });
@@ -62,7 +61,8 @@ app.use(function(req, res, next) {
 
 app.use('/', index);
 app.use('/forgot', forgot);
-// app.use('/board', cors, board);
+app.use('/api/board', board);
+app.use('/api/auth', auth);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

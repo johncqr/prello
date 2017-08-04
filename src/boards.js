@@ -18,10 +18,10 @@ export default class Boards extends React.Component {
     componentDidMount() {
         // API information
         let PORT = 3000;
-        let HOST = `http://localhost:${PORT}`
+        let HOST = `http://localhost:${PORT}/api/board`
 
         $.ajax({
-            url: `${HOST}/board`,
+            url: `${HOST}`,
             type: 'GET',
             dataType: 'json',
         }).done((json) => {
@@ -34,7 +34,7 @@ export default class Boards extends React.Component {
 
     handleDeleteBoard(bid) {
         $.ajax({
-            url: `${HOST}/board/${bid}`,
+            url: `${HOST}/${bid}`,
             type: 'DELETE',
         });
         let newBoards = this.state.boards;
@@ -46,7 +46,7 @@ export default class Boards extends React.Component {
 
     handleCreateBoard(name) {
         $.ajax({
-            url: `${HOST}/board`,
+            url: `${HOST}`,
             type: 'POST',
             data: {
                 name: name,

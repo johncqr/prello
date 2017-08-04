@@ -41,13 +41,12 @@ export default class BoardPage extends React.Component {
     }
 
     componentDidMount() {
-
         let PORT = 3000;
         let BASE = `http://localhost:${PORT}`
-        let HOST = `http://localhost:${PORT}/board/${this.props.bid}`;
+        let HOST = `http://localhost:${PORT}/api/board/${this.props.bid}`;
 
         $.ajax({
-            url: `${HOST}/info`,
+            url: `${HOST}`,
             type: 'GET',
             dataType: 'json',
         }).done((json) => {

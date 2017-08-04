@@ -1,22 +1,20 @@
 var express = require('express');
-var requireLogin = require('../libs/requireLogin');
+var requireLogin = require('../../libs/requireLogin');
 
-var Board = require('../models/board');
-var User = require('../models/user');
+var Board = require('../../models/board');
+var User = require('../../models/user');
 
 var router = express.Router();
 router.use(requireLogin);
 
-var io = require('../libs/socketio');
+var io = require('../../libs/socketio');
 
-var boardpageStyle = '/stylesheets/boardpage.css';
-var errorStyle = '/stylesheets/error.css';
-var errorRequestMessage = 'Error handling request!';
+var defaultErrorMessage = 'Error handling request';
 
 function sendResource(err, resource, res) {
   if (err) {
     console.log(err);
-    res.status(500).send('Error handling your request!');
+    res.status(500).json({ error: defaultErrorMessage});
   } else {
     res.json(resource);
   }
@@ -28,7 +26,7 @@ function emitToBoard(bid, eventName, data) {
 
 function checkExistResource(resource, res) {
   if (!resource) {
-    res.status(404).render('error', { title: 'Oops', message: 'Something went wrong!', stylesheet: errorStyle});
+    res.status(404).json({ error: 'Resource does not exist'});
     return false;
   } 
   return true;
@@ -36,7 +34,7 @@ function checkExistResource(resource, res) {
 
 function handleSaveError(err, res) {
   console.log(err);
-  res.status(500).send('Error handling your request!');
+  res.status(500).json({ error: 'Error handling request'});
 }
 
 function contains(arr, o) {
@@ -54,7 +52,7 @@ function checkPermission(req, res, next) {
       if (contains(board.members, req.user.username)) {
         next();
       } else {
-        res.render('error', { title: 'Oops!', message: 'You do not have access to this board!', stylesheet: errorStyle });
+        res.json({ error: 'Permission denied' })
       }
     }
   });
@@ -77,17 +75,7 @@ router.post('/', function (req, res) {
   });
 });
 
-// router.get('/:bid', checkPermission, function (req, res) {
-//   Board.findById(req.params.bid, function (err, board) {
-//     if (checkExistResource(board, res)) {
-//       Board.find({ members: req.user.username }, function (err, boards) {
-//         res.render('boardpage', { title: board.name, username: req.user.username, boards, members: board.members, bid: req.params.bid, stylesheet: boardpageStyle });
-//       });
-//     }
-//   });
-// });
-
-router.get('/:bid/info', checkPermission, function (req, res) {
+router.get('/:bid', checkPermission, function (req, res) {
   Board.findById(req.params.bid, function (err, board) {
     if (checkExistResource(board, res)) {
       res.json(board);
