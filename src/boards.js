@@ -1,15 +1,10 @@
 import $ from 'jquery';
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 import Navbar from './components/boards/Navbar';
 import BoardCollection from './components/boards/BoardCollection';
 
-// API information
-let PORT = 3000;
-let HOST = `http://localhost:${PORT}`
-
-class Boards extends React.Component {
+export default class Boards extends React.Component {
     constructor() {
         super();
         this.state = {
@@ -21,6 +16,10 @@ class Boards extends React.Component {
     }
 
     componentDidMount() {
+        // API information
+        let PORT = 3000;
+        let HOST = `http://localhost:${PORT}`
+
         $.ajax({
             url: `${HOST}/board`,
             type: 'GET',

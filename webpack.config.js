@@ -5,9 +5,10 @@ var path = require('path');
 module.exports = {
   context: path.join(__dirname, "src"),
   devtool: debug ? "inline-sourcemap" : null,
-  entry: "./boardpage.js",
+  // entry: "./boardpage.js",
   // entry: "./boards.js",
   // entry: "./login.js",
+  entry: "./index.js",
   module: {
     loaders: [
       {
@@ -22,9 +23,10 @@ module.exports = {
   },
   output: {
     path: __dirname + "/public/javascripts",
-    filename: "boardpage.js",
+    // filename: "boardpage.js",
     // filename: "boards.js",
     // filename: "login.js",
+    filename: "index.js",
   },
   plugins: debug ? [
   ] : [

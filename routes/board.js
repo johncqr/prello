@@ -77,15 +77,15 @@ router.post('/', function (req, res) {
   });
 });
 
-router.get('/:bid', checkPermission, function (req, res) {
-  Board.findById(req.params.bid, function (err, board) {
-    if (checkExistResource(board, res)) {
-      Board.find({ members: req.user.username }, function (err, boards) {
-        res.render('boardpage', { title: board.name, username: req.user.username, boards, members: board.members, bid: req.params.bid, stylesheet: boardpageStyle });
-      });
-    }
-  });
-});
+// router.get('/:bid', checkPermission, function (req, res) {
+//   Board.findById(req.params.bid, function (err, board) {
+//     if (checkExistResource(board, res)) {
+//       Board.find({ members: req.user.username }, function (err, boards) {
+//         res.render('boardpage', { title: board.name, username: req.user.username, boards, members: board.members, bid: req.params.bid, stylesheet: boardpageStyle });
+//       });
+//     }
+//   });
+// });
 
 router.get('/:bid/info', checkPermission, function (req, res) {
   Board.findById(req.params.bid, function (err, board) {

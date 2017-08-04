@@ -9,19 +9,23 @@ var Board = require('../models/board');
 var boardStyle = '/stylesheets/boards.css';
 var loginStyle = '/stylesheets/login.css';
 
-router.get('/', requireLogin, function(req, res) {
-  Board.find({ members: req.user.username }, function (err, boards) {
-    res.render('index', { title: 'Boards', username: req.user.username, boards, stylesheet: boardStyle });
-  });
+// router.get('/', requireLogin, function(req, res) {
+//   Board.find({ members: req.user.username }, function (err, boards) {
+//     res.render('index', { title: 'Boards', username: req.user.username, boards, stylesheet: boardStyle });
+//   });
+// });
+
+router.get('/', function(req, res) {
+  res.render('index');
 });
 
-router.get('/login', function (req, res, next) {
-  if (req.user) {
-    res.redirect('/')
-  } else {
-    res.render('login', { title: 'Log In', stylesheet: loginStyle, notice: '' });
-  }
-});
+// router.get('/login', function (req, res, next) {
+//   if (req.user) {
+//     res.redirect('/')
+//   } else {
+//     res.render('login', { title: 'Log In', stylesheet: loginStyle, notice: '' });
+//   }
+// });
 
 router.post('/login', function (req, res, next) {
     User.findOne({ email: req.body.email }, function (err, user) {

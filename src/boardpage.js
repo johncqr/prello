@@ -1,6 +1,5 @@
 import $ from 'jquery';
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 import Navbar from './components/boardpage/Navbar'
 import BoardToolbar from './components/boardpage/BoardToolbar'
@@ -9,12 +8,7 @@ import ListAdder from './components/boardpage/ListAdder'
 import InfoModal from './components/boardpage/InfoModal'
 import NewModal from './components/boardpage/NewModal'
 
-// API information
-let PORT = 3000;
-let BASE = `http://localhost:${PORT}`
-let HOST = `http://localhost:${PORT}/board/${BID}`; // BID passed through template
-
-class BoardPage extends React.Component {
+export default class BoardPage extends React.Component {
     constructor() {
         super();
         this.state = {
@@ -47,6 +41,11 @@ class BoardPage extends React.Component {
     }
 
     componentDidMount() {
+
+        let PORT = 3000;
+        let BASE = `http://localhost:${PORT}`
+        let HOST = `http://localhost:${PORT}/board/${this.props.bid}`;
+
         $.ajax({
             url: `${HOST}/info`,
             type: 'GET',
@@ -370,5 +369,3 @@ class BoardPage extends React.Component {
         );
     }
 }
-
-ReactDOM.render(<BoardPage />, document.getElementById('app'));
