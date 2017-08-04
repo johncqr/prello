@@ -9,8 +9,13 @@ import InfoModal from './components/boardpage/InfoModal'
 import NewModal from './components/boardpage/NewModal'
 
 export default class BoardPage extends React.Component {
-    constructor() {
+    constructor(props) {
         super();
+        
+        this.port = 3000;
+        this.base = `http://localhost:${this.port}`
+        this.host = `http://localhost:${this.port}/api/board/${props.bid}`;
+
         this.state = {
             data: [],
             boards: [],
@@ -41,12 +46,9 @@ export default class BoardPage extends React.Component {
     }
 
     componentDidMount() {
-        let PORT = 3000;
-        let BASE = `http://localhost:${PORT}`
-        let HOST = `http://localhost:${PORT}/api/board/${this.props.bid}`;
 
         $.ajax({
-            url: `${HOST}`,
+            url: `${this.host}`,
             type: 'GET',
             dataType: 'json',
         }).done((json) => {
@@ -59,7 +61,7 @@ export default class BoardPage extends React.Component {
         });
 
         $.ajax({
-            url: `${BASE}/board`,
+            url: `${this.base}/board`,
             type: 'GET',
             dataType: 'json',
         }).done((json) => {
@@ -167,7 +169,7 @@ export default class BoardPage extends React.Component {
 
     handleAddList(name) {
         $.ajax({
-            url: `${HOST}/list`,
+            url: `${this.host}/list`,
             data: {
                 name
             },
@@ -177,7 +179,7 @@ export default class BoardPage extends React.Component {
 
     handleAddCard(cardData) {
         $.ajax({
-            url: `${HOST}/list/${this.state.currentLid}/card/`,
+            url: `${this.host}/list/${this.state.currentLid}/card/`,
             data: {
                 name: cardData.name,
                 desc: cardData.desc,
@@ -190,7 +192,7 @@ export default class BoardPage extends React.Component {
 
     handleListNameChange(lid, name) {
         $.ajax({
-            url: `${HOST}/list/${lid}`,
+            url: `${this.host}/list/${lid}`,
             data: {
                 name: name,
             },
@@ -200,14 +202,14 @@ export default class BoardPage extends React.Component {
 
     handleDeleteList(lid) {
         $.ajax({
-            url: `${HOST}/list/${lid}`,
+            url: `${this.host}/list/${lid}`,
             type: 'DELETE'
         });
     }
 
     handleNewMember(name) {
         $.ajax({
-            url: `${HOST}/member`,
+            url: `${this.host}/member`,
             data: {
                 username: name
             },
@@ -238,7 +240,7 @@ export default class BoardPage extends React.Component {
 
     handleDeleteCard() {
         $.ajax({
-            url: `${HOST}/list/${this.state.currentLid}/card/${this.state.currentCid}`,
+            url: `${this.host}/list/${this.state.currentLid}/card/${this.state.currentCid}`,
             type: 'DELETE',
         });
         this.handleCloseCard();
@@ -246,7 +248,7 @@ export default class BoardPage extends React.Component {
 
     handleNewComment(content) {
         $.ajax({
-            url: `${HOST}/list/${this.state.currentLid}/card/${this.state.currentCid}/comment`,
+            url: `${this.host}/list/${this.state.currentLid}/card/${this.state.currentCid}/comment`,
             data: {
                 content: content
             },
@@ -256,7 +258,7 @@ export default class BoardPage extends React.Component {
 
     handleCardNameChange(name) {
         $.ajax({
-            url: `${HOST}/list/${this.state.currentLid}/card/${this.state.currentCid}`,
+            url: `${this.host}/list/${this.state.currentLid}/card/${this.state.currentCid}`,
             data: {
                 name: name,
             },
@@ -271,7 +273,7 @@ export default class BoardPage extends React.Component {
         }
         newLabels.push({ desc, color });
         $.ajax({
-            url: `${HOST}/list/${this.state.currentLid}/card/${this.state.currentCid}`,
+            url: `${this.host}/list/${this.state.currentLid}/card/${this.state.currentCid}`,
             data: {
                 labels: newLabels,
             },
@@ -286,7 +288,7 @@ export default class BoardPage extends React.Component {
             newLabels = 0;
         }
         $.ajax({
-            url: `${HOST}/list/${this.state.currentLid}/card/${this.state.currentCid}`,
+            url: `${this.host}/list/${this.state.currentLid}/card/${this.state.currentCid}`,
             data: {
                 labels: newLabels,
             },
@@ -296,7 +298,7 @@ export default class BoardPage extends React.Component {
 
     handleCardDescChange(desc) {
         $.ajax({
-            url: `${HOST}/list/${this.state.currentLid}/card/${this.state.currentCid}`,
+            url: `${this.host}/list/${this.state.currentLid}/card/${this.state.currentCid}`,
             data: {
                 desc: desc,
             },

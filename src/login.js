@@ -10,6 +10,16 @@ export default class Login extends React.Component {
         this.state = {
             notice: '',
         }
+
+        // API information
+        this.port = 3000;
+        this.host = `http://localhost:${this.port}/api/auth`
+
+        this.handleNotice = this.handleNotice.bind(this);
+    }
+
+    handleNotice(notice) {
+        this.setState({ notice });
     }
 
     render() {
@@ -22,8 +32,16 @@ export default class Login extends React.Component {
                             {this.state.notice}
                         </div>
                     }
-                    <RegistrationForm />
-                    <LoginForm />
+                    <RegistrationForm
+                        host={this.host}
+                        onNotice={this.handleNotice}
+                        onLogin={this.onLogin}
+                    />
+                    <LoginForm
+                        host={this.host}
+                        onNotice={this.handleNotice}
+                        onLogin={this.onLogin}
+                    />
                 </div>
             </div>
         );
