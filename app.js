@@ -23,8 +23,6 @@ db.once('open', function() {
 
 var app = express();
 
-var errorStyle = '../stylesheets/error.css';
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -59,28 +57,13 @@ app.use(function(req, res, next) {
   }
 });
 
-app.use('/', index);
 app.use('/forgot', forgot);
 app.use('/api/board', board);
 app.use('/api/auth', auth);
 
-// catch 404 and forward to error handler
+// otherwise render app
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
-});
-
-// error handler
-app.use(function(err, req, res, next) {
-  res.redirect('/');
-  // set locals, only providing error in development
-  // res.locals.message = err.message;
-  // res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  // res.status(err.status || 500);
-  // res.render('error', { title: 'Oops!', message: 'Nothing to see here!', stylesheet: errorStyle });
+  res.sendFile(path.join(__dirname + '/index.html'));
 });
 
 module.exports = app;
