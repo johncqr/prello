@@ -66,8 +66,9 @@ export default class Boards extends React.Component {
             <div>
                 <Navbar
                     boards={this.state.boards}
-                    username={USERNAME}
+                    username={this.props.username}
                     onCreateBoard={this.handleCreateBoard}
+                    onLogout={this.props.onLogout}
                 />
                 <BoardCollection
                     name={'Personal Boards'}
@@ -78,5 +79,3 @@ export default class Boards extends React.Component {
         );
     }
 }
-
-ReactDOM.render(<Boards />, document.getElementById('app'));

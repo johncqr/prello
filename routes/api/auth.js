@@ -60,6 +60,7 @@ router.post('/register', function (req, res, next) {
 
 router.get('/logout', function (req, res, next) {
     req.session.reset();
+    res.json({ 'notice': 'Logout successful'});
 });
 
 module.exports = router;

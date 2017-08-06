@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 
 import Navbar from './components/login/Navbar';
 import RegistrationForm from './components/login/RegistrationForm';
@@ -35,12 +36,12 @@ export default class Login extends React.Component {
                     <RegistrationForm
                         host={this.host}
                         onNotice={this.handleNotice}
-                        onLogin={this.onLogin}
+                        onLogin={this.props.onLogin}
                     />
                     <LoginForm
                         host={this.host}
                         onNotice={this.handleNotice}
-                        onLogin={this.onLogin}
+                        onLogin={this.props.onLogin}
                     />
                 </div>
             </div>

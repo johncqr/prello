@@ -52,7 +52,7 @@ export default class Navbar extends React.Component {
     }
 
     handleLogOut() {
-        window.location.href = '/logout';
+        this.props.onLogout();
     }
 
     renderBoardEntry(boardData) {
